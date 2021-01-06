@@ -1,20 +1,39 @@
 {
   "name": "@jlguenego/syntax-analysis",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Syntax analysis. Lot of different methods.",
+  "main": "./build/src/index.js",
+  "module": "build_esm/src/index.js",
+  "private": false,
   "scripts": {
     "test": "nyc mocha",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",
+    "compile:esm": "tsc --project tsconfig.esm.json",
     "fix": "gts fix",
     "prepare": "npm.cmd run compile",
     "pretest": "npm.cmd run compile",
-    "posttest": "npm.cmd run lint"
+    "posttest": "npm.cmd run lint",
+    "prerelease": "npm run compile && npm run compile:esm",
+    "release": "standard-version"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "syntax analysis",
+    "parser",
+    "parse-tree",
+    "compiler",
+    "bfs",
+    "dfs",
+    "ll",
+    "lr",
+    "lalr",
+    "slr",
+    "lr(0)",
+    "lr(1)",
+    "lr(k)"
+  ],
+  "author": "Jean-Louis GUENEGO <jlguenego@gmail.com>",
   "license": "ISC",
   "devDependencies": {
     "@types/mocha": "^8.2.0",
@@ -22,7 +41,19 @@
     "gts": "^3.0.3",
     "mocha": "^8.2.1",
     "nyc": "^15.1.0",
+    "standard-version": "^9.1.0",
     "ts-node": "^9.1.1",
     "typescript": "^4.0.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jlguenego/syntax-analysis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jlguenego/syntax-analysis/issues"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/jlguenego"
   }
 }
