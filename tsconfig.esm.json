@@ -5,5 +5,5 @@
     "module": "ES2015",
     "moduleResolution": "Node"
   },
-  "include": ["src/**/*.ts", "test/**/*.ts"]
+  "include": ["src/**/*.ts"]
 }
