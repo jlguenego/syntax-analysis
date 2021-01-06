@@ -1,6 +1,7 @@
-import {Alphabet} from './Alphabet';
+import {NonTerminal} from '../NonTerminal';
+import {Terminal} from '../Terminal';
 
 export interface Production {
-  LHS: string;
-  RHS: Alphabet[];
+  LHS: NonTerminal;
+  RHS: (Terminal | NonTerminal)[];
 }

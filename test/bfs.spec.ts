@@ -1,20 +1,34 @@
 import assert from 'assert';
-import {ContextFreeGrammar} from '../src/ContextFreeGrammar';
+import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
 import {bfs} from '../src/index';
-import {P} from '../src/NonTerminal';
-import {T} from '../src/Terminal';
+import {NonTerminal} from '../src/NonTerminal';
+import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
+import {Terminal} from '../src/Terminal';
+import {TerminalAlphabet} from '../src/TerminalAlphabet';
+
+class TestNTAlphabet extends NonTerminalAlphabet {
+  S = new NonTerminal('S');
+  E = new NonTerminal('E');
+  F = new NonTerminal('F');
+}
+class TestTAlphabet extends TerminalAlphabet {
+  PLUS = new Terminal('+');
+  INT = new Terminal('int');
+}
 
 describe('BFS Unit Test', () => {
   it('test a simple graph', () => {
+    const t = new TestTAlphabet();
+    const nt = new TestNTAlphabet();
     const spec = {
-      startSymbol: 'S',
+      startSymbol: nt.S,
       productions: [
-        {LHS: 'S', RHS: [P('E')]},
-        {LHS: 'E', RHS: [P('E'), T('+'), P('F')]},
-        {LHS: 'E', RHS: [P('F')]},
-        {LHS: 'F', RHS: [T('int')]},
+        {LHS: nt.S, RHS: [nt.E]},
+        {LHS: nt.E, RHS: [nt.E, t.PLUS, nt.F]},
+        {LHS: nt.E, RHS: [nt.F]},
+        {LHS: nt.F, RHS: [t.INT]},
       ],
-    };
+    } as CFGSpec;
     const cfg = new ContextFreeGrammar(spec);
     console.log('cfg: ', cfg);
     assert.deepStrictEqual(bfs, 123);
