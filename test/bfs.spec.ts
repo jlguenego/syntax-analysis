@@ -1,6 +1,7 @@
 import assert from 'assert';
 import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
 import {bfs} from '../src/index';
+import {Sentence} from '../src/interfaces/Sentence';
 import {NonTerminal} from '../src/NonTerminal';
 import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
 import {Terminal} from '../src/Terminal';
@@ -16,36 +17,30 @@ class TestTAlphabet extends TerminalAlphabet {
   INT = new Terminal('int');
 }
 
+const t = new TestTAlphabet();
+const nt = new TestNTAlphabet();
+const spec = {
+  startSymbol: nt.S,
+  productions: [
+    {LHS: nt.S, RHS: [nt.E]},
+    {LHS: nt.E, RHS: [nt.E, t.PLUS, nt.F]},
+    {LHS: nt.E, RHS: [nt.F]},
+    {LHS: nt.F, RHS: [t.INT]},
+  ],
+} as CFGSpec<TestTAlphabet, TestNTAlphabet>;
+const cfg = new ContextFreeGrammar(spec);
+console.log('cfg: ', cfg);
+
 describe('BFS Unit Test', () => {
   it('test a simple graph', () => {
-    const t = new TestTAlphabet();
-    const nt = new TestNTAlphabet();
-    const spec = {
-      startSymbol: nt.S,
-      productions: [
-        {LHS: nt.S, RHS: [nt.E]},
-        {LHS: nt.E, RHS: [nt.E, t.PLUS, nt.F]},
-        {LHS: nt.E, RHS: [nt.F]},
-        {LHS: nt.F, RHS: [t.INT]},
-      ],
-    } as CFGSpec<TestTAlphabet, TestNTAlphabet>;
-    const cfg = new ContextFreeGrammar(spec);
-    console.log('cfg: ', cfg);
+    const sentence: Sentence<TestTAlphabet> = [
+      t.INT,
+      t.PLUS,
+      t.INT,
+      t.PLUS,
+      t.INT,
+    ];
+    console.log('sentence: ', sentence);
     assert.deepStrictEqual(bfs, 123);
-  });
-
-  it('test attribute of', () => {
-    class C {
-      a = 'toto';
-      b = 123;
-    }
-
-    function getProperty<T>(obj: T, str: keyof T): T[keyof T] {
-      return obj[str];
-    }
-
-    const c = new C();
-    const result = getProperty(c, 'b');
-    assert.deepStrictEqual(result, 123);
   });
 });
