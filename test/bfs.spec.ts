@@ -1,25 +1,24 @@
 import assert from 'assert';
-import {METHODS} from 'http';
 import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
-import {bfs} from '../src/index';
 import {Sentence} from '../src/interfaces/Sentence';
 import {NonTerminal} from '../src/NonTerminal';
 import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
 import {Terminal} from '../src/Terminal';
 import {TerminalAlphabet} from '../src/TerminalAlphabet';
+import {parseWithBFS1} from '../src/top-down/BFS1';
 
-class TestNTAlphabet extends NonTerminalAlphabet {
+class TA extends NonTerminalAlphabet {
   S = new NonTerminal('S');
   E = new NonTerminal('E');
   F = new NonTerminal('F');
 }
-class TestTAlphabet extends TerminalAlphabet {
+class NTA extends TerminalAlphabet {
   PLUS = new Terminal('+');
   INT = new Terminal('int');
 }
 
-const t = new TestTAlphabet();
-const nt = new TestNTAlphabet();
+const t = new NTA();
+const nt = new TA();
 const spec = {
   startSymbol: nt.S,
   productions: [
@@ -28,23 +27,15 @@ const spec = {
     {LHS: nt.E, RHS: [nt.F]},
     {LHS: nt.F, RHS: [t.INT]},
   ],
-} as CFGSpec<TestTAlphabet, TestNTAlphabet>;
+} as CFGSpec<NTA, TA>;
 const cfg = new ContextFreeGrammar(spec);
 console.log('cfg: ', cfg);
 
 describe('BFS Unit Test', () => {
   it('test a simple graph', () => {
-    const sentence: Sentence<TestTAlphabet> = [
-      t.INT,
-      t.PLUS,
-      t.INT,
-      t.PLUS,
-      t.INT,
-    ];
+    const sentence: Sentence<NTA> = [t.INT, t.PLUS, t.INT, t.PLUS, t.INT];
     console.log('sentence: ', sentence);
-    // const parseTree = parser.get(sentence, {
-    //   method: METHODS.BFS,
-    // });
-    assert.deepStrictEqual(bfs, 123);
+    const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
+    assert(parseTree);
   });
 });
