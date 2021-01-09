@@ -28,9 +28,24 @@ describe('BFS Unit Test', () => {
         {LHS: nt.E, RHS: [nt.F]},
         {LHS: nt.F, RHS: [t.INT]},
       ],
-    } as CFGSpec;
+    } as CFGSpec<TestTAlphabet, TestNTAlphabet>;
     const cfg = new ContextFreeGrammar(spec);
     console.log('cfg: ', cfg);
     assert.deepStrictEqual(bfs, 123);
+  });
+
+  it('test attribute of', () => {
+    class C {
+      a = 'toto';
+      b = 123;
+    }
+
+    function getProperty<T>(obj: T, str: keyof T): T[keyof T] {
+      return obj[str];
+    }
+
+    const c = new C();
+    const result = getProperty(c, 'b');
+    assert.deepStrictEqual(result, 123);
   });
 });
