@@ -1,4 +1,5 @@
 import assert from 'assert';
+import {METHODS} from 'http';
 import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
 import {bfs} from '../src/index';
 import {Sentence} from '../src/interfaces/Sentence';
@@ -41,6 +42,9 @@ describe('BFS Unit Test', () => {
       t.INT,
     ];
     console.log('sentence: ', sentence);
+    // const parseTree = parser.get(sentence, {
+    //   method: METHODS.BFS,
+    // });
     assert.deepStrictEqual(bfs, 123);
   });
 });
