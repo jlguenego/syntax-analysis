@@ -6,18 +6,13 @@ export type SententialForm<
   NT extends NonTerminalAlphabet
 > = (T[keyof T] | NT[keyof NT])[];
 
-export const areSententialFormEquals = <
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
->(
-  a: SententialForm<T, NT>,
-  b: SententialForm<T, NT>
-) => {
-  for (let i = 0; i < a.length; i++) {
-    // equal by reference because all alphabet letters are the same ref in memory.
-    if (a[i] !== b[i]) {
-      return false;
-    }
-  }
-  return true;
-};
+// // flat parse tree
+// export function isParseTreeValid<
+//   T extends TerminalAlphabet,
+//   NT extends NonTerminalAlphabet
+// >(sentence: SententialForm<T, NT>) {
+//   console.log('sentence: ', sentence);
+//   return (parseTree: ParseTree<T, NT>) => {
+//     return parseTree.getSententialForm().equals(sentence);
+//   };
+// }

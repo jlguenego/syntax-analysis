@@ -1,6 +1,6 @@
 export interface BFSTree<T> {
   value: T;
-  equals(actual: T, expected: T): boolean;
+  test(actual: BFSTree<T>): boolean;
   getChildren(): T[];
   parent?: BFSTree<T>;
   root?: BFSTree<T>;
