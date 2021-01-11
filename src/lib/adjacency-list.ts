@@ -1,6 +1,6 @@
-import {Tree} from '../interfaces/Tree';
+import {AdjacencyList} from './Tree';
 
-export function getRoot(t: Tree): number {
+export function getRoot(t: AdjacencyList): number {
   const children: number[] = Object.values(t).reduce(
     (acc, n) => acc.concat(n),
     []
@@ -13,7 +13,7 @@ export function getRoot(t: Tree): number {
   throw new Error('Cannot find a root for this tree: ' + JSON.stringify(t));
 }
 
-export function getSubTree(t: Tree, n: number): Tree {
+export function getSubTree(t: AdjacencyList, n: number): AdjacencyList {
   if (t[n] === undefined) {
     return {
       [n]: [],
@@ -24,7 +24,7 @@ export function getSubTree(t: Tree, n: number): Tree {
   });
 }
 
-export function flatten(t: Tree): Array<number> {
+export function flatten(t: AdjacencyList): Array<number> {
   if (Object.keys(t).length === 0) {
     return [];
   }

@@ -1,6 +1,5 @@
 import assert from 'assert';
-import {Tree} from '../src/interfaces/Tree';
-import {flatten} from '../src/lib/tree-utils';
+import {Tree} from '../src/lib/Tree';
 
 describe('Tree Unit Test', () => {
   it('test flatten tree', () => {
@@ -15,13 +14,15 @@ describe('Tree Unit Test', () => {
     //     {n: 4},
     //   ],
     // };
-    const t = {
+    const adjList = {
       1: [2, 3, 4],
       2: [5, 6],
       6: [7, 8],
-    } as Tree;
+    };
 
-    const flat = flatten(t);
+    const tree = Tree.fromAdjacenceList(adjList);
+
+    const flat = tree.flatten();
     console.log('flat: ', flat);
 
     assert.deepStrictEqual(flat, [5, 7, 8, 3, 4]);
