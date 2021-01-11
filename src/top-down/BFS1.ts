@@ -2,9 +2,7 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence, sentenceEquals} from '../interfaces/Sentence';
-import {isSentence} from '../interfaces/SententialForm';
 import {Tree} from '../lib/Tree';
-import {NonTerminal} from '../NonTerminal';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {BFSTree} from './lib/breadthFirstSearch';
@@ -25,10 +23,6 @@ export const parseWithBFS1 = <
   };
   const getChildren = (t: PartialParseTree) => {
     console.log('t: ', t);
-    const t2 = t.clone();
-    const leaves = t2
-      .getLeaves()
-      .filter(n => n.getNode() instanceof NonTerminal);
     // foreach leaves generate all possible production rules, and add the node to the tree.
     return [];
   };
