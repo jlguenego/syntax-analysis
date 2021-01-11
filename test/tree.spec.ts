@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {inspect} from 'util';
 import {Tree} from '../src/lib/Tree';
 
 describe('Tree Unit Test', () => {
