@@ -42,6 +42,16 @@ export class Tree<T> {
     );
   }
 
+  static fromObject<T>(to: TreeObject<T>): Tree<T> {
+    if (to.c) {
+      return new Tree<T>(
+        to.v,
+        to.c.map(c => Tree.fromObject<T>(c))
+      );
+    }
+    return new Tree<T>(to.v);
+  }
+
   constructor(private node: T, private children: Tree<T>[] = []) {}
   getNode() {
     return this.node;

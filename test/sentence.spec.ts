@@ -1,6 +1,6 @@
 import assert from 'assert';
 import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
-import {ParseTree} from '../src/interfaces/ParseTree';
+import {getSentence, ParseTree} from '../src/interfaces/ParseTree';
 import {Sentence} from '../src/interfaces/Sentence';
 import {Terminal} from '../src/interfaces/Terminal';
 import {NonTerminal} from '../src/NonTerminal';
@@ -36,11 +36,13 @@ console.log('cfg: ', cfg);
 
 describe('Sentence Unit Test', () => {
   it('test getSentence', () => {
-    const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
-      name: str,
-    }));
-    const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
-    const expectedParseTree: ParseTree = {
+    const expectedSentence: Sentence = ['int', '+', 'int', '+', 'int'].map(
+      str => ({
+        name: str,
+      })
+    );
+    // const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
+    const parseTree: ParseTree = {
       v: nt.S,
       c: [
         {
@@ -78,6 +80,7 @@ describe('Sentence Unit Test', () => {
         },
       ],
     };
-    assert.deepStrictEqual(parseTree, expectedParseTree);
+    const actualSentence = getSentence(parseTree);
+    assert.deepStrictEqual(actualSentence, expectedSentence);
   });
 });

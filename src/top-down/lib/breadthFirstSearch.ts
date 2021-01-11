@@ -1,11 +1,25 @@
-export interface BFSTree<T> {
-  value: T;
-  test(actual: BFSTree<T>): boolean;
-  getChildren(): T[];
-  parent?: BFSTree<T>;
-  root?: BFSTree<T>;
-}
+export type BFSTreeTestValueFn<T> = (value: T) => boolean;
+export type BFSTreeGetChildrenFn<T> = (value: T) => T[];
 
-export const breadthFirstSearch = <T>(tree: BFSTree<T>): BFSTree<T> => {
-  return tree;
-};
+export class BFSTree<T> {
+  constructor(
+    private initValue: T,
+    private test: BFSTreeTestValueFn<T>,
+    private getChildren: BFSTreeGetChildrenFn<T>
+  ) {}
+
+  search(): T | undefined {
+    const stack = [this.initValue];
+    while (true) {
+      const currentValue = stack.shift();
+      if (currentValue === undefined) {
+        return undefined;
+      }
+      if (this.test(currentValue)) {
+        return currentValue;
+      }
+      const children = this.getChildren(currentValue);
+      stack.push(...children);
+    }
+  }
+}
