@@ -1,1 +1,3 @@
-export type Sentence<T> = T[keyof T][];
+import {Terminal} from './Terminal';
+
+export type Sentence = Terminal[];

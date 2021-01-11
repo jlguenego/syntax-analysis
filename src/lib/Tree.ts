@@ -1,20 +1,20 @@
 import {getRoot, getSubTree} from './adjacency-list';
 
 export interface AdjacencyList {
-  [node: number]: number[];
+  [node: string]: string[];
 }
 
 export interface TreeObject<T> {
-  n: T;
+  v: T;
   c?: TreeObject<T>[];
 }
 
-export type NodeMap<T> = Map<number, T>;
+export type NodeMap<T> = Map<string, T>;
 
 export class Tree<T> {
-  static fromAdjacenceList(adjacencyList: AdjacencyList): Tree<number> {
+  static fromAdjacenceList(adjacencyList: AdjacencyList): Tree<string> {
     const root = getRoot(adjacencyList);
-    return new Tree<number>(
+    return new Tree<string>(
       root,
       adjacencyList[root].map(c =>
         Tree.fromAdjacenceList(getSubTree(adjacencyList, c))
@@ -52,7 +52,7 @@ export class Tree<T> {
   toObject(): TreeObject<T> {
     const children = this.children.map(c => c.toObject());
     const result: TreeObject<T> = {
-      n: this.node,
+      v: this.node,
     };
     if (children.length > 0) {
       result.c = children;

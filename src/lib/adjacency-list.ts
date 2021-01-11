@@ -1,19 +1,19 @@
 import {AdjacencyList} from './Tree';
 
-export function getRoot(t: AdjacencyList): number {
-  const children: number[] = Object.values(t).reduce(
+export function getRoot(t: AdjacencyList): string {
+  const children: string[] = Object.values(t).reduce(
     (acc, n) => acc.concat(n),
     []
   );
   for (const p of Object.keys(t)) {
-    if (!children.includes(+p)) {
-      return +p;
+    if (!children.includes(p)) {
+      return p;
     }
   }
   throw new Error('Cannot find a root for this tree: ' + JSON.stringify(t));
 }
 
-export function getSubTree(t: AdjacencyList, n: number): AdjacencyList {
+export function getSubTree(t: AdjacencyList, n: string): AdjacencyList {
   if (t[n] === undefined) {
     return {
       [n]: [],
@@ -24,7 +24,7 @@ export function getSubTree(t: AdjacencyList, n: number): AdjacencyList {
   });
 }
 
-export function flatten(t: AdjacencyList): Array<number> {
+export function flatten(t: AdjacencyList): Array<string> {
   if (Object.keys(t).length === 0) {
     return [];
   }
