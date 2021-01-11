@@ -4,6 +4,11 @@ export interface AdjacencyList {
   [node: number]: number[];
 }
 
+export interface TreeObject<T> {
+  n: T;
+  c?: TreeObject<T>[];
+}
+
 export type NodeMap<T> = Map<number, T>;
 
 export class Tree<T> {
@@ -44,11 +49,15 @@ export class Tree<T> {
   getChildren() {
     return this.children;
   }
-  toObject(): Object {
-    return {
+  toObject(): TreeObject<T> {
+    const children = this.children.map(c => c.toObject());
+    const result: TreeObject<T> = {
       n: this.node,
-      c: this.children.map(c => c.toObject()),
     };
+    if (children.length > 0) {
+      result.c = children;
+    }
+    return result;
   }
 
   toString() {
