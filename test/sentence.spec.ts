@@ -6,7 +6,6 @@ import {Terminal} from '../src/interfaces/Terminal';
 import {NonTerminal} from '../src/NonTerminal';
 import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
 import {TerminalAlphabet} from '../src/TerminalAlphabet';
-import {parseWithBFS1} from '../src/top-down/BFS1';
 
 class NTA extends NonTerminalAlphabet {
   S = new NonTerminal('S');
@@ -21,18 +20,6 @@ class TA extends TerminalAlphabet {
 
 const nt = new NTA();
 const t = new TA();
-
-const spec: CFGSpec<TA, NTA> = {
-  startSymbol: 'S',
-  productions: [
-    {LHS: 'S', RHS: ['E']},
-    {LHS: 'E', RHS: ['E', 'PLUS', 'F']},
-    {LHS: 'E', RHS: ['F']},
-    {LHS: 'F', RHS: ['INT']},
-  ],
-};
-const cfg = new ContextFreeGrammar(spec, t, nt);
-console.log('cfg: ', cfg);
 
 describe('Sentence Unit Test', () => {
   it('test getSentence', () => {

@@ -32,7 +32,6 @@ const spec: CFGSpec<TA, NTA> = {
   ],
 };
 const cfg = new ContextFreeGrammar(spec, t, nt);
-console.log('cfg: ', cfg);
 
 describe('Sentence Unit Test', () => {
   it('test getSentence', () => {
@@ -40,6 +39,7 @@ describe('Sentence Unit Test', () => {
       name: str,
     }));
     const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
+    console.log('parseTree: ', parseTree);
     const expectedParseTree: ParseTree = {
       v: nt.S,
       c: [

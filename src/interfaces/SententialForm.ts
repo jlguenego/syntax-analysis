@@ -1,18 +1,16 @@
-import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
-import {TerminalAlphabet} from '../TerminalAlphabet';
+import {NonTerminal} from '../NonTerminal';
+import {ParseSymbol} from './ParseSymbol';
+import {Sentence} from './Sentence';
 
-export type SententialForm<
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
-> = (T[keyof T] | NT[keyof NT])[];
+export type SententialForm = ParseSymbol[];
 
-// // flat parse tree
-// export function isParseTreeValid<
-//   T extends TerminalAlphabet,
-//   NT extends NonTerminalAlphabet
-// >(sentence: SententialForm<T, NT>) {
-//   console.log('sentence: ', sentence);
-//   return (parseTree: ParseTree<T, NT>) => {
-//     return parseTree.getSententialForm().equals(sentence);
-//   };
-// }
+export function isSentence(form: SententialForm): form is Sentence {
+  for (const s of form) {
+    if (s instanceof NonTerminal) {
+      console.log('not sentence');
+      return false;
+    }
+  }
+  console.log('is sentence sent found!');
+  return true;
+}

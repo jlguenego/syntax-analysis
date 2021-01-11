@@ -26,7 +26,6 @@ describe('Tree Unit Test', () => {
     const actualTreeObject = tree.toObject();
 
     const flat = tree.flatten();
-    console.log('flat: ', flat);
 
     assert.deepStrictEqual(actualTreeObject, expectedTreeObject);
     assert.deepStrictEqual(flat, ['5', '7', '8', '3', '4']);

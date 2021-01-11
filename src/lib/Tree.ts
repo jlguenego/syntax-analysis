@@ -82,4 +82,20 @@ export class Tree<T> {
       .map(c => c.flatten())
       .reduce((acc, n) => acc.concat(n), []);
   }
+
+  clone(): Tree<T> {
+    return new Tree<T>(
+      this.node,
+      this.children.map(c => c.clone())
+    );
+  }
+
+  getLeaves(): Tree<T>[] {
+    if (this.children.length === 0) {
+      return [this];
+    }
+    return this.children
+      .map(c => c.getLeaves())
+      .reduce((acc, n) => acc.concat(n), []);
+  }
 }

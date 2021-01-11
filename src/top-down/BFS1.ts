@@ -1,14 +1,14 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
-import {Sentence} from '../interfaces/Sentence';
-import {Terminal} from '../interfaces/Terminal';
+import {Sentence, sentenceEquals} from '../interfaces/Sentence';
+import {isSentence} from '../interfaces/SententialForm';
 import {Tree} from '../lib/Tree';
 import {NonTerminal} from '../NonTerminal';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {BFSTree} from './lib/breadthFirstSearch';
 
-export type ParseSymbol = Terminal | NonTerminal;
 export type PartialParseTree = Tree<ParseSymbol>;
 
 export const parseWithBFS1 = <
@@ -20,10 +20,16 @@ export const parseWithBFS1 = <
 ): ParseTree => {
   const test = (t: PartialParseTree): boolean => {
     console.log('t: ', t);
-    return true;
+    const sententialForm = t.flatten();
+    return sentenceEquals(sentence, sententialForm as Sentence);
   };
   const getChildren = (t: PartialParseTree) => {
     console.log('t: ', t);
+    const t2 = t.clone();
+    const leaves = t2
+      .getLeaves()
+      .filter(n => n.getNode() instanceof NonTerminal);
+    // foreach leaves generate all possible production rules, and add the node to the tree.
     return [];
   };
   const bfsTree = new BFSTree<PartialParseTree>(
