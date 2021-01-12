@@ -30,4 +30,20 @@ describe('Tree Unit Test', () => {
     assert.deepStrictEqual(actualTreeObject, expectedTreeObject);
     assert.deepStrictEqual(flat, ['5', '7', '8', '3', '4']);
   });
+
+  it('test leaves tree', () => {
+    const adjList: AdjacencyList = {
+      1: ['2', '3', '4'],
+      2: ['5', '6'],
+      6: ['7', '8'],
+    };
+
+    const tree = Tree.fromAdjacenceList(adjList);
+
+    const actualLeaves = tree.getLeaves();
+    const actualFlat = actualLeaves.map(t => t.getNode());
+    const flat = tree.flatten();
+
+    assert.deepStrictEqual(actualFlat, flat);
+  });
 });
