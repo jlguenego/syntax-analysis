@@ -9,7 +9,7 @@ import {PartialParseTree} from '../PartialParseTree';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {testFn} from './common';
 
-export const parseWithLL0 = <
+export const parseWithLL1 = <
   T extends TerminalAlphabet,
   NT extends NonTerminalAlphabet
 >(
@@ -37,6 +37,8 @@ export const parseWithLL0 = <
       .slice(0, 1);
     const result = [];
     for (const ntleaf of ntLeaves) {
+      // CS143 slide
+      // the order of productions is now important. We take the one by looking at one lookahead.
       const productions = cfg.productions.filter(p => p.LHS === ntleaf.node);
       for (const prod of productions) {
         const child = ppt.tree.clone();
