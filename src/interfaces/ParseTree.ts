@@ -17,6 +17,5 @@ export interface ParseTreeLeaf {
 
 export function getSentence(parseTree: ParseTree): Sentence {
   const tree: Tree<ParseSymbol> = Tree.fromObject<ParseSymbol>(parseTree);
-  console.log('tree: ', tree);
   return tree.flatten() as Sentence;
 }
