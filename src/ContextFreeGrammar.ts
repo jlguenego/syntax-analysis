@@ -33,4 +33,9 @@ export class ContextFreeGrammar<
       };
     });
   }
+  hasEmptyProduction(): boolean {
+    return (
+      Math.min(+Infinity, ...this.productions.map(p => p.RHS.length)) === 0
+    );
+  }
 }

@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {inspect} from 'util';
 import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
 import {ParseTree} from '../src/interfaces/ParseTree';
 import {Sentence} from '../src/interfaces/Sentence';
@@ -40,7 +39,6 @@ describe('BFS Unit Test', () => {
       name: str,
     }));
     const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
-    console.log('parseTree: ', inspect(parseTree, false, null, true));
     const expectedParseTree: ParseTree = {
       node: nt.S,
       children: [
