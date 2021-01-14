@@ -10,7 +10,7 @@ import {TerminalAlphabet} from '../TerminalAlphabet';
 
 let seq = 1;
 
-export const parseWithBFS1 = <
+export const parseWithBFS2 = <
   T extends TerminalAlphabet,
   NT extends NonTerminalAlphabet
 >(
@@ -31,12 +31,19 @@ export const parseWithBFS1 = <
   };
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // foreach leaves generate all possible production rules, and add the node to the tree.
-    const leaves = ppt.getLeaves();
+    const leaves = ppt.tree.getLeaves();
 
     // JLG optimization. This is true exept if there is a production with RHS empty.
     if (!cfg.hasEmptyProduction() && leaves.length > sentence.length) {
       return [];
     }
+
+    // CS143 slide 49
+    // https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/03/Slides03.pdf
+    if (!ppt.sharePrefixWith(sentence)) {
+      return [];
+    }
+
     const ntLeaves = leaves.filter(leaf => leaf.node instanceof NonTerminal);
     const result = [];
     for (const ntleaf of ntLeaves) {
