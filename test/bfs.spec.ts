@@ -1,12 +1,15 @@
 import assert from 'assert';
-import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
-import {ParseTree} from '../src/interfaces/ParseTree';
-import {Sentence} from '../src/interfaces/Sentence';
-import {Terminal} from '../src/interfaces/Terminal';
-import {NonTerminal} from '../src/NonTerminal';
-import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
-import {TerminalAlphabet} from '../src/TerminalAlphabet';
-import {parseWithBFS1} from '../src/top-down/BFS1';
+import {
+  CFGSpec,
+  ContextFreeGrammar,
+  NonTerminal,
+  NonTerminalAlphabet,
+  parse,
+  ParseTree,
+  Sentence,
+  Terminal,
+  TerminalAlphabet,
+} from '../src';
 
 class NTA extends NonTerminalAlphabet {
   S = new NonTerminal('S');
@@ -38,7 +41,7 @@ describe('BFS Unit Test', () => {
     const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
       name: str,
     }));
-    const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
+    const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'BFS1'});
     const expectedParseTree: ParseTree = {
       node: nt.S,
       children: [
