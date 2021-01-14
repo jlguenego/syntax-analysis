@@ -6,9 +6,10 @@ import {TerminalAlphabet} from './TerminalAlphabet';
 import {parseWithBFS1} from './top-down/BFS1';
 import {parseWithBFS2} from './top-down/BFS2';
 import {parseWithBFS3} from './top-down/BFS3';
+import {parseWithDFS1} from './top-down/DFS1';
 
 export interface ParseOptions {
-  method: 'BFS1' | 'BFS2' | 'BFS3';
+  method: 'BFS1' | 'BFS2' | 'BFS3' | 'DFS1';
 }
 
 export function parse<
@@ -30,6 +31,8 @@ export function parse<
       return parseWithBFS2(sentence, cfg);
     case 'BFS3':
       return parseWithBFS3(sentence, cfg);
+    case 'DFS1':
+      return parseWithDFS1(sentence, cfg);
     default:
       throw new Error('Method not implemented');
   }
