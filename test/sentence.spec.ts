@@ -27,7 +27,6 @@ describe('Sentence Unit Test', () => {
         name: str,
       })
     );
-    // const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
     const parseTree: ParseTree = {
       node: nt.S,
       children: [
