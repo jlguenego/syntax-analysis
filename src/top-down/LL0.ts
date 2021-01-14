@@ -1,4 +1,4 @@
-import {Tree, BFSTree} from '@jlguenego/tree';
+import {Tree, DFSTree} from '@jlguenego/tree';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
@@ -9,7 +9,7 @@ import {PartialParseTree} from '../PartialParseTree';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {testFn} from './common';
 
-export const parseWithBFS1 = <
+export const parseWithLL0 = <
   T extends TerminalAlphabet,
   NT extends NonTerminalAlphabet
 >(
@@ -20,7 +20,21 @@ export const parseWithBFS1 = <
     // foreach leaves generate all possible production rules, and add the node to the tree.
     const leaves = ppt.getLeaves();
 
-    const ntLeaves = leaves.filter(leaf => leaf.node instanceof NonTerminal);
+    // JLG optimization. This is true exept if there is a production with RHS empty.
+    if (!cfg.hasEmptyProduction() && leaves.length > sentence.length) {
+      return [];
+    }
+
+    // CS143 slide 49
+    // https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/03/Slides03.pdf
+    if (!ppt.sharePrefixWith(sentence)) {
+      return [];
+    }
+
+    const ntLeaves = leaves
+      .filter(leaf => leaf.node instanceof NonTerminal)
+      // CS143 slide 51 : consider only left most derivation.
+      .slice(0, 1);
     const result = [];
     for (const ntleaf of ntLeaves) {
       const productions = cfg.productions.filter(p => p.LHS === ntleaf.node);
@@ -37,12 +51,15 @@ export const parseWithBFS1 = <
     }
     return result;
   };
-  const bfsTree = new BFSTree<PartialParseTree>(
+  const dfsTree = new DFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
     testFn(sentence),
     getChildren
   );
-  const pt = bfsTree.search() as PartialParseTree;
+  const pt = dfsTree.search();
+  if (pt === undefined) {
+    throw new Error('did not worked. Syntax error in sentence?');
+  }
   const parseTree = pt.tree.toObject() as ParseTree;
   return parseTree;
 };

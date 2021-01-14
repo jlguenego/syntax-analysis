@@ -2,13 +2,12 @@ import {Tree, DFSTree} from '@jlguenego/tree';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
-import {Sentence, sentenceEquals} from '../interfaces/Sentence';
+import {Sentence} from '../interfaces/Sentence';
 import {NonTerminal} from '../NonTerminal';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {PartialParseTree} from '../PartialParseTree';
 import {TerminalAlphabet} from '../TerminalAlphabet';
-
-let seq = 1;
+import {testFn} from './common';
 
 export const parseWithDFS1 = <
   T extends TerminalAlphabet,
@@ -17,18 +16,6 @@ export const parseWithDFS1 = <
   sentence: Sentence,
   cfg: ContextFreeGrammar<T, NT>
 ): ParseTree => {
-  const test = (t: PartialParseTree): boolean => {
-    seq++;
-    if (seq > 1000) {
-      throw new Error('too much. stop');
-    }
-    const sententialForm = t.tree.flatten();
-    if (sentenceEquals(sentence, sententialForm)) {
-      console.log('seq: ', seq);
-      return true;
-    }
-    return false;
-  };
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // foreach leaves generate all possible production rules, and add the node to the tree.
     const leaves = ppt.getLeaves();
@@ -66,7 +53,7 @@ export const parseWithDFS1 = <
   };
   const dfsTree = new DFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
-    test,
+    testFn(sentence),
     getChildren
   );
   const pt = dfsTree.search();

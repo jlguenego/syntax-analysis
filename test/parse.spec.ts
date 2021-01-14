@@ -1,6 +1,6 @@
 import assert from 'assert';
 import {parse} from '../src';
-import {cfg, expectedParseTree, NTA, sentence, TA} from './data/data';
+import {cfg, expectedParseTree, NTA, sentence, TA} from './data/cfg1';
 
 describe('BFS Unit Test', () => {
   it('test parse with BFS1', () => {

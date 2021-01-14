@@ -27,8 +27,8 @@ export const spec: CFGSpec<TA, NTA> = {
   startSymbol: 'S',
   productions: [
     {LHS: 'S', RHS: ['E']},
-    {LHS: 'E', RHS: ['E', 'PLUS', 'F']},
     {LHS: 'E', RHS: ['F']},
+    {LHS: 'E', RHS: ['E', 'PLUS', 'F']},
     {LHS: 'F', RHS: ['INT']},
   ],
 };
