@@ -19,4 +19,8 @@ describe('BFS Unit Test', () => {
     const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'DFS1'});
     assert.deepStrictEqual(parseTree, expectedParseTree);
   });
+  it('test parse with LL0', () => {
+    const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL0'});
+    assert.deepStrictEqual(parseTree, expectedParseTree);
+  });
 });
