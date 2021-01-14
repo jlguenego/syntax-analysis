@@ -13,12 +13,13 @@ export class PartialParseTree {
   }
 
   sharePrefixWith(sentence: Sentence): boolean {
-    for (let i = 0; i < sentence.length; i++) {
-      const s = this.getLeaves()[i].node;
+    this.getLeaves();
+    for (let i = 0; i < Math.min(sentence.length, this.leaves.length); i++) {
+      const s = this.leaves[i].node;
       if (s instanceof NonTerminal) {
         return true;
       }
-      if (s !== sentence[i]) {
+      if (s.name !== sentence[i].name) {
         return false;
       }
     }
