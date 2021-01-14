@@ -43,13 +43,19 @@ const sentence = [{name: 'int'}, {name: '+'}, {name: 'int'}];
 const parseTree = parse<NTA, TA>(sentence, cfg, {algo: 'BFS1');
 ```
 
-## Top down algorithm.
+## Top down algorithm
 
 ### Breadth First Search
 
 - BFS1: Naive Breadth First Search with nothing else (very slow, but didactic).
 
 ### Depth First Search
+
+## Bottom up algorithm
+
+### LR(0)
+
+### LR(1)
 
 ## Project related
 
