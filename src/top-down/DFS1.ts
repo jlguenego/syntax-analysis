@@ -1,4 +1,4 @@
-import {Tree, BFSTree} from '@jlguenego/tree';
+import {Tree, DFSTree} from '@jlguenego/tree';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
@@ -64,12 +64,12 @@ export const parseWithDFS1 = <
     }
     return result;
   };
-  const bfsTree = new BFSTree<PartialParseTree>(
+  const dfsTree = new DFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
     test,
     getChildren
   );
-  const pt = bfsTree.search();
+  const pt = dfsTree.search();
   if (pt === undefined) {
     throw new Error('did not worked. Syntax error in sentence?');
   }
