@@ -33,46 +33,46 @@ const spec: CFGSpec<TA, NTA> = {
 };
 const cfg = new ContextFreeGrammar(spec, t, nt);
 
-describe('Sentence Unit Test', () => {
-  it('test getSentence', () => {
+describe('BFS Unit Test', () => {
+  it('test parseWithBFS1', () => {
     const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
       name: str,
     }));
     const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
     console.log('parseTree: ', parseTree);
     const expectedParseTree: ParseTree = {
-      v: nt.S,
-      c: [
+      node: nt.S,
+      children: [
         {
-          v: nt.E,
-          c: [
+          node: nt.E,
+          children: [
             {
-              v: nt.E,
-              c: [
+              node: nt.E,
+              children: [
                 {
-                  v: nt.E,
-                  c: [
+                  node: nt.E,
+                  children: [
                     {
-                      v: nt.F,
-                      c: [{v: t.INT}],
+                      node: nt.F,
+                      children: [{node: t.INT}],
                     },
                   ],
                 },
                 {
-                  v: t.PLUS,
+                  node: t.PLUS,
                 },
                 {
-                  v: nt.F,
-                  c: [{v: t.INT}],
+                  node: nt.F,
+                  children: [{node: t.INT}],
                 },
               ],
             },
             {
-              v: t.PLUS,
+              node: t.PLUS,
             },
             {
-              v: nt.F,
-              c: [{v: t.INT}],
+              node: nt.F,
+              children: [{node: t.INT}],
             },
           ],
         },

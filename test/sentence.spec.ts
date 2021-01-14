@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {CFGSpec, ContextFreeGrammar} from '../src/ContextFreeGrammar';
 import {getSentence, ParseTree} from '../src/interfaces/ParseTree';
 import {Sentence} from '../src/interfaces/Sentence';
 import {Terminal} from '../src/interfaces/Terminal';
@@ -30,38 +29,38 @@ describe('Sentence Unit Test', () => {
     );
     // const parseTree = parseWithBFS1<NTA, TA>(sentence, cfg);
     const parseTree: ParseTree = {
-      v: nt.S,
-      c: [
+      node: nt.S,
+      children: [
         {
-          v: nt.E,
-          c: [
+          node: nt.E,
+          children: [
             {
-              v: nt.E,
-              c: [
+              node: nt.E,
+              children: [
                 {
-                  v: nt.E,
-                  c: [
+                  node: nt.E,
+                  children: [
                     {
-                      v: nt.F,
-                      c: [{v: t.INT}],
+                      node: nt.F,
+                      children: [{node: t.INT}],
                     },
                   ],
                 },
                 {
-                  v: t.PLUS,
+                  node: t.PLUS,
                 },
                 {
-                  v: nt.F,
-                  c: [{v: t.INT}],
+                  node: nt.F,
+                  children: [{node: t.INT}],
                 },
               ],
             },
             {
-              v: t.PLUS,
+              node: t.PLUS,
             },
             {
-              v: nt.F,
-              c: [{v: t.INT}],
+              node: nt.F,
+              children: [{node: t.INT}],
             },
           ],
         },

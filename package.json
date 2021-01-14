@@ -55,5 +55,8 @@
   "funding": {
     "type": "individual",
     "url": "https://github.com/sponsors/jlguenego"
+  },
+  "dependencies": {
+    "@jlguenego/tree": "file:../tree"
   }
 }

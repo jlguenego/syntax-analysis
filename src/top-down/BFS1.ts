@@ -1,8 +1,8 @@
+import {Tree} from '@jlguenego/tree';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence, sentenceEquals} from '../interfaces/Sentence';
-import {Tree} from '../lib/Tree';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {BFSTree} from './lib/breadthFirstSearch';
