@@ -1,12 +1,17 @@
 import {Tree} from '@jlguenego/tree';
+import {epsilon} from './epsilonTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {SententialForm} from './interfaces/SententialForm';
-import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 
 export class PartialParseTree {
-  sententialForm: SententialForm = this.tree.getLeaves().map(t => t.node);
+  sententialForm: SententialForm = this.tree
+    .getLeaves()
+    .map(t => t.node)
+    .filter(node =>
+      node instanceof NonTerminal ? true : node.name !== epsilon.name
+    );
   constructor(public tree: Tree<ParseSymbol>) {}
 
   sharePrefixWith(sentence: Sentence): boolean {
@@ -26,7 +31,11 @@ export class PartialParseTree {
     return true;
   }
 
-  getLookAheadToken(sentence: Sentence): Terminal {
-    return sentence[0];
+  getLookAheadTokenName(sentence: Sentence): string {
+    const index = this.sententialForm.findIndex(s => s instanceof NonTerminal);
+    if (index === -1) {
+      throw new Error('getLookAheadToken should not be called on sentence');
+    }
+    return sentence[index].name;
   }
 }

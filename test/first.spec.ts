@@ -7,16 +7,19 @@ describe('First Unit Test', () => {
     const expectedArray = [
       {
         nt: nt.Num,
-        first: [{name: '+'}, {name: '-'}, {name: 'd'}],
+        first: ['+', '-', 'd'],
       },
       {
         nt: nt.Sign,
-        first: [{name: ''}, {name: '+'}, {name: '-'}],
+        first: ['', '+', '-'],
       },
-      {nt: nt.Digits, first: [{name: 'd'}]},
+      {
+        nt: nt.Digits,
+        first: ['d'],
+      },
       {
         nt: nt.More,
-        first: [{name: ''}, {name: 'd'}],
+        first: ['', 'd'],
       },
     ];
     assert.deepStrictEqual(array, expectedArray);

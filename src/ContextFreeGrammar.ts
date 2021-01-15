@@ -86,30 +86,37 @@ export class ContextFreeGrammar<
    * @returns {Terminal[]}
    * @memberof ContextFreeGrammar
    */
-  first(nt: ParseSymbol): Terminal[] {
+  first(nt: ParseSymbol): string[] {
     if (!(nt instanceof NonTerminal)) {
-      return [nt];
-    }
-
-    const result: Terminal[] = [];
-    // test if s is a ε-productions
-    if (this.isEmptyProduction(nt)) {
-      result.push(epsilon);
+      return [nt.name];
     }
 
     const rhsArray = this.getProductions(nt);
     if (!rhsArray) {
-      return result;
+      return [];
+    }
+
+    const result: string[] = [];
+    // test if s is a ε-productions
+    if (this.isEmptyProduction(nt)) {
+      result.push(epsilon.name);
     }
 
     for (const rhs of rhsArray) {
       for (const s of rhs) {
+        // check infinite recursion
+        if (s === nt) {
+          if (this.isEmptyProduction(nt)) {
+            continue;
+          }
+          break;
+        }
         const firstYi = this.first(s);
-        if (!firstYi.includes(epsilon)) {
+        if (!firstYi.includes(epsilon.name)) {
           result.push(...firstYi);
           break;
         }
-        result.push(...firstYi.filter(t => t !== epsilon));
+        result.push(...firstYi.filter(t => t !== epsilon.name));
       }
     }
 

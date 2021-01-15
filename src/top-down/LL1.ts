@@ -23,11 +23,14 @@ export const parseWithLL1 = <
       return [];
     }
 
-    const result = [];
-
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
-    // const lookAheadToken = ppt.getLookAheadToken(sentence);
+    const lookAheadTokenName = ppt.getLookAheadTokenName(sentence);
+    const names = cfg.first(nts);
+    if (!names.includes(lookAheadTokenName)) {
+      return [];
+    }
+    const result = [];
     const productions = cfg.productions.filter(p => p.LHS === nts);
     for (const prod of productions) {
       const child = ppt.tree.clone();
