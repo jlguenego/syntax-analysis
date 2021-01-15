@@ -12,3 +12,14 @@ export function isSentence(form: SententialForm): form is Sentence {
   }
   return true;
 }
+
+export function sententialFormToString(form: SententialForm): string {
+  return form
+    .map(s => {
+      if (s instanceof NonTerminal) {
+        return s.label;
+      }
+      return s.name;
+    })
+    .join('');
+}
