@@ -17,11 +17,11 @@ export const parseWithBFS3 = <
   cfg: ContextFreeGrammar<T, NT>
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
-    // foreach leaves generate all possible production rules, and add the node to the tree.
-    const leaves = ppt.getLeaves();
-
     // JLG optimization. This is true exept if there is a production with RHS empty.
-    if (!cfg.hasEmptyProduction() && leaves.length > sentence.length) {
+    if (
+      !cfg.hasEmptyProduction() &&
+      ppt.sententialForm.length > sentence.length
+    ) {
       return [];
     }
 
@@ -31,23 +31,17 @@ export const parseWithBFS3 = <
       return [];
     }
 
-    const ntLeaves = leaves
-      .filter(leaf => leaf.node instanceof NonTerminal)
-      // CS143 slide 51 : consider only left most derivation.
-      .slice(0, 1);
+    const nts = ppt.sententialForm.find(s => s instanceof NonTerminal);
+
     const result = [];
-    for (const ntleaf of ntLeaves) {
-      const productions = cfg.productions.filter(p => p.LHS === ntleaf.node);
-      for (const prod of productions) {
-        const child = ppt.tree.clone();
-        const ntl = child.find(
-          t => t.node === ntleaf.node
-        ) as Tree<ParseSymbol>;
-        for (const s of prod.RHS) {
-          child.graft(ntl, new Tree<ParseSymbol>(s));
-        }
-        result.push(new PartialParseTree(child));
+    const productions = cfg.productions.filter(p => p.LHS === nts);
+    for (const prod of productions) {
+      const child = ppt.tree.clone();
+      const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+      for (const s of prod.RHS) {
+        child.graft(ntl, new Tree<ParseSymbol>(s));
       }
+      result.push(new PartialParseTree(child));
     }
     return result;
   };

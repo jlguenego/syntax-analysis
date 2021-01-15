@@ -1,21 +1,21 @@
 import {Tree} from '@jlguenego/tree';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
+import {SententialForm} from './interfaces/SententialForm';
+import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 
 export class PartialParseTree {
-  private leaves!: Tree<ParseSymbol>[];
+  sententialForm: SententialForm = this.tree.getLeaves().map(t => t.node);
   constructor(public tree: Tree<ParseSymbol>) {}
 
-  getLeaves() {
-    this.leaves = this.leaves ?? this.tree.getLeaves();
-    return this.leaves;
-  }
-
   sharePrefixWith(sentence: Sentence): boolean {
-    this.getLeaves();
-    for (let i = 0; i < Math.min(sentence.length, this.leaves.length); i++) {
-      const s = this.leaves[i].node;
+    for (
+      let i = 0;
+      i < Math.min(sentence.length, this.sententialForm.length);
+      i++
+    ) {
+      const s = this.sententialForm[i];
       if (s instanceof NonTerminal) {
         return true;
       }
@@ -24,5 +24,9 @@ export class PartialParseTree {
       }
     }
     return true;
+  }
+
+  getLookAheadToken(sentence: Sentence): Terminal {
+    return sentence[0];
   }
 }

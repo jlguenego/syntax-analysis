@@ -17,40 +17,27 @@ export const parseWithLL1 = <
   cfg: ContextFreeGrammar<T, NT>
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
-    // foreach leaves generate all possible production rules, and add the node to the tree.
-    const leaves = ppt.getLeaves();
-
-    // JLG optimization. This is true exept if there is a production with RHS empty.
-    if (!cfg.hasEmptyProduction() && leaves.length > sentence.length) {
+    // only the first non terminal needs to be yielded. (left most derivation)
+    const nts = ppt.sententialForm.find(s => s instanceof NonTerminal);
+    if (nts === undefined) {
       return [];
     }
 
-    // CS143 slide 49
-    // https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/03/Slides03.pdf
-    if (!ppt.sharePrefixWith(sentence)) {
-      return [];
-    }
-
-    const ntLeaves = leaves
-      .filter(leaf => leaf.node instanceof NonTerminal)
-      // CS143 slide 51 : consider only left most derivation.
-      .slice(0, 1);
     const result = [];
-    for (const ntleaf of ntLeaves) {
-      // CS143 slide
-      // the order of productions is now important. We take the one by looking at one lookahead.
-      const productions = cfg.productions.filter(p => p.LHS === ntleaf.node);
-      for (const prod of productions) {
-        const child = ppt.tree.clone();
-        const ntl = child.find(
-          t => t.node === ntleaf.node
-        ) as Tree<ParseSymbol>;
-        for (const s of prod.RHS) {
-          child.graft(ntl, new Tree<ParseSymbol>(s));
-        }
-        result.push(new PartialParseTree(child));
+
+    // CS143 slide
+    // the order of productions is now important. We take the one by looking at one lookahead token.
+    // const lookAheadToken = ppt.getLookAheadToken(sentence);
+    const productions = cfg.productions.filter(p => p.LHS === nts);
+    for (const prod of productions) {
+      const child = ppt.tree.clone();
+      const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+      for (const s of prod.RHS) {
+        child.graft(ntl, new Tree<ParseSymbol>(s));
       }
+      result.push(new PartialParseTree(child));
     }
+
     return result;
   };
   const dfsTree = new DFSTree<PartialParseTree>(
