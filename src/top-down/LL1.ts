@@ -25,9 +25,9 @@ export const parseWithLL1 = <
 
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
-    const lookAheadTokenName = ppt.getLookAheadTokenName(sentence);
-    const names = cfg.first(nts);
-    if (!names.includes(lookAheadTokenName)) {
+    const lookAheadToken = ppt.getLookAheadToken(sentence);
+    const terminals = cfg.first(nts);
+    if (!terminals.map(t => t.name).includes(lookAheadToken.name)) {
       return [];
     }
     const result = [];

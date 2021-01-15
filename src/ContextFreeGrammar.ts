@@ -1,4 +1,5 @@
-import {epsilon} from './epsilonTerminal';
+import {epsilon} from './terminals/epsilonTerminal';
+import {$} from './terminals/endAnchorTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production, ProductionSpec} from './interfaces/Production';
 import {SententialForm} from './interfaces/SententialForm';
@@ -86,9 +87,9 @@ export class ContextFreeGrammar<
    * @returns {Terminal[]}
    * @memberof ContextFreeGrammar
    */
-  first(nt: ParseSymbol): string[] {
+  first(nt: ParseSymbol): Terminal[] {
     if (!(nt instanceof NonTerminal)) {
-      return [nt.name];
+      return [nt];
     }
 
     const rhsArray = this.getProductions(nt);
@@ -96,10 +97,10 @@ export class ContextFreeGrammar<
       return [];
     }
 
-    const result: string[] = [];
+    const result: Terminal[] = [];
     // test if s is a ε-productions
     if (this.isEmptyProduction(nt)) {
-      result.push(epsilon.name);
+      result.push(epsilon);
     }
 
     for (const rhs of rhsArray) {
@@ -112,12 +113,36 @@ export class ContextFreeGrammar<
           break;
         }
         const firstYi = this.first(s);
-        if (!firstYi.includes(epsilon.name)) {
+        if (!firstYi.includes(epsilon)) {
           result.push(...firstYi);
           break;
         }
-        result.push(...firstYi.filter(t => t !== epsilon.name));
+        result.push(...firstYi.filter(t => t !== epsilon));
       }
+    }
+
+    return result;
+  }
+
+  follow(A: NonTerminal): Terminal[] {
+    // starting symbol case
+    if (A === this.startSymbol) {
+      return [$];
+    }
+
+    const result: Terminal[] = [];
+
+    // find all productions rules RHS matching .*A(B) where B is a parse symbol (terminal or non-terminal).
+    for (const p of this.productions) {
+      const rhs = p.RHS;
+      const index = rhs.findIndex(s => s === A);
+      if (index === -1) {
+        break;
+      }
+      if (index === rhs.length - 1) {
+        break;
+      }
+      result.push(...this.first(rhs[index + 1]));
     }
 
     return result;

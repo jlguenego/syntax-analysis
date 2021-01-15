@@ -1,3 +1,5 @@
+import {Terminal} from '../interfaces/Terminal';
+
 /**
  * Some CFG has ε-production (rules with RHS empty).
  * when this occurs we may need a special terminal
@@ -9,6 +11,6 @@
  * @export
  * @interface Terminal
  */
-export const epsilon = {
+export const epsilon: Terminal = {
   name: '',
 };

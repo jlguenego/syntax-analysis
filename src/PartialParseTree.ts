@@ -1,9 +1,10 @@
 import {Tree} from '@jlguenego/tree';
-import {epsilon} from './epsilonTerminal';
+import {epsilon} from './terminals/epsilonTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {SententialForm} from './interfaces/SententialForm';
 import {NonTerminal} from './NonTerminal';
+import {Terminal} from './interfaces/Terminal';
 
 export class PartialParseTree {
   sententialForm: SententialForm = this.tree
@@ -31,11 +32,11 @@ export class PartialParseTree {
     return true;
   }
 
-  getLookAheadTokenName(sentence: Sentence): string {
+  getLookAheadToken(sentence: Sentence): Terminal {
     const index = this.sententialForm.findIndex(s => s instanceof NonTerminal);
     if (index === -1) {
       throw new Error('getLookAheadToken should not be called on sentence');
     }
-    return sentence[index].name;
+    return sentence[index];
   }
 }

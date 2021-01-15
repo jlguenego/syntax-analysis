@@ -3,7 +3,10 @@ import {cfg, nt} from './data/cfg2';
 
 describe('First Unit Test', () => {
   it('test the first function', () => {
-    const array = Object.values(nt).map(s => ({nt: s, first: cfg.first(s)}));
+    const array = Object.values(nt).map(s => ({
+      nt: s,
+      first: cfg.first(s).map(t => t.name),
+    }));
     const expectedArray = [
       {
         nt: nt.Num,
