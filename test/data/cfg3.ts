@@ -3,9 +3,9 @@ import {
   NonTerminal,
   TerminalAlphabet,
   Terminal,
-  CFGSpec,
+  CFGSpecifications,
   ContextFreeGrammar,
-  CFGDef,
+  CFGSpec,
 } from '../../src';
 
 export class TA extends TerminalAlphabet {
@@ -23,7 +23,7 @@ export class NTA extends NonTerminalAlphabet {
 export const t = new TA();
 export const nt = new NTA();
 
-export const spec: CFGSpec<TA, NTA> = {
+export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'E',
   productions: [
     {LHS: 'E', RHS: ['T']},
@@ -32,7 +32,7 @@ export const spec: CFGSpec<TA, NTA> = {
     {LHS: 'T', RHS: ['(', 'E', ')']},
   ],
 };
-export const cfg3 = new ContextFreeGrammar(spec as CFGDef, t, nt);
+export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
 
 export const expectedParseTree3 = {
   node: nt.E,

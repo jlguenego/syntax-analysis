@@ -10,7 +10,7 @@ import {TerminalAlphabet} from './TerminalAlphabet';
 import {checkAlphabetAreDisjoint} from './utils';
 import {isLeftRecursive} from './left-recursion/left-recursion';
 
-export interface CFGSpec<
+export interface CFGSpecifications<
   T extends TerminalAlphabet,
   NT extends NonTerminalAlphabet
 > {
@@ -18,7 +18,7 @@ export interface CFGSpec<
   productions: ProductionSpec<T, NT>[];
 }
 
-export type CFGDef = CFGSpec<TerminalAlphabet, NonTerminalAlphabet>;
+export type CFGSpec = CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>;
 
 export class ContextFreeGrammar {
   startSymbol: NonTerminal;
@@ -28,7 +28,7 @@ export class ContextFreeGrammar {
   followCache = new Map<NonTerminal, Terminal[]>();
 
   constructor(
-    spec: CFGSpec<TerminalAlphabet, NonTerminalAlphabet>,
+    spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
     public t: TerminalAlphabet,
     public nt: NonTerminalAlphabet
   ) {

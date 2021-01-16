@@ -3,9 +3,9 @@ import {
   NonTerminal,
   TerminalAlphabet,
   Terminal,
-  CFGSpec,
+  CFGSpecifications,
   ContextFreeGrammar,
-  CFGDef,
+  CFGSpec,
 } from '../../src';
 
 export class TA extends TerminalAlphabet {
@@ -24,7 +24,7 @@ export class NTA extends NonTerminalAlphabet {
 export const nt = new NTA();
 const t = new TA();
 
-export const spec: CFGSpec<TA, NTA> = {
+export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'Num',
   productions: [
     {LHS: 'Num', RHS: ['Sign', 'Digits']},
@@ -36,4 +36,4 @@ export const spec: CFGSpec<TA, NTA> = {
     {LHS: 'More', RHS: []},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec as CFGDef, t, nt);
+export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);

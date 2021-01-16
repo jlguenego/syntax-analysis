@@ -3,11 +3,11 @@ import {
   NonTerminal,
   TerminalAlphabet,
   Terminal,
-  CFGSpec,
+  CFGSpecifications,
   ContextFreeGrammar,
   Sentence,
   ParseTree,
-  CFGDef,
+  CFGSpec,
 } from '../../src';
 
 export class NTA extends NonTerminalAlphabet {
@@ -24,7 +24,7 @@ export class TA extends TerminalAlphabet {
 export const nt = new NTA();
 const t = new TA();
 
-export const spec: CFGSpec<TA, NTA> = {
+export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'S',
   productions: [
     {LHS: 'S', RHS: ['E']},
@@ -33,7 +33,7 @@ export const spec: CFGSpec<TA, NTA> = {
     {LHS: 'F', RHS: ['INT']},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec as CFGDef, t, nt);
+export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
 
 export const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
   name: str,
