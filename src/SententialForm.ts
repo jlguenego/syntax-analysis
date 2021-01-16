@@ -9,6 +9,9 @@ type ParseSymbolArray = ParseSymbol[];
  * A sentential form (also called working tree)
  * represents an array of terminal and nonterminal symbols.
  *
+ * source:
+ * https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/080%20Formal%20Grammars.pdf
+ *
  * @export
  * @class SententialForm
  */

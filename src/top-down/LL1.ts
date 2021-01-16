@@ -26,7 +26,13 @@ export const parseWithLL1 = (
       return [];
     }
     const result = [];
-    const productions = cfg.productions.filter(p => p.LHS === nts);
+    const productions = cfg.productions
+      .filter(p => p.LHS === nts)
+      .filter(
+        p =>
+          p.RHS.symbols[0] instanceof NonTerminal ||
+          p.RHS.symbols[0].name === lookAheadToken.name
+      );
     for (const prod of productions) {
       const child = ppt.tree.clone();
       const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
