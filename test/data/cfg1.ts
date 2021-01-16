@@ -7,6 +7,7 @@ import {
   ContextFreeGrammar,
   Sentence,
   ParseTree,
+  CFGDef,
 } from '../../src';
 
 export class TA extends TerminalAlphabet {
@@ -32,7 +33,7 @@ export const spec: CFGSpec<TA, NTA> = {
     {LHS: 'F', RHS: ['INT']},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec, t, nt);
+export const cfg = new ContextFreeGrammar(spec as CFGDef, t, nt);
 
 export const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
   name: str,

@@ -4,17 +4,12 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {NonTerminal} from '../NonTerminal';
-import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {PartialParseTree} from '../PartialParseTree';
-import {TerminalAlphabet} from '../TerminalAlphabet';
 import {testFn} from './common';
 
-export const parseWithBFS1 = <
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
->(
+export const parseWithBFS1 = (
   sentence: Sentence,
-  cfg: ContextFreeGrammar<T, NT>
+  cfg: ContextFreeGrammar
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // foreach leaves generate all possible production rules, and add the node to the tree.

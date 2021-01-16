@@ -8,6 +8,7 @@ import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
 import {checkAlphabetAreDisjoint} from './utils';
+import {isLeftRecursive} from './left-recursion/left-recursion';
 
 export interface CFGSpec<
   T extends TerminalAlphabet,
@@ -17,24 +18,26 @@ export interface CFGSpec<
   productions: ProductionSpec<T, NT>[];
 }
 
-export class ContextFreeGrammar<
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
-> {
+export type CFGDef = CFGSpec<TerminalAlphabet, NonTerminalAlphabet>;
+
+export class ContextFreeGrammar {
   startSymbol: NonTerminal;
   productions: Production[];
   productionMap = new Map<NonTerminal, SententialForm[]>();
   emptyProductionSet = new Set<NonTerminal>();
   followCache = new Map<NonTerminal, Terminal[]>();
 
-  constructor(spec: CFGSpec<T, NT>, public t: T, public nt: NT) {
+  constructor(
+    spec: CFGSpec<TerminalAlphabet, NonTerminalAlphabet>,
+    public t: TerminalAlphabet,
+    public nt: NonTerminalAlphabet
+  ) {
     this.check();
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
       const rhs: SententialForm = p.RHS.map(
         c =>
-          ((nt[c as keyof NT] as unknown) as NonTerminal) ??
-          ((t[c as keyof T] as unknown) as Terminal)
+          ((nt[c] as unknown) as NonTerminal) ?? ((t[c] as unknown) as Terminal)
       );
       const lhs = (nt[p.LHS] as unknown) as NonTerminal;
       return {
@@ -74,6 +77,10 @@ export class ContextFreeGrammar<
 
   getProductions(nt: NonTerminal) {
     return this.productionMap.get(nt);
+  }
+
+  isLeftRecursive(nt: NonTerminal): boolean {
+    return isLeftRecursive(this, nt);
   }
 
   /**

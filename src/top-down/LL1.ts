@@ -4,17 +4,12 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {NonTerminal} from '../NonTerminal';
-import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {PartialParseTree} from '../PartialParseTree';
-import {TerminalAlphabet} from '../TerminalAlphabet';
 import {testFn} from './common';
 
-export const parseWithLL1 = <
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
->(
+export const parseWithLL1 = (
   sentence: Sentence,
-  cfg: ContextFreeGrammar<T, NT>
+  cfg: ContextFreeGrammar
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // only the first non terminal needs to be yielded. (left most derivation)

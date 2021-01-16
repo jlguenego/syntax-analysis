@@ -5,6 +5,7 @@ import {
   Terminal,
   CFGSpec,
   ContextFreeGrammar,
+  CFGDef,
 } from '../../src';
 
 export class TA extends TerminalAlphabet {
@@ -35,4 +36,4 @@ export const spec: CFGSpec<TA, NTA> = {
     {LHS: 'More', RHS: []},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec, t, nt);
+export const cfg = new ContextFreeGrammar(spec as CFGDef, t, nt);

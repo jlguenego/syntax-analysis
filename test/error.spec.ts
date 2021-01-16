@@ -1,5 +1,6 @@
 import assert from 'assert';
 import {
+  CFGDef,
   CFGSpec,
   ContextFreeGrammar,
   NonTerminal,
@@ -23,7 +24,7 @@ describe('First Unit Test', () => {
         startSymbol: 'a',
         productions: [],
       };
-      new ContextFreeGrammar(spec, t, n);
+      new ContextFreeGrammar(spec as CFGDef, t, n);
       assert.fail('must throw error');
     } catch (error) {
       assert.deepStrictEqual(
