@@ -29,6 +29,8 @@ const getFirstCache = (cfg: ContextFreeGrammar, nt: NonTerminal) => {
  * https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/04/Slides04A.pdf
  * slide 7
  *
+ * See also https://www.geeksforgeeks.org/first-set-in-syntax-analysis/
+ *
  * @param {ContextFreeGrammar} cfg
  */
 export const buildFirst = (cfg: ContextFreeGrammar): void => {
@@ -44,17 +46,23 @@ export const buildFirst = (cfg: ContextFreeGrammar): void => {
           firstNt.add(epsilon);
           continue;
         }
+        let broken = false;
         for (const symbol of rhs.symbols) {
           if (!(symbol instanceof NonTerminal)) {
             firstNt.add(symbol);
+            broken = true;
             break;
           }
           const set = getFirstCache(cfg, symbol);
           if (!set.has(epsilon)) {
             [...set].forEach(t => firstNt.add(t));
+            broken = true;
             break;
           }
           [...set].filter(t => t !== epsilon).forEach(t => firstNt.add(t));
+        }
+        if (broken === false) {
+          firstNt.add(epsilon);
         }
       }
     }
