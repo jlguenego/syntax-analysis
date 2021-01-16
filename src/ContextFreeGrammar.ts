@@ -24,10 +24,12 @@ export class ContextFreeGrammar<
   productions: Production[];
   productionMap = new Map<NonTerminal, SententialForm[]>();
   emptyProductionSet = new Set<NonTerminal>();
+  followCache = new Map<NonTerminal, Terminal[]>();
+
   constructor(spec: CFGSpec<T, NT>, t: T, nt: NT) {
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
-      const rhs: (Terminal | NonTerminal)[] = p.RHS.map(
+      const rhs: SententialForm = p.RHS.map(
         c =>
           ((nt[c as keyof NT] as unknown) as NonTerminal) ??
           ((t[c as keyof T] as unknown) as Terminal)
@@ -124,27 +126,63 @@ export class ContextFreeGrammar<
     return result;
   }
 
-  follow(A: NonTerminal): Terminal[] {
-    // starting symbol case
-    if (A === this.startSymbol) {
-      return [$];
+  seq = 1;
+
+  follow(B: NonTerminal): Terminal[] {
+    console.log('follow start with B: ', B);
+    this.seq++;
+    if (this.seq > 50) {
+      throw new Error('too much call of follow');
+    }
+
+    // cache
+    if (this.followCache.has(B)) {
+      console.log('sending from cache');
+      return this.followCache.get(B) as Terminal[];
+    }
+
+    console.log('not cache. computing', B);
+
+    if (B === this.startSymbol) {
+      // starting symbol case (case 1)
+      console.log('B is a start symbol', B);
+      this.followCache.set(B, [$]);
+      return this.followCache.get(B) as Terminal[];
     }
 
     const result: Terminal[] = [];
 
-    // find all productions rules RHS matching .*A(B) where B is a parse symbol (terminal or non-terminal).
+    // find all productions rules A -> pBq
     for (const p of this.productions) {
+      const A = p.LHS;
       const rhs = p.RHS;
-      const index = rhs.findIndex(s => s === A);
+      const index = rhs.findIndex(s => s === B);
       if (index === -1) {
-        break;
+        console.log('B is not found');
+        continue;
       }
       if (index === rhs.length - 1) {
-        break;
+        console.log('B is found at last: A -> PB');
+        // productions A -> PB : follow(B) = follow(A)
+        const followA = this.follow(A).filter(t => result.includes(t));
+        result.push(...followA);
+        continue;
       }
-      result.push(...this.first(rhs[index + 1]));
-    }
 
-    return result;
+      // A -> pBq : follow(B) = first(q) - epsilon
+      const q = rhs[index + 1];
+      const firstQ = this.first(q);
+      if (firstQ.includes(epsilon)) {
+        result.push(...firstQ.filter(t => t !== epsilon));
+        const followA = this.follow(A).filter(t => result.includes(t));
+        result.push(...followA);
+        continue;
+      }
+      result.push(...firstQ);
+    }
+    console.log('finished B with result', B, result);
+
+    this.followCache.set(B, result);
+    return this.followCache.get(B) as Terminal[];
   }
 }
