@@ -10,14 +10,14 @@ import {
 } from '../../src';
 
 export class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  INT: Terminal = {name: 'int'};
+  readonly PLUS: Terminal = {name: '+'};
+  readonly INT: Terminal = {name: 'int'};
 }
 
 export class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  F = new NonTerminal('F');
+  readonly S = new NonTerminal('S');
+  readonly E = new NonTerminal('E');
+  readonly F = new NonTerminal('F');
 }
 
 export const t = new TA();
