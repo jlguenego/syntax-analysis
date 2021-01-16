@@ -2,7 +2,7 @@ import {epsilon} from './terminals/epsilon.terminal';
 import {$} from './terminals/dollar.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production, ProductionSpec} from './interfaces/Production';
-import {SententialForm} from './interfaces/SententialForm';
+import {SententialForm} from './SententialForm';
 import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';

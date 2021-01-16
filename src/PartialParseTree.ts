@@ -2,7 +2,7 @@ import {Tree} from '@jlguenego/tree';
 import {epsilon} from './terminals/epsilon.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
-import {SententialForm} from './interfaces/SententialForm';
+import {SententialForm} from './SententialForm';
 import {NonTerminal} from './NonTerminal';
 import {Terminal} from './interfaces/Terminal';
 

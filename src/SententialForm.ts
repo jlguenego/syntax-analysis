@@ -1,10 +1,17 @@
-import {NonTerminal} from '../NonTerminal';
-import {ParseSymbol} from './ParseSymbol';
-import {Sentence} from './Sentence';
-import {Terminal} from './Terminal';
+import {NonTerminal} from './NonTerminal';
+import {ParseSymbol} from './interfaces/ParseSymbol';
+import {Sentence} from './interfaces/Sentence';
+import {Terminal} from './interfaces/Terminal';
 
 type ParseSymbolArray = ParseSymbol[];
 
+/**
+ * A sentential form (also called working tree)
+ * represents an array of terminal and nonterminal symbols.
+ *
+ * @export
+ * @class SententialForm
+ */
 export class SententialForm {
   constructor(public symbols: ParseSymbolArray) {}
 

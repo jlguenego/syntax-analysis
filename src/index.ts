@@ -4,7 +4,7 @@ export * from './interfaces/ParseSymbol';
 export * from './interfaces/ParseTree';
 export * from './interfaces/Production';
 export * from './interfaces/Sentence';
-export * from './interfaces/SententialForm';
+export * from './SententialForm';
 export * from './interfaces/Terminal';
 export * from './NonTerminal';
 export * from './NonTerminalAlphabet';

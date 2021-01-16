@@ -1,7 +1,7 @@
 import {NonTerminal} from '../NonTerminal';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
-import {SententialForm} from './SententialForm';
+import {SententialForm} from '../SententialForm';
 
 export interface ProductionSpec<
   T extends TerminalAlphabet,
