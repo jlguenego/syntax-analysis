@@ -8,7 +8,7 @@ import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
 import {checkAlphabetAreDisjoint} from './utils';
-import {isLeftRecursive} from './left-recursion/left-recursion';
+import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -80,7 +80,7 @@ export class ContextFreeGrammar {
   }
 
   isLeftRecursive(nt: NonTerminal): boolean {
-    return isLeftRecursive(this, nt);
+    return isLeftRecursiveNonTerminal(this, nt);
   }
 
   /**

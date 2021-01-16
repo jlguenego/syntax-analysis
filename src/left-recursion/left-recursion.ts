@@ -1,19 +1,8 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
-import {
-  hasOnlyNonTerminal,
-  includesTerminal,
-} from '../interfaces/SententialForm';
+import {hasOnlyNonTerminal} from '../interfaces/SententialForm';
 import {NonTerminal} from '../NonTerminal';
 import {epsilon} from '../terminals/epsilon.terminal';
-
-export const isLeftRecursive = (cfg: ContextFreeGrammar, nt: NonTerminal) => {
-  const prod = isLeftRecursiveNonTerminal(cfg, nt);
-  if (prod.length === 0) {
-    return false;
-  }
-  return false;
-};
 
 export const isLeftRecursiveNonTerminal = (
   cfg: ContextFreeGrammar,
