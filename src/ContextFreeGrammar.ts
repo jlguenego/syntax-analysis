@@ -76,10 +76,6 @@ export class ContextFreeGrammar<
     return this.productionMap.get(nt);
   }
 
-  isProduction(nt: NonTerminal) {
-    return this.productionMap.has(nt);
-  }
-
   /**
    * For a given non-terminal/terminal `s`,
    * returns the list of all terminals
