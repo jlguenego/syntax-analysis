@@ -15,7 +15,7 @@ export const parseWithDFS1 = (
     // JLG optimization. This is true exept if there is a production with RHS empty.
     if (
       !cfg.hasEmptyProduction() &&
-      ppt.sententialForm.length > sentence.length
+      ppt.sententialForm.symbols.length > sentence.length
     ) {
       return [];
     }
@@ -27,7 +27,7 @@ export const parseWithDFS1 = (
     }
 
     // CS143 slide 51 : consider only left most derivation.
-    const nts = ppt.sententialForm.find(s => s instanceof NonTerminal);
+    const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
     if (nts === undefined) {
       return [];
     }
@@ -38,7 +38,7 @@ export const parseWithDFS1 = (
     for (const prod of productions) {
       const child = ppt.tree.clone();
       const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
-      for (const s of prod.RHS) {
+      for (const s of prod.RHS.symbols) {
         child.graft(ntl, new Tree<ParseSymbol>(s));
       }
       result.push(new PartialParseTree(child));

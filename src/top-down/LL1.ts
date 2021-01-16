@@ -13,7 +13,7 @@ export const parseWithLL1 = (
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // only the first non terminal needs to be yielded. (left most derivation)
-    const nts = ppt.sententialForm.find(s => s instanceof NonTerminal);
+    const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
     if (nts === undefined) {
       return [];
     }
@@ -30,7 +30,7 @@ export const parseWithLL1 = (
     for (const prod of productions) {
       const child = ppt.tree.clone();
       const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
-      for (const s of prod.RHS) {
+      for (const s of prod.RHS.symbols) {
         child.graft(ntl, new Tree<ParseSymbol>(s));
       }
       result.push(new PartialParseTree(child));

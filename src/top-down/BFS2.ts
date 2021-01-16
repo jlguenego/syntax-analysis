@@ -15,7 +15,7 @@ export const parseWithBFS2 = (
     // JLG optimization. This is true exept if there is a production with RHS empty.
     if (
       !cfg.hasEmptyProduction() &&
-      ppt.sententialForm.length > sentence.length
+      ppt.sententialForm.symbols.length > sentence.length
     ) {
       return [];
     }
@@ -26,14 +26,16 @@ export const parseWithBFS2 = (
       return [];
     }
 
-    const ntsArray = ppt.sententialForm.filter(s => s instanceof NonTerminal);
+    const ntsArray = ppt.sententialForm.symbols.filter(
+      s => s instanceof NonTerminal
+    );
     const result = [];
     for (const nts of ntsArray) {
       const productions = cfg.productions.filter(p => p.LHS === nts);
       for (const prod of productions) {
         const child = ppt.tree.clone();
         const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
-        for (const s of prod.RHS) {
+        for (const s of prod.RHS.symbols) {
           child.graft(ntl, new Tree<ParseSymbol>(s));
         }
         result.push(new PartialParseTree(child));

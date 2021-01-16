@@ -1,6 +1,5 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
-import {hasOnlyNonTerminal} from '../interfaces/SententialForm';
 import {NonTerminal} from '../NonTerminal';
 import {epsilon} from '../terminals/epsilon.terminal';
 
@@ -17,7 +16,7 @@ export const isLeftRecursiveNonTerminal = (
     return false;
   }
   for (const form of forms) {
-    for (const s of form) {
+    for (const s of form.symbols) {
       if (derivateToEmptyString(cfg, s)) {
         continue;
       }
@@ -48,10 +47,10 @@ export const derivateToEmptyString = (
     throw new Error('Grammar have nonterminal without productions.');
   }
   for (const form of forms) {
-    if (!hasOnlyNonTerminal(form)) {
+    if (!form.hasOnlyNonTerminal()) {
       return false;
     }
-    for (const nt of form) {
+    for (const nt of form.symbols) {
       if (!derivateToEmptyString(cfg, nt)) {
         return false;
       }

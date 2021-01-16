@@ -35,11 +35,14 @@ export class ContextFreeGrammar {
     this.check();
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
-      const rhs: SententialForm = p.RHS.map(
-        c =>
-          ((nt[c] as unknown) as NonTerminal) ?? ((t[c] as unknown) as Terminal)
-      );
       const lhs = (nt[p.LHS] as unknown) as NonTerminal;
+      const rhs = new SententialForm(
+        p.RHS.map(
+          c =>
+            ((nt[c] as unknown) as NonTerminal) ??
+            ((t[c] as unknown) as Terminal)
+        )
+      );
       return {
         LHS: lhs,
         RHS: rhs,
@@ -51,7 +54,7 @@ export class ContextFreeGrammar {
       } else {
         this.productionMap.set(p.LHS, [p.RHS]);
       }
-      if (p.RHS.length === 0) {
+      if (p.RHS.symbols.length === 0) {
         this.emptyProductionSet.add(p.LHS);
       }
     }
@@ -116,7 +119,7 @@ export class ContextFreeGrammar {
     }
 
     for (const rhs of rhsArray) {
-      for (const s of rhs) {
+      for (const s of rhs.symbols) {
         // check infinite recursion
         if (s === nt) {
           if (this.isEmptyProduction(nt)) {
@@ -166,12 +169,12 @@ export class ContextFreeGrammar {
     for (const p of this.productions) {
       const A = p.LHS;
       const rhs = p.RHS;
-      const index = rhs.findIndex(s => s === B);
+      const index = rhs.symbols.findIndex(s => s === B);
       if (index === -1) {
         console.log('B is not found');
         continue;
       }
-      if (index === rhs.length - 1) {
+      if (index === rhs.symbols.length - 1) {
         console.log('B is found at last: A -> PB');
         // productions A -> PB : follow(B) = follow(A)
         const followA = this.follow(A).filter(t => result.includes(t));
@@ -180,7 +183,7 @@ export class ContextFreeGrammar {
       }
 
       // A -> pBq : follow(B) = first(q) - epsilon
-      const q = rhs[index + 1];
+      const q = rhs.symbols[index + 1];
       const firstQ = this.first(q);
       if (firstQ.includes(epsilon)) {
         result.push(...firstQ.filter(t => t !== epsilon));

@@ -1,5 +1,5 @@
 import {PartialParseTree} from '../PartialParseTree';
-import {Sentence, sentenceEquals} from '../interfaces/Sentence';
+import {Sentence} from '../interfaces/Sentence';
 
 let seq = 0;
 
@@ -15,7 +15,7 @@ export const testFn = (sentence: Sentence) => (
   //   'ppt.sententialForm: ',
   //   sententialFormToString(ppt.sententialForm)
   // );
-  if (sentenceEquals(sentence, ppt.sententialForm)) {
+  if (ppt.sententialForm.isEqualsToSentence(sentence)) {
     console.log('seq: ', seq);
     seq = 0;
     return true;
