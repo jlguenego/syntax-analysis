@@ -9,6 +9,7 @@ import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
 import {checkAlphabetAreDisjoint} from './utils';
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
+import {buildFirst} from './first';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -25,6 +26,8 @@ export class ContextFreeGrammar {
   productions: Production[];
   productionMap = new Map<NonTerminal, SententialForm[]>();
   emptyProductionSet = new Set<NonTerminal>();
+
+  firstCache = new Map<NonTerminal, Set<Terminal>>();
   followCache = new Map<NonTerminal, Terminal[]>();
 
   constructor(
@@ -58,6 +61,7 @@ export class ContextFreeGrammar {
         this.emptyProductionSet.add(p.LHS);
       }
     }
+    buildFirst(this);
   }
 
   check() {
@@ -78,7 +82,7 @@ export class ContextFreeGrammar {
     return this.emptyProductionSet.has(nt);
   }
 
-  getProductions(nt: NonTerminal) {
+  getProdRHSArray(nt: NonTerminal) {
     return this.productionMap.get(nt);
   }
 
@@ -87,16 +91,7 @@ export class ContextFreeGrammar {
   }
 
   /**
-   * For a given non-terminal/terminal `s`,
-   * returns the list of all terminals
-   * that are prefix to sentence that derives from `s`
    *
-   * The following algorithm takes care about ε-productions.
-   * https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/03/Slides03.pdf
-   * slide 302
-   *
-   * Algo can be found at:
-   * https://www.geeksforgeeks.org/first-set-in-syntax-analysis/
    *
    * @param {ParseSymbol} nt
    * @returns {Terminal[]}
@@ -106,37 +101,8 @@ export class ContextFreeGrammar {
     if (!(nt instanceof NonTerminal)) {
       return [nt];
     }
-
-    const rhsArray = this.getProductions(nt);
-    if (!rhsArray) {
-      return [];
-    }
-
-    const result: Terminal[] = [];
-    // test if s is a ε-productions
-    if (this.isEmptyProduction(nt)) {
-      result.push(epsilon);
-    }
-
-    for (const rhs of rhsArray) {
-      for (const s of rhs.symbols) {
-        // check infinite recursion
-        if (s === nt) {
-          if (this.isEmptyProduction(nt)) {
-            continue;
-          }
-          break;
-        }
-        const firstYi = this.first(s);
-        if (!firstYi.includes(epsilon)) {
-          result.push(...firstYi);
-          break;
-        }
-        result.push(...firstYi.filter(t => t !== epsilon));
-      }
-    }
-
-    return result;
+    const set = this.firstCache.get(nt) as Set<Terminal>;
+    return [...set].sort();
   }
 
   seq = 1;
