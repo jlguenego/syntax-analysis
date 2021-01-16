@@ -1,5 +1,5 @@
-import {epsilon} from './terminals/epsilonTerminal';
-import {$} from './terminals/endAnchorTerminal';
+import {epsilon} from './terminals/epsilon.terminal';
+import {$} from './terminals/dollar.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production, ProductionSpec} from './interfaces/Production';
 import {SententialForm} from './interfaces/SententialForm';

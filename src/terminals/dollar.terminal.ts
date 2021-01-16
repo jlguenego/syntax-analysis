@@ -1,11 +1,10 @@
 import {Terminal} from '../interfaces/Terminal';
 
 /**
- * Some CFG has ε-production (rules with RHS empty).
- * when this occurs we may need a special terminal
- * symbol called epsilon to indicate it.
+ * $ terminal represents the end of a sentence, similarly to the regular expression.
+ * $ terminal is used for computing the FOLLOW function.
  *
- * slide 283
+ * slide 168
  * https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/lectures/03/Slides03.pdf
  *
  * @export

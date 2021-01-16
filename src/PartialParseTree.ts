@@ -1,5 +1,5 @@
 import {Tree} from '@jlguenego/tree';
-import {epsilon} from './terminals/epsilonTerminal';
+import {epsilon} from './terminals/epsilon.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {SententialForm} from './interfaces/SententialForm';
