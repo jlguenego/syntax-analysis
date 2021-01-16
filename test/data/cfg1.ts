@@ -9,19 +9,19 @@ import {
   ParseTree,
 } from '../../src';
 
+export class TA extends TerminalAlphabet {
+  PLUS: Terminal = {name: '+'};
+  INT: Terminal = {name: 'int'};
+}
+
 export class NTA extends NonTerminalAlphabet {
   S = new NonTerminal('S');
   E = new NonTerminal('E');
   F = new NonTerminal('F');
 }
 
-export class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  INT: Terminal = {name: 'int'};
-}
-
+export const t = new TA();
 export const nt = new NTA();
-const t = new TA();
 
 export const spec: CFGSpec<TA, NTA> = {
   startSymbol: 'S',

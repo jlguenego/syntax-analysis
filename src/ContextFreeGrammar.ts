@@ -7,6 +7,7 @@ import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
+import {checkAlphabetAreDisjoint} from './utils';
 
 export interface CFGSpec<
   T extends TerminalAlphabet,
@@ -26,7 +27,8 @@ export class ContextFreeGrammar<
   emptyProductionSet = new Set<NonTerminal>();
   followCache = new Map<NonTerminal, Terminal[]>();
 
-  constructor(spec: CFGSpec<T, NT>, t: T, nt: NT) {
+  constructor(spec: CFGSpec<T, NT>, public t: T, public nt: NT) {
+    this.check();
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
       const rhs: SententialForm = p.RHS.map(
@@ -51,6 +53,11 @@ export class ContextFreeGrammar<
       }
     }
   }
+
+  check() {
+    checkAlphabetAreDisjoint(this.t, this.nt);
+  }
+
   hasEmptyProduction(): boolean {
     return this.emptyProductionSet.size > 0;
   }

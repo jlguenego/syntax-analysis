@@ -19,8 +19,8 @@ export class NTA extends NonTerminalAlphabet {
   T = new NonTerminal('T');
 }
 
+export const t = new TA();
 export const nt = new NTA();
-const t = new TA();
 
 export const spec: CFGSpec<TA, NTA> = {
   startSymbol: 'E',
