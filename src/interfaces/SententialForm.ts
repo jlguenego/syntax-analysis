@@ -23,3 +23,14 @@ export function sententialFormToString(form: SententialForm): string {
     })
     .join('');
 }
+
+export function hasOnlyNonTerminal(
+  form: SententialForm
+): form is NonTerminal[] {
+  for (const s of form) {
+    if (!(s instanceof NonTerminal)) {
+      return false;
+    }
+  }
+  return true;
+}
