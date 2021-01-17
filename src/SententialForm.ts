@@ -67,4 +67,10 @@ export class SententialForm {
   findNonTerminalIndex(nt: NonTerminal): number {
     return this.symbols.findIndex(s => s === nt);
   }
+
+  findFirstNonTerminal(): NonTerminal | undefined {
+    return this.symbols.find(s => s instanceof NonTerminal) as
+      | NonTerminal
+      | undefined;
+  }
 }

@@ -37,7 +37,7 @@ export class ContextFreeGrammar {
   // cache for FIRST and FOLLOW functions (top-down parsing, LL1)
   firstCache = new Map<NonTerminal, Set<Terminal>>();
   followCache = new Map<NonTerminal, Set<Terminal>>();
-  ll1TableCache = new Map<NonTerminal, Map<Terminal, number>>();
+  ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
   options: CFGOptions = {
     ll1: false,
@@ -122,5 +122,15 @@ export class ContextFreeGrammar {
     }
     const set = this.firstCache.get(nt) as Set<Terminal>;
     return [...set].sort();
+  }
+
+  getfromLL1Table(nt: NonTerminal, t: Terminal): SententialForm {
+    const index = this.ll1TableCache.get(nt)?.get(t.name);
+    if (index === undefined) {
+      throw new Error(
+        `Syntax Error. nonterminal=${nt.label} and terminal=${t.name} `
+      );
+    }
+    return this.productions[index].RHS;
   }
 }

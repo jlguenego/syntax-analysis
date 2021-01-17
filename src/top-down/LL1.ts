@@ -3,9 +3,7 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
-import {NonTerminal} from '../NonTerminal';
 import {PartialParseTree} from '../PartialParseTree';
-import {epsilon} from '../terminals/epsilon.terminal';
 import {testFn} from './common';
 
 export const parseWithLL1 = (
@@ -14,7 +12,7 @@ export const parseWithLL1 = (
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
     // only the first non terminal needs to be yielded. (left most derivation)
-    const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
+    const nts = ppt.sententialForm.findFirstNonTerminal();
     if (nts === undefined) {
       return [];
     }
@@ -22,24 +20,15 @@ export const parseWithLL1 = (
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
     const lookAheadToken = ppt.getLookAheadToken(sentence);
+    const rhs = cfg.getfromLL1Table(nts, lookAheadToken);
 
     const result = [];
-    const productions = cfg.productions
-      .filter(p => p.LHS === nts)
-      .filter(
-        p =>
-          p.RHS.symbols[0] instanceof NonTerminal ||
-          p.RHS.symbols[0].name === lookAheadToken.name ||
-          p.RHS.symbols[0] === epsilon
-      );
-    for (const prod of productions) {
-      const child = ppt.tree.clone();
-      const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
-      for (const s of prod.RHS.symbols) {
-        child.graft(ntl, new Tree<ParseSymbol>(s));
-      }
-      result.push(new PartialParseTree(child));
+    const child = ppt.tree.clone();
+    const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+    for (const s of rhs.symbols) {
+      child.graft(ntl, new Tree<ParseSymbol>(s));
     }
+    result.push(new PartialParseTree(child));
 
     return result;
   };

@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {inspect} from 'util';
 import {parse} from '../src';
 import {cfg, expectedParseTree, sentence} from './data/cfg1';
 import {cfg3, expectedParseTree3} from './data/cfg3';
