@@ -10,6 +10,8 @@ npm i @jlguenego/syntax-analysis
 
 ## Usage
 
+You should use Typescript in order to check your grammar in a easier way.
+
 ```ts
 class TA extends TerminalAlphabet {
   PLUS: Terminal = {name: '+'};
@@ -47,9 +49,21 @@ const parseTree = parse<NTA, TA>(sentence, cfg, {algo: 'BFS1');
 
 ### Breadth First Search
 
-- BFS1: Naive Breadth First Search with nothing else (very slow, but didactic).
+- BFS1: Naive Breadth First Search with nothing else (very slow, may take many days...).
+- BFS2: BFS1 with 2 checks for speeding BFS (slow, may take many hours...).
+  - checks the length of sentential form
+  - checks the sentence prefix of the sentential form
+- BFS3: BFS2 with LeftMost Derivation strategy (not so slow, mak take some minutes...).
 
 ### Depth First Search
+
+- DFS1: Leftmost derivation strategy. (not so slow execpt for left recursive grammar)
+- DFS2: use one lookahead terminal to speed up a little bit.
+
+- LL1: yes ! This is linear O(ng), n is the size of the string to parse, and g is the size of the grammar.
+  - Warning: the grammar must be LL(1) compatible. So you may have to refactor your grammar in some case:
+    - Left factoring
+    - Convert left recursion to right recursion.
 
 ## Bottom up algorithm
 
