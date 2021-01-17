@@ -14,8 +14,8 @@ You should use Typescript in order to check your grammar in a easier way.
 
 ```ts
 class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  INT: Terminal = {name: 'int'};
+  '+': Terminal = {name: '+'};
+  'int': Terminal = {name: 'int'};
 }
 
 class NTA extends NonTerminalAlphabet {
@@ -31,9 +31,9 @@ const spec: CFGSpec<TA, NTA> = {
   startSymbol: 'S',
   productions: [
     {LHS: 'S', RHS: ['E']},
-    {LHS: 'E', RHS: ['E', 'PLUS', 'F']},
+    {LHS: 'E', RHS: ['E', '+', 'F']},
     {LHS: 'E', RHS: ['F']},
-    {LHS: 'F', RHS: ['INT']},
+    {LHS: 'F', RHS: ['int']},
   ],
 };
 const cfg = new ContextFreeGrammar(spec, t, nt);
