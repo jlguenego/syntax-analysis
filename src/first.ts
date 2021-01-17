@@ -3,6 +3,7 @@ import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 import {SententialForm} from './SententialForm';
 import {epsilon} from './terminals/epsilon.terminal';
+import {absorbSet} from './utils/set';
 
 const initFirstCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
@@ -46,27 +47,38 @@ export const buildFirst = (cfg: ContextFreeGrammar): void => {
           firstNt.add(epsilon);
           continue;
         }
-        let broken = false;
-        for (const symbol of rhs.symbols) {
-          if (!(symbol instanceof NonTerminal)) {
-            firstNt.add(symbol);
-            broken = true;
-            break;
-          }
-          const set = getFirstCache(cfg, symbol);
-          if (!set.has(epsilon)) {
-            [...set].forEach(t => firstNt.add(t));
-            broken = true;
-            break;
-          }
-          [...set].filter(t => t !== epsilon).forEach(t => firstNt.add(t));
-        }
-        if (broken === false) {
-          firstNt.add(epsilon);
-        }
+        absorbSet(firstNt, firstStar(cfg, rhs));
       }
     }
     previousSize = size;
     size = getFirstCacheSize(cfg);
   }
 };
+
+export function firstStar(
+  cfg: ContextFreeGrammar,
+  f: SententialForm
+): Set<Terminal> {
+  const result = new Set<Terminal>();
+  let broken = false;
+  for (const symbol of f.symbols) {
+    if (!(symbol instanceof NonTerminal)) {
+      result.add(symbol);
+      broken = true;
+      break;
+    }
+    const set = getFirstCache(cfg, symbol);
+    if (!set.has(epsilon)) {
+      absorbSet(result, set);
+      broken = true;
+      break;
+    }
+    const setMinusEpsilon = new Set(set);
+    setMinusEpsilon.delete(epsilon);
+    absorbSet(result, setMinusEpsilon);
+  }
+  if (broken === false) {
+    result.add(epsilon);
+  }
+  return result;
+}

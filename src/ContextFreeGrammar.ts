@@ -1,5 +1,3 @@
-import {epsilon} from './terminals/epsilon.terminal';
-import {$} from './terminals/dollar.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production, ProductionSpec} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
@@ -10,6 +8,7 @@ import {TerminalAlphabet} from './TerminalAlphabet';
 import {checkAlphabetAreDisjoint} from './utils';
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './first';
+import {buildFollow} from './follow';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -24,11 +23,14 @@ export type CFGSpec = CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>;
 export class ContextFreeGrammar {
   startSymbol: NonTerminal;
   productions: Production[];
+
+  // for better access performance
   productionMap = new Map<NonTerminal, SententialForm[]>();
   emptyProductionSet = new Set<NonTerminal>();
 
+  // cache for FIRST and FOLLOW functions (top-down parsing, LL1)
   firstCache = new Map<NonTerminal, Set<Terminal>>();
-  followCache = new Map<NonTerminal, Terminal[]>();
+  followCache = new Map<NonTerminal, Set<Terminal>>();
 
   constructor(
     spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
@@ -62,6 +64,7 @@ export class ContextFreeGrammar {
       }
     }
     buildFirst(this);
+    buildFollow(this);
   }
 
   check() {
@@ -103,65 +106,5 @@ export class ContextFreeGrammar {
     }
     const set = this.firstCache.get(nt) as Set<Terminal>;
     return [...set].sort();
-  }
-
-  seq = 1;
-
-  follow(B: NonTerminal): Terminal[] {
-    console.log('follow start with B: ', B);
-    this.seq++;
-    if (this.seq > 50) {
-      throw new Error('too much call of follow');
-    }
-
-    // cache
-    if (this.followCache.has(B)) {
-      console.log('sending from cache');
-      return this.followCache.get(B) as Terminal[];
-    }
-
-    console.log('not cache. computing', B);
-
-    if (B === this.startSymbol) {
-      // starting symbol case (case 1)
-      console.log('B is a start symbol', B);
-      this.followCache.set(B, [$]);
-      return this.followCache.get(B) as Terminal[];
-    }
-
-    const result: Terminal[] = [];
-
-    // find all productions rules A -> pBq
-    for (const p of this.productions) {
-      const A = p.LHS;
-      const rhs = p.RHS;
-      const index = rhs.symbols.findIndex(s => s === B);
-      if (index === -1) {
-        console.log('B is not found');
-        continue;
-      }
-      if (index === rhs.symbols.length - 1) {
-        console.log('B is found at last: A -> PB');
-        // productions A -> PB : follow(B) = follow(A)
-        const followA = this.follow(A).filter(t => result.includes(t));
-        result.push(...followA);
-        continue;
-      }
-
-      // A -> pBq : follow(B) = first(q) - epsilon
-      const q = rhs.symbols[index + 1];
-      const firstQ = this.first(q);
-      if (firstQ.includes(epsilon)) {
-        result.push(...firstQ.filter(t => t !== epsilon));
-        const followA = this.follow(A).filter(t => result.includes(t));
-        result.push(...followA);
-        continue;
-      }
-      result.push(...firstQ);
-    }
-    console.log('finished B with result', B, result);
-
-    this.followCache.set(B, result);
-    return this.followCache.get(B) as Terminal[];
   }
 }

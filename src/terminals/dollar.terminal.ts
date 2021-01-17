@@ -10,6 +10,6 @@ import {Terminal} from '../interfaces/Terminal';
  * @export
  * @interface Terminal
  */
-export const $: Terminal = {
+export const dollar: Terminal = {
   name: '$',
 };
