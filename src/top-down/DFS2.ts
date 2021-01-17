@@ -5,10 +5,9 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {NonTerminal} from '../NonTerminal';
 import {PartialParseTree} from '../PartialParseTree';
-import {epsilon} from '../terminals/epsilon.terminal';
 import {testFn} from './common';
 
-export const parseWithLL1 = (
+export const parseWithDFS2 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {
@@ -22,15 +21,17 @@ export const parseWithLL1 = (
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
     const lookAheadToken = ppt.getLookAheadToken(sentence);
-
+    const terminals = cfg.first(nts);
+    if (!terminals.map(t => t.name).includes(lookAheadToken.name)) {
+      return [];
+    }
     const result = [];
     const productions = cfg.productions
       .filter(p => p.LHS === nts)
       .filter(
         p =>
           p.RHS.symbols[0] instanceof NonTerminal ||
-          p.RHS.symbols[0].name === lookAheadToken.name ||
-          p.RHS.symbols[0] === epsilon
+          p.RHS.symbols[0].name === lookAheadToken.name
       );
     for (const prod of productions) {
       const child = ppt.tree.clone();

@@ -5,6 +5,7 @@ import {Sentence} from './interfaces/Sentence';
 import {SententialForm} from './SententialForm';
 import {NonTerminal} from './NonTerminal';
 import {Terminal} from './interfaces/Terminal';
+import {dollar} from './terminals/dollar.terminal';
 
 export class PartialParseTree {
   sententialForm = new SententialForm(
@@ -40,6 +41,9 @@ export class PartialParseTree {
     );
     if (index === -1) {
       throw new Error('getLookAheadToken should not be called on sentence');
+    }
+    if (index >= sentence.length) {
+      return dollar;
     }
     return sentence[index];
   }

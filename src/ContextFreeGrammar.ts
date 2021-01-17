@@ -5,10 +5,12 @@ import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
-import {checkAlphabetAreDisjoint} from './utils';
+import {checkAlphabetAreDisjoint} from './utils/check';
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './first';
 import {buildFollow} from './follow';
+import {buildLL1Table} from './LL1Table';
+import {epsilon} from './terminals/epsilon.terminal';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -19,6 +21,10 @@ export interface CFGSpecifications<
 }
 
 export type CFGSpec = CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>;
+
+export interface CFGOptions {
+  ll1: boolean;
+}
 
 export class ContextFreeGrammar {
   startSymbol: NonTerminal;
@@ -31,22 +37,29 @@ export class ContextFreeGrammar {
   // cache for FIRST and FOLLOW functions (top-down parsing, LL1)
   firstCache = new Map<NonTerminal, Set<Terminal>>();
   followCache = new Map<NonTerminal, Set<Terminal>>();
+  ll1TableCache = new Map<NonTerminal, Map<Terminal, number>>();
+
+  options: CFGOptions = {
+    ll1: false,
+  };
 
   constructor(
     spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
     public t: TerminalAlphabet,
-    public nt: NonTerminalAlphabet
+    public nt: NonTerminalAlphabet,
+    opts: Partial<CFGOptions> = {}
   ) {
+    this.options = {...this.options, ...opts};
     this.check();
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
       const lhs = (nt[p.LHS] as unknown) as NonTerminal;
+      const symbols = p.RHS.map(
+        c =>
+          ((nt[c] as unknown) as NonTerminal) ?? ((t[c] as unknown) as Terminal)
+      );
       const rhs = new SententialForm(
-        p.RHS.map(
-          c =>
-            ((nt[c] as unknown) as NonTerminal) ??
-            ((t[c] as unknown) as Terminal)
-        )
+        symbols.length === 0 ? [epsilon] : symbols
       );
       return {
         LHS: lhs,
@@ -65,6 +78,9 @@ export class ContextFreeGrammar {
     }
     buildFirst(this);
     buildFollow(this);
+    if (this.options.ll1) {
+      buildLL1Table(this);
+    }
   }
 
   check() {

@@ -36,4 +36,4 @@ export const spec: CFGSpecifications<TA, NTA> = {
     {LHS: 'More', RHS: []},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg2 = new ContextFreeGrammar(spec as CFGSpec, t, nt);

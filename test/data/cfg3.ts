@@ -18,6 +18,7 @@ export class TA extends TerminalAlphabet {
 export class NTA extends NonTerminalAlphabet {
   E = new NonTerminal('E');
   T = new NonTerminal('T');
+  Y = new NonTerminal('Y');
 }
 
 export const t = new TA();
@@ -26,13 +27,14 @@ export const nt = new NTA();
 export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'E',
   productions: [
-    {LHS: 'E', RHS: ['T']},
-    {LHS: 'E', RHS: ['T', '+', 'E']},
+    {LHS: 'E', RHS: ['T', 'Y']},
     {LHS: 'T', RHS: ['INT']},
     {LHS: 'T', RHS: ['(', 'E', ')']},
+    {LHS: 'Y', RHS: ['+', 'E']},
+    {LHS: 'Y', RHS: []},
   ],
 };
-export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt, {ll1: true});
 
 export const expectedParseTree3 = {
   node: nt.E,
@@ -41,22 +43,17 @@ export const expectedParseTree3 = {
       node: nt.T,
       children: [{node: {name: 'int'}}],
     },
-    {node: {name: '+'}},
     {
-      node: nt.E,
+      node: nt.Y,
       children: [
+        {node: {name: '+'}},
         {
-          node: nt.T,
+          node: nt.E,
           children: [
-            {node: {name: '('}},
             {
-              node: nt.E,
+              node: nt.T,
               children: [
-                {
-                  node: nt.T,
-                  children: [{node: {name: 'int'}}],
-                },
-                {node: {name: '+'}},
+                {node: {name: '('}},
                 {
                   node: nt.E,
                   children: [
@@ -64,11 +61,34 @@ export const expectedParseTree3 = {
                       node: nt.T,
                       children: [{node: {name: 'int'}}],
                     },
+                    {
+                      node: nt.Y,
+                      children: [
+                        {node: {name: '+'}},
+                        {
+                          node: nt.E,
+                          children: [
+                            {
+                              node: nt.T,
+                              children: [{node: {name: 'int'}}],
+                            },
+                            {
+                              node: nt.Y,
+                              children: [{node: {name: ''}}],
+                            },
+                          ],
+                        },
+                      ],
+                    },
                   ],
                 },
+                {node: {name: ')'}},
               ],
             },
-            {node: {name: ')'}},
+            {
+              node: nt.Y,
+              children: [{node: {name: ''}}],
+            },
           ],
         },
       ],

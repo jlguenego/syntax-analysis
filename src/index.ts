@@ -9,3 +9,5 @@ export * from './interfaces/Terminal';
 export * from './NonTerminal';
 export * from './NonTerminalAlphabet';
 export * from './TerminalAlphabet';
+export * from './terminals/dollar.terminal';
+export * from './terminals/epsilon.terminal';

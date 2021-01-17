@@ -1,5 +1,5 @@
-import {NonTerminalAlphabet} from './NonTerminalAlphabet';
-import {TerminalAlphabet} from './TerminalAlphabet';
+import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
+import {TerminalAlphabet} from '../TerminalAlphabet';
 
 export const checkAlphabetAreDisjoint = (
   t: TerminalAlphabet,
