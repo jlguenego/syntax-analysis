@@ -11,6 +11,7 @@ import {buildFirst} from './first';
 import {buildFollow} from './follow';
 import {buildLL1Table} from './LL1Table';
 import {epsilon} from './terminals/epsilon.terminal';
+import {ParseError} from './ParseError';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -127,9 +128,7 @@ export class ContextFreeGrammar {
   getfromLL1Table(nt: NonTerminal, t: Terminal): SententialForm {
     const index = this.ll1TableCache.get(nt)?.get(t.name);
     if (index === undefined) {
-      throw new Error(
-        `Syntax Error. nonterminal=${nt.label} and terminal=${t.name} `
-      );
+      throw new ParseError('LL(1) Parser: Syntax Error.', nt, t);
     }
     return this.productions[index].RHS;
   }
