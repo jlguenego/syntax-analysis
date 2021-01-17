@@ -42,7 +42,7 @@ const cfg = new ContextFreeGrammar(spec, t, nt);
 const sentence = [{name: 'int'}, {name: '+'}, {name: 'int'}];
 
 // the real job
-const parseTree = parse<NTA, TA>(sentence, cfg, {algo: 'BFS1');
+const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
 ```
 
 ## Top down algorithm
