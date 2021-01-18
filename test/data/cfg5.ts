@@ -11,6 +11,7 @@ import {
 } from '../../src';
 
 export class NTA extends NonTerminalAlphabet {
+  S = new NonTerminal('S');
   E = new NonTerminal('E');
   F = new NonTerminal('F');
   T = new NonTerminal('T');
@@ -28,8 +29,9 @@ export const nt = new NTA();
 const t = new TA();
 
 export const spec: CFGSpecifications<TA, NTA> = {
-  startSymbol: 'E',
+  startSymbol: 'S',
   productions: [
+    {LHS: 'S', RHS: ['E']},
     {LHS: 'E', RHS: ['F']},
     {LHS: 'E', RHS: ['E', '+', 'F']},
     {LHS: 'F', RHS: ['F', '*', 'T']},
@@ -84,4 +86,8 @@ export const expectedParseTree5: ParseTree = {
       ],
     },
   ],
+};
+
+export const expectedAutomaton5 = {
+  states: ['[1] S->·E E->·F E->·E+F F->·F*T F->·T T->·int T->·(E)'],
 };
