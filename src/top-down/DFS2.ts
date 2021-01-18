@@ -12,6 +12,14 @@ export const parseWithDFS2 = (
   cfg: ContextFreeGrammar
 ): ParseTree => {
   const getChildren = (ppt: PartialParseTree): PartialParseTree[] => {
+    // check
+    if (
+      !cfg.hasEmptyProduction() &&
+      ppt.sententialForm.symbols.length > sentence.length
+    ) {
+      return [];
+    }
+
     // only the first non terminal needs to be yielded. (left most derivation)
     const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
     if (nts === undefined) {

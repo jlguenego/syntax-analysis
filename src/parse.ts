@@ -1,3 +1,4 @@
+import {parseWithLR1} from './bottom-up/LR1';
 import {ContextFreeGrammar} from './ContextFreeGrammar';
 import {ParseTree} from './interfaces/ParseTree';
 import {Sentence} from './interfaces/Sentence';
@@ -9,7 +10,7 @@ import {parseWithDFS2} from './top-down/DFS2';
 import {parseWithLL1} from './top-down/LL1';
 
 export interface ParseOptions {
-  method: 'BFS1' | 'BFS2' | 'BFS3' | 'DFS1' | 'DFS2' | 'LL1';
+  method: 'BFS1' | 'BFS2' | 'BFS3' | 'DFS1' | 'DFS2' | 'LL1' | 'LR1';
 }
 
 export function parse(
@@ -34,6 +35,8 @@ export function parse(
       return parseWithDFS2(sentence, cfg);
     case 'LL1':
       return parseWithLL1(sentence, cfg);
+    case 'LR1':
+      return parseWithLR1(sentence, cfg);
     default:
       throw new Error('Method not implemented');
   }
