@@ -5,6 +5,7 @@ import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {buildAutomaton} from './buildAutomaton';
+import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
 
 const canShift = (state: BUState): boolean => {
   if (!state.automaton.hasCurrentTransitions()) {
@@ -66,6 +67,13 @@ const findProduction = (state: BUState): Production => {
   return pwps[0].production;
 };
 
+const action = (state: BUState): LRAction => {
+  if (canShift(state)) {
+    return new ShiftAction();
+  }
+  return new ReduceAction(findProduction(state));
+};
+
 export const parseWithLR0 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
@@ -86,13 +94,12 @@ export const parseWithLR0 = (
       throw new Error('Too much parsing.');
     }
     // find if you need to shift or reduce.
-    if (canShift(state)) {
+    const a = action(state);
+    if (a instanceof ShiftAction) {
       state = shift(state);
       continue;
     }
-    // which production must be taken ?
-    const production = findProduction(state);
-    state = reduce(state, production);
+    state = reduce(state, a.production);
     if (state.isCompleted) {
       break;
     }
