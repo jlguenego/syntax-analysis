@@ -12,3 +12,4 @@ export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
 export * from './terminals/epsilon.terminal';
 export * from './Automaton';
+export * from './bottom-up/buildAutomaton';

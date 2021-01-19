@@ -10,21 +10,21 @@ import {
   CFGSpec,
 } from '../../src';
 
-export class TA extends TerminalAlphabet {
+class TA extends TerminalAlphabet {
   readonly PLUS: Terminal = {name: '+'};
   readonly INT: Terminal = {name: 'int'};
 }
 
-export class NTA extends NonTerminalAlphabet {
+class NTA extends NonTerminalAlphabet {
   readonly S = new NonTerminal('S');
   readonly E = new NonTerminal('E');
   readonly F = new NonTerminal('F');
 }
 
-export const t = new TA();
-export const nt = new NTA();
+const t = new TA();
+const nt = new NTA();
 
-export const spec: CFGSpecifications<TA, NTA> = {
+const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'S',
   productions: [
     {LHS: 'S', RHS: ['E']},
@@ -33,7 +33,7 @@ export const spec: CFGSpecifications<TA, NTA> = {
     {LHS: 'F', RHS: ['INT']},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg1 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
 
 export const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
   name: str,
