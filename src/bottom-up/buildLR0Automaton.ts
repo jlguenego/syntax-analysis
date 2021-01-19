@@ -3,7 +3,9 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {LRState} from '../LRState';
 import {ProductionWithPosition} from '../ProductionWithPosition';
 
-export const buildAutomaton = (cfg: ContextFreeGrammar): Automaton<LRState> => {
+export const buildLR0Automaton = (
+  cfg: ContextFreeGrammar
+): Automaton<LRState> => {
   // add a first state with start symbol
 
   const startProductions = cfg.productions.filter(

@@ -4,7 +4,7 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
-import {buildAutomaton} from './buildAutomaton';
+import {buildLR0Automaton} from './buildLR0Automaton';
 import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
 import {ParseError} from '../ParseError';
 
@@ -93,7 +93,7 @@ export const parseWithLR0 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {
-  const automaton = buildAutomaton(cfg);
+  const automaton = buildLR0Automaton(cfg);
   let state: BUState = {
     remainingSentence: [...sentence],
     parseTrees: [],
