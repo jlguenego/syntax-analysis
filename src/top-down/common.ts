@@ -11,9 +11,7 @@ export const testFn = (sentence: Sentence) => (
     seq = 0;
     throw new Error('too much. stop');
   }
-  // console.log('ppt.sententialForm: ' + ppt.sententialForm);
   if (ppt.sententialForm.isEqualsToSentence(sentence)) {
-    console.log('seq: ', seq);
     seq = 0;
     return true;
   }

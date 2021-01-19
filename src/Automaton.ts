@@ -1,7 +1,16 @@
 export class Automaton<S extends {id: number}> {
   private states = new Set<S>();
   private transitions = new Map<S, Map<string, S>>();
-  constructor() {}
+  private currentState = this.startState;
+
+  constructor(private startState: S) {
+    this.addState(startState);
+    this.reset();
+  }
+
+  reset(): void {
+    this.currentState = this.startState;
+  }
 
   toObject() {
     return {
@@ -36,7 +45,7 @@ export class Automaton<S extends {id: number}> {
     map.set(symbol, to);
   }
 
-  hasTransition(from: S, symbol: string): S | undefined {
+  getTransition(from: S, symbol: string): S | undefined {
     // returns undefined if no state or transition are found.
     return this.transitions.get(from)?.get(symbol);
   }
@@ -47,5 +56,31 @@ export class Automaton<S extends {id: number}> {
 
   getStateArray() {
     return [...this.states];
+  }
+
+  hasCurrentTransitions() {
+    const map = this.transitions.get(this.currentState);
+    if (!map) {
+      return false;
+    }
+    return map.size > 0;
+  }
+
+  getCurrentTransition(symbol: string) {
+    return this.getTransition(this.currentState, symbol);
+  }
+
+  getCurrentState(): S {
+    return this.currentState;
+  }
+
+  jump(symbol: string) {
+    const state = this.getTransition(this.currentState, symbol);
+    if (state === undefined) {
+      throw new Error(
+        `Cannot jump from stateId ${this.currentState.id} with symbol ${symbol}`
+      );
+    }
+    this.currentState = state;
   }
 }

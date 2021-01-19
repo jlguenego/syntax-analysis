@@ -6,6 +6,8 @@ import {
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
+  ParseTree,
+  Sentence,
 } from '../../src';
 
 class NTA extends NonTerminalAlphabet {
@@ -39,49 +41,68 @@ const spec: CFGSpecifications<TA, NTA> = {
 // note: cfg5 is not LL1
 export const cfg6 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
 
-// export const sentence5: Sentence = ['int', '+', 'int', '*', 'int'].map(str => ({
-//   name: str,
-// }));
+export const sentence6: Sentence = [
+  'int',
+  '+',
+  '(',
+  'int',
+  '+',
+  'int',
+  ';',
+  ')',
+  ';',
+].map(str => ({
+  name: str,
+}));
 
-// export const expectedParseTree5: ParseTree = {
-//   node: nt.E,
-//   children: [
-//     {
-//       node: nt.E,
-//       children: [
-//         {
-//           node: nt.F,
-//           children: [
-//             {
-//               node: nt.T,
-//               children: [{node: {name: 'int'}}],
-//             },
-//           ],
-//         },
-//       ],
-//     },
-//     {node: {name: '+'}},
-//     {
-//       node: nt.F,
-//       children: [
-//         {
-//           node: nt.F,
-//           children: [
-//             {
-//               node: nt.T,
-//               children: [{node: {name: 'int'}}],
-//             },
-//           ],
-//         },
-//         {node: {name: '*'}},
-//         {
-//           node: nt.T,
-//           children: [{node: {name: 'int'}}],
-//         },
-//       ],
-//     },
-//   ],
-// };
+export const expectedParseTree6: ParseTree = {
+  node: nt.S,
+  children: [
+    {
+      node: nt.E,
+      children: [
+        {
+          node: nt.T,
+          children: [{node: {name: 'int'}}],
+        },
+        {node: {name: '+'}},
+        {
+          node: nt.E,
+          children: [
+            {
+              node: nt.T,
+              children: [
+                {node: {name: '('}},
+                {
+                  node: nt.E,
+                  children: [
+                    {
+                      node: nt.T,
+                      children: [{node: {name: 'int'}}],
+                    },
+                    {node: {name: '+'}},
+                    {
+                      node: nt.E,
+                      children: [
+                        {
+                          node: nt.T,
+                          children: [{node: {name: 'int'}}],
+                        },
+                        {node: {name: ';'}},
+                      ],
+                    },
+                  ],
+                },
+                {node: {name: ')'}},
+              ],
+            },
+            {node: {name: ';'}},
+          ],
+        },
+      ],
+    },
+  ],
+};
 
 export const expectedAutomaton6 = {
   states: [
