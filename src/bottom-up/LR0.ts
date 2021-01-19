@@ -1,5 +1,5 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {BUState} from '../interfaces/BUState';
+import {BUState, getForm} from '../interfaces/BUState';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
@@ -31,25 +31,29 @@ const shift = (previousState: BUState): BUState => {
   state.parseTrees = [...state.parseTrees];
   state.parseTrees.push({node: t});
   state.automaton.jump(psSerialize(t));
+  state.lrstateStack.push(state.automaton.getCurrentState());
   return state;
 };
 
 const reduce = (previousState: BUState, production: Production) => {
   const state = {...previousState};
+  console.log('reducting RHS: ' + production.RHS.toString());
   const length = production.RHS.symbols.length;
   const reducedParseTree = state.parseTrees.slice(0, -length);
   const replacedSlice = state.parseTrees.slice(-length);
-  reducedParseTree.push({node: production.LHS, children: replacedSlice});
+  const pt = {node: production.LHS, children: replacedSlice};
+  reducedParseTree.push(pt);
   state.parseTrees = reducedParseTree;
 
-  state.automaton.reset(state.automaton.getStartState());
-  for (const s of state.parseTrees.map(pt => pt.node)) {
-    if (s === state.cfg.startSymbol) {
-      state.isCompleted = true;
-      break;
-    }
-    state.automaton.jump(psSerialize(s));
+  state.lrstateStack = state.lrstateStack.slice(0, -length);
+  state.automaton.reset(state.lrstateStack[state.lrstateStack.length - 1]);
+  const s = pt.node;
+  if (s === state.cfg.startSymbol) {
+    state.isCompleted = true;
+    return state;
   }
+  state.automaton.jump(psSerialize(s));
+  state.lrstateStack.push(state.automaton.getCurrentState());
   return state;
 };
 
@@ -82,6 +86,8 @@ export const parseWithLR0 = (
     if (seq > 40) {
       throw new Error('Too much parsing.');
     }
+    const form = getForm(state);
+    console.log('form: ', form);
     // find if you need to shift or reduce.
     if (canShift(state)) {
       state = shift(state);
