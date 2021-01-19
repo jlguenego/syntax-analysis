@@ -1,5 +1,4 @@
 import assert from 'assert';
-import {inspect} from 'util';
 import {parse} from '../src';
 import {cfg1, expectedParseTree, sentence} from './data/cfg1';
 import {cfg3, expectedParseTree3} from './data/cfg3';
@@ -34,7 +33,6 @@ describe('BFS Unit Test', () => {
   });
   it('test parse cfg5 with LR0', () => {
     const parseTree5 = parse(sentence6, cfg6, {method: 'LR0'});
-    console.log('parseTree5: ', inspect(parseTree5, false, null));
     assert.deepStrictEqual(parseTree5, expectedParseTree6);
   });
 });

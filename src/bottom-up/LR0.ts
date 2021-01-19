@@ -1,5 +1,5 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {BUState, getForm} from '../interfaces/BUState';
+import {BUState} from '../interfaces/BUState';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
@@ -37,7 +37,6 @@ const shift = (previousState: BUState): BUState => {
 
 const reduce = (previousState: BUState, production: Production) => {
   const state = {...previousState};
-  console.log('reducting RHS: ' + production.RHS.toString());
   const length = production.RHS.symbols.length;
   const reducedParseTree = state.parseTrees.slice(0, -length);
   const replacedSlice = state.parseTrees.slice(-length);
@@ -86,8 +85,6 @@ export const parseWithLR0 = (
     if (seq > 40) {
       throw new Error('Too much parsing.');
     }
-    const form = getForm(state);
-    console.log('form: ', form);
     // find if you need to shift or reduce.
     if (canShift(state)) {
       state = shift(state);
