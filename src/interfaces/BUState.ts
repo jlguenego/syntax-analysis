@@ -8,6 +8,7 @@ import {Sentence} from './Sentence';
 export interface BUState {
   remainingSentence: Sentence;
   parseTrees: ParseTree[];
+  lrstateStack: LRState[];
   cfg: ContextFreeGrammar;
   automaton: Automaton<LRState>;
   isCompleted: boolean;

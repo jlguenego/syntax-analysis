@@ -67,11 +67,10 @@ export const parseWithLR0 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {
-  const remainingSentence = [...sentence];
-  const parseTrees: ParseTree[] = [];
   let state: BUState = {
-    remainingSentence,
-    parseTrees,
+    remainingSentence: [...sentence],
+    parseTrees: [],
+    lrstateStack: [],
     cfg,
     automaton: buildAutomaton(cfg),
     isCompleted: false,
