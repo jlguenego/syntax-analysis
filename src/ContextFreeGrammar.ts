@@ -9,7 +9,7 @@ import {checkAlphabetAreDisjoint} from './utils/check';
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './first';
 import {buildFollow} from './follow';
-import {buildLL1Table} from './LL1Table';
+import {buildLL1Table} from './top-down/LL1Table';
 import {epsilon} from './terminals/epsilon.terminal';
 import {ParseError} from './ParseError';
 

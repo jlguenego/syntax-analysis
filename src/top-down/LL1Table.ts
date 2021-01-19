@@ -1,8 +1,8 @@
-import {ContextFreeGrammar} from './ContextFreeGrammar';
-import {firstStar} from './first';
-import {Terminal} from './interfaces/Terminal';
-import {epsilon} from './terminals/epsilon.terminal';
-import {copyWithoutElt} from './utils/set';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {firstStar} from '../first';
+import {Terminal} from '../interfaces/Terminal';
+import {epsilon} from '../terminals/epsilon.terminal';
+import {copyWithoutElt} from '../utils/set';
 
 const initLL1TableCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
