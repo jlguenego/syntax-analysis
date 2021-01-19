@@ -8,21 +8,30 @@ import {buildAutomaton} from './buildAutomaton';
 import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
 
 const canShift = (state: BUState): boolean => {
-  if (!state.automaton.hasCurrentTransitions()) {
-    return false;
+  const pwps = [...state.automaton.getCurrentState().pwps];
+  const reducable = pwps.filter(p => p.isReducable());
+  const shiftable = pwps.filter(p => !p.isReducable());
+  if (reducable.length > 0 && shiftable.length > 0) {
+    throw new Error('shift/reduce conflict.');
   }
+  return shiftable.length > 0;
 
-  if (state.remainingSentence.length === 0) {
-    return false;
-  }
-  const symbol = state.remainingSentence[0];
+  // if (!state.automaton.hasCurrentTransitions()) {
+  //   return false;
+  // }
 
-  // terminal case
-  const transition = state.automaton.getCurrentTransition(psSerialize(symbol));
-  if (!transition) {
-    return false;
-  }
-  return true;
+  // if (state.remainingSentence.length === 0) {
+  //   return false;
+  // }
+  // // LR 1 !!!
+  // const symbol = state.remainingSentence[0];
+
+  // // terminal case
+  // const transition = state.automaton.getCurrentTransition(psSerialize(symbol));
+  // if (!transition) {
+  //   return false;
+  // }
+  // return true;
 };
 
 const shift = (previousState: BUState): BUState => {
