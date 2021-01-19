@@ -61,7 +61,7 @@ const findProduction = (state: BUState): Production => {
   const pwps = [...state.automaton.getCurrentState().pwps];
   if (pwps.length > 1) {
     throw new Error(
-      'Many Productions can be the handle.' + state.automaton.getCurrentState()
+      'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
     );
   }
   return pwps[0].production;
