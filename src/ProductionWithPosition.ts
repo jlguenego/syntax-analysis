@@ -1,3 +1,4 @@
+import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
 
@@ -9,7 +10,7 @@ export class ProductionWithPosition {
   constructor(production: Production, position: number) {
     if (production.RHS.symbols.length < position) {
       throw new Error(
-        `position too high: ${production.RHS.symbols.length} < ${position}`
+        `position too high: ${production.RHS.symbols.length} < ${position}: ${production.RHS} `
       );
     }
     const pwp = cache.find(
@@ -23,7 +24,7 @@ export class ProductionWithPosition {
     cache.push(this);
   }
 
-  getNextSymbol() {
+  getNextSymbol(): ParseSymbol | undefined {
     return this.production.RHS.symbols[this.position];
   }
 

@@ -87,7 +87,3 @@ export const expectedParseTree5: ParseTree = {
     },
   ],
 };
-
-export const expectedAutomaton5 = {
-  states: ['[1] S->·E E->·F E->·E+F F->·F*T F->·T T->·int T->·(E)'],
-};

@@ -6,6 +6,7 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {ProductionWithPosition} from '../ProductionWithPosition';
+import {inspect} from 'util';
 
 export const buildAutomaton = (
   cfg: ContextFreeGrammar
@@ -26,6 +27,29 @@ export const buildAutomaton = (
   let previousSize = 0;
   let size = automaton.getSize();
   while (previousSize < size) {
+    console.log('size: ', size);
+    console.log('previousSize: ', previousSize);
+    const array = automaton.getStateArray();
+    console.log('array: ', array.length);
+    if (array.length > 1000) {
+      throw new Error('too much state. LR-Grammar too complicated ?');
+    }
+    for (const s1 of array) {
+      const symbols = s1.getSymbolTransitions();
+      symbols.forEach(symbol => {
+        if (automaton.hasTransition(s1, symbol)) {
+          return;
+        }
+        const newPwps = new Set<ProductionWithPosition>();
+        const pwps = [...s1.pwps].filter(pwp => pwp.getNextSymbol() === symbol);
+        pwps.forEach(p => {
+          newPwps.add(new ProductionWithPosition(p.production, p.position + 1));
+        });
+        const newState = new LRState(cfg, newPwps);
+        automaton.addTransition(s1, newState, symbol);
+      });
+    }
+
     previousSize = size;
     size = automaton.getSize();
   }

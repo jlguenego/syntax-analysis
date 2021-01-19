@@ -3,17 +3,42 @@ import {ParseSymbol} from './interfaces/ParseSymbol';
 import {NonTerminal} from './NonTerminal';
 import {ProductionWithPosition} from './ProductionWithPosition';
 
+const cache: LRState[] = [];
+
 export class LRState {
+  static getFromCache(
+    cfg: ContextFreeGrammar,
+    pwps: Set<ProductionWithPosition>
+  ): LRState | undefined {
+    for (const s of cache) {
+      if (s.cfg !== cfg) {
+        continue;
+      }
+      for (const pwp of pwps.keys()) {
+        if (!s.pwps.has(pwp)) {
+          continue;
+        }
+      }
+      return s;
+    }
+    return undefined;
+  }
   static seq = 0;
-  id: number;
-  constructor(
-    public cfg: ContextFreeGrammar,
-    public pwps: Set<ProductionWithPosition>
-  ) {
+  id!: number;
+  cfg!: ContextFreeGrammar;
+  pwps!: Set<ProductionWithPosition>;
+  constructor(cfg: ContextFreeGrammar, pwps: Set<ProductionWithPosition>) {
+    const state = LRState.getFromCache(cfg, pwps);
+    if (state) {
+      return state;
+    }
     LRState.seq++;
     this.id = LRState.seq;
+    this.cfg = cfg;
+    this.pwps = pwps;
     this.computeClosure();
   }
+
   computeClosure() {
     let previousSize = -1;
     let size = this.pwps.size;
@@ -39,7 +64,15 @@ export class LRState {
     return `[${this.id}] ` + [...this.pwps].map(p => p.toString()).join(' ');
   }
 
-  getSymbolTransitions(): ParseSymbol[] {
-    return [...this.pwps].map(pwp => pwp.getNextSymbol());
+  getSymbolTransitions(): Set<ParseSymbol> {
+    const result = new Set<ParseSymbol>();
+    this.pwps.forEach(pwp => {
+      const symbol = pwp.getNextSymbol();
+      if (symbol === undefined) {
+        return;
+      }
+      result.add(symbol);
+    });
+    return result;
   }
 }

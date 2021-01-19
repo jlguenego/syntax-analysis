@@ -16,15 +16,28 @@ export class Automaton<S extends Object, T> {
   }
 
   addTransition(from: S, to: S, symbol: T) {
-    const map = this.transitions.get(from) as Map<T, S>;
+    // note that if a transition already exists, it is replaced.
+    // so no need to check if there is already a transition.
+    this.states.add(from);
+    this.states.add(to);
+    let map = this.transitions.get(from);
+    if (map === undefined) {
+      map = new Map<T, S>();
+      this.transitions.set(from, map);
+    }
     map.set(symbol, to);
   }
 
-  goto(from: S, symbol: T): S | undefined {
+  hasTransition(from: S, symbol: T): S | undefined {
+    // returns undefined if no state or transition are found.
     return this.transitions.get(from)?.get(symbol);
   }
 
   getSize() {
     return this.states.size;
+  }
+
+  getStateArray() {
+    return [...this.states];
   }
 }
