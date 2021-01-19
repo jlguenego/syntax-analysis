@@ -1,6 +1,6 @@
 import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {BUState, getForm} from '../interfaces/BUState';
+import {BUState} from '../interfaces/BUState';
 import {LRState} from '../LRState';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
