@@ -8,8 +8,8 @@ export class Automaton<S extends {id: number}> {
     this.reset();
   }
 
-  reset(): void {
-    this.currentState = this.startState;
+  reset(state = this.startState): void {
+    this.currentState = state;
   }
 
   toObject() {

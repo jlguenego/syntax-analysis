@@ -42,7 +42,7 @@ const reduce = (previousState: BUState, production: Production) => {
   reducedParseTree.push({node: production.LHS, children: replacedSlice});
   state.parseTrees = reducedParseTree;
 
-  state.automaton.reset();
+  state.automaton.reset(state.automaton.getStartState());
   for (const s of state.parseTrees.map(pt => pt.node)) {
     if (s === state.cfg.startSymbol) {
       state.isCompleted = true;
