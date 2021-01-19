@@ -63,6 +63,9 @@ const reduce = (previousState: BUState, production: Production) => {
   const s = pt.node;
   if (s === state.cfg.startSymbol) {
     state.isCompleted = true;
+    if (state.remainingSentence.length > 0) {
+      throw new ParseError('remaining text', state.remainingSentence[0]);
+    }
     return state;
   }
   state.automaton.jump(psSerialize(s));
@@ -103,7 +106,7 @@ export const parseWithLR0 = (
     isCompleted: false,
   };
   let seq = 0;
-  while (true) {
+  while (!state.isCompleted) {
     seq++;
     if (seq > 40) {
       throw new Error('Too much parsing.');
@@ -115,9 +118,6 @@ export const parseWithLR0 = (
       continue;
     }
     state = reduce(state, a.production);
-    if (state.isCompleted) {
-      break;
-    }
   }
 
   return state.parseTrees[0];
