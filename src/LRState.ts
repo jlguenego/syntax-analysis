@@ -1,5 +1,5 @@
 import {ContextFreeGrammar} from './ContextFreeGrammar';
-import {ParseSymbol} from './interfaces/ParseSymbol';
+import {psSerialize} from './interfaces/ParseSymbol';
 import {NonTerminal} from './NonTerminal';
 import {ProductionWithPosition} from './ProductionWithPosition';
 
@@ -64,14 +64,15 @@ export class LRState {
     return `[${this.id}] ` + [...this.pwps].map(p => p.toString()).join(' ');
   }
 
-  getSymbolTransitions(): Set<ParseSymbol> {
-    const result = new Set<ParseSymbol>();
+  getSymbolTransitions(): Set<string> {
+    const result = new Set<string>();
     this.pwps.forEach(pwp => {
       const symbol = pwp.getNextSymbol();
       if (symbol === undefined) {
         return;
       }
-      result.add(symbol);
+
+      result.add(psSerialize(symbol));
     });
     return result;
   }

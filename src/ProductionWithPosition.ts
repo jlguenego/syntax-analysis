@@ -1,4 +1,4 @@
-import {ParseSymbol} from './interfaces/ParseSymbol';
+import {ParseSymbol, psSerialize} from './interfaces/ParseSymbol';
 import {Production} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
 
@@ -26,6 +26,14 @@ export class ProductionWithPosition {
 
   getNextSymbol(): ParseSymbol | undefined {
     return this.production.RHS.symbols[this.position];
+  }
+
+  getNextSerializedSymbol(): string | undefined {
+    const s = this.getNextSymbol();
+    if (s === undefined) {
+      return undefined;
+    }
+    return psSerialize(s);
   }
 
   toString() {

@@ -2,15 +2,12 @@ import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {BUState} from '../interfaces/BUState';
 import {LRState} from '../LRState';
-import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {ProductionWithPosition} from '../ProductionWithPosition';
 
-export const buildAutomaton = (
-  cfg: ContextFreeGrammar
-): Automaton<LRState, ParseSymbol> => {
-  const automaton = new Automaton<LRState, ParseSymbol>();
+export const buildAutomaton = (cfg: ContextFreeGrammar): Automaton<LRState> => {
+  const automaton = new Automaton<LRState>();
   // add a first state with start symbol
 
   const startProductions = cfg.productions.filter(
@@ -37,7 +34,9 @@ export const buildAutomaton = (
           return;
         }
         const newPwps = new Set<ProductionWithPosition>();
-        const pwps = [...s1.pwps].filter(pwp => pwp.getNextSymbol() === symbol);
+        const pwps = [...s1.pwps].filter(
+          pwp => pwp.getNextSerializedSymbol() === symbol
+        );
         pwps.forEach(p => {
           newPwps.add(new ProductionWithPosition(p.production, p.position + 1));
         });
