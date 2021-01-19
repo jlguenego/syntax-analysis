@@ -24,6 +24,10 @@ export class ProductionWithPosition {
     cache.push(this);
   }
 
+  isReducable() {
+    return this.position === this.production.RHS.symbols.length;
+  }
+
   getNextSymbol(): ParseSymbol | undefined {
     return this.production.RHS.symbols[this.position];
   }

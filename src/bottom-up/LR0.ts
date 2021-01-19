@@ -58,7 +58,9 @@ const reduce = (previousState: BUState, production: Production) => {
 };
 
 const findProduction = (state: BUState): Production => {
-  const pwps = [...state.automaton.getCurrentState().pwps];
+  const pwps = [...state.automaton.getCurrentState().pwps].filter(p =>
+    p.isReducable()
+  );
   if (pwps.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
