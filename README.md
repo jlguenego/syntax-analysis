@@ -68,9 +68,8 @@ const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
 
 ## Bottom up algorithm
 
-### LR(0)
-
-### LR(1)
+- **LR(0)**: Use an LR0 automaton, and decide to shift or reduce without lookahead.
+- **LR(1)**: Use an LR1 automaton, and decide to shift or reduce with one lookahead.
 
 ## Project related
 
