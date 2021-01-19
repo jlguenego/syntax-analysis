@@ -69,7 +69,7 @@ export const buildAutomaton = (cfg: ContextFreeGrammar): Automaton<LRState> => {
 //   return state;
 // };
 
-export const parseWithLR1 = (
+export const parseWithLR0 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {

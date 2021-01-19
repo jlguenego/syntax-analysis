@@ -27,7 +27,6 @@ export class LRState {
   pwps!: Set<ProductionWithPosition>;
   constructor(cfg: ContextFreeGrammar, pwps: Set<ProductionWithPosition>) {
     const state = LRState.getFromCache(cfg, pwps);
-    console.log('state: ', state);
     if (state) {
       return state;
     }
