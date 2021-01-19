@@ -83,4 +83,8 @@ export class Automaton<S extends {id: number}> {
     }
     this.currentState = state;
   }
+
+  getStartState() {
+    return this.startState;
+  }
 }

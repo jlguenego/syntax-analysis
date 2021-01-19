@@ -67,12 +67,13 @@ export const parseWithLR0 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {
+  const automaton = buildAutomaton(cfg);
   let state: BUState = {
     remainingSentence: [...sentence],
     parseTrees: [],
-    lrstateStack: [],
+    lrstateStack: [automaton.getStartState()],
     cfg,
-    automaton: buildAutomaton(cfg),
+    automaton,
     isCompleted: false,
   };
   let seq = 0;
