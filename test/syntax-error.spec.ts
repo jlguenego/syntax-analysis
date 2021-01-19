@@ -6,7 +6,7 @@ import {cfg3} from './data/cfg3';
 import {ParseError} from '../src/ParseError';
 import {Token} from '@jlguenego/lexer/build/src/interfaces/Token';
 
-describe('BFS Unit Test', () => {
+describe('Error Unit Test', () => {
   it('test a syntax error', () => {
     const str = '3 + 56 + + 123';
     const blank = new Rule({
@@ -35,7 +35,7 @@ describe('BFS Unit Test', () => {
     } catch (error) {
       if (error instanceof ParseError) {
         assert.deepStrictEqual(error.message, 'LL(1) Parser: Syntax Error.');
-        assert.deepStrictEqual(error.nt.label, 'E');
+        assert.deepStrictEqual(error.nt?.label, 'E');
         assert.deepStrictEqual((error.t as Token).position.col, 10);
       } else {
         throw error;

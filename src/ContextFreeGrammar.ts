@@ -128,7 +128,7 @@ export class ContextFreeGrammar {
   getfromLL1Table(nt: NonTerminal, t: Terminal): SententialForm {
     const index = this.ll1TableCache.get(nt)?.get(t.name);
     if (index === undefined) {
-      throw new ParseError('LL(1) Parser: Syntax Error.', nt, t);
+      throw new ParseError('LL(1) Parser: Syntax Error.', t, nt);
     }
     return this.productions[index].RHS;
   }

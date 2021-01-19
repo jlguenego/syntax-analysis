@@ -6,13 +6,17 @@ import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {buildAutomaton} from './buildAutomaton';
 import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
+import {ParseError} from '../ParseError';
 
 const canShift = (state: BUState): boolean => {
   const pwps = [...state.automaton.getCurrentState().pwps];
   const reducable = pwps.filter(p => p.isReducable());
   const shiftable = pwps.filter(p => !p.isReducable());
   if (reducable.length > 0 && shiftable.length > 0) {
-    throw new Error('shift/reduce conflict.');
+    throw new ParseError(
+      `shift/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
+      state.remainingSentence[0]
+    );
   }
   return shiftable.length > 0;
 
