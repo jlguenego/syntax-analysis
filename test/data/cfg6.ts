@@ -84,5 +84,16 @@ export const cfg6 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
 // };
 
 export const expectedAutomaton6 = {
-  states: ['[1] S->·E E->·F E->·E+F F->·F*T F->·T T->·int T->·(E)'],
+  states: [
+    '[1] S->·E E->·T; E->·T+E T->·int T->·(E)',
+    '[2] S->E·',
+    '[3] E->T·; E->T·+E',
+    '[4] T->int·',
+    '[5] T->(·E) E->·T; E->·T+E T->·int T->·(E)',
+    '[6] E->T;·',
+    '[7] E->T+·E E->·T; E->·T+E T->·int T->·(E)',
+    '[8] T->(E·)',
+    '[9] E->T+E·',
+    '[10] T->(E)·',
+  ],
 };

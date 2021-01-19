@@ -14,12 +14,10 @@ export class LRState {
       if (s.cfg !== cfg) {
         continue;
       }
-      for (const pwp of pwps.keys()) {
-        if (!s.pwps.has(pwp)) {
-          continue;
-        }
+      // same grammar
+      if (s.hasAllPwps(pwps)) {
+        return s;
       }
-      return s;
     }
     return undefined;
   }
@@ -29,6 +27,7 @@ export class LRState {
   pwps!: Set<ProductionWithPosition>;
   constructor(cfg: ContextFreeGrammar, pwps: Set<ProductionWithPosition>) {
     const state = LRState.getFromCache(cfg, pwps);
+    console.log('state: ', state);
     if (state) {
       return state;
     }
@@ -36,6 +35,7 @@ export class LRState {
     this.id = LRState.seq;
     this.cfg = cfg;
     this.pwps = pwps;
+    cache.push(this);
     this.computeClosure();
   }
 
@@ -74,5 +74,14 @@ export class LRState {
       result.add(symbol);
     });
     return result;
+  }
+
+  hasAllPwps(pwps: Set<ProductionWithPosition>) {
+    for (const pwp of pwps.keys()) {
+      if (!this.pwps.has(pwp)) {
+        return false;
+      }
+    }
+    return true;
   }
 }

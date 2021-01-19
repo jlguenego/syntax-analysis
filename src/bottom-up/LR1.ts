@@ -6,7 +6,6 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {ProductionWithPosition} from '../ProductionWithPosition';
-import {inspect} from 'util';
 
 export const buildAutomaton = (
   cfg: ContextFreeGrammar
@@ -27,12 +26,9 @@ export const buildAutomaton = (
   let previousSize = 0;
   let size = automaton.getSize();
   while (previousSize < size) {
-    console.log('size: ', size);
-    console.log('previousSize: ', previousSize);
     const array = automaton.getStateArray();
-    console.log('array: ', array.length);
-    if (array.length > 1000) {
-      throw new Error('too much state. LR-Grammar too complicated ?');
+    if (array.length > 10000) {
+      throw new Error('too much states. LR-Grammar too complicated ?');
     }
     for (const s1 of array) {
       const symbols = s1.getSymbolTransitions();
