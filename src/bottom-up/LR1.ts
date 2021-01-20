@@ -32,9 +32,9 @@ const canShift = (state: BU1State): boolean => {
   }
 
   // if shift/reduce conflict, prefer shift.
-  const items = [...state.automaton.getCurrentState().items];
-  const reducable = items.filter(p => p.isReducableForTerminal(symbol));
-  if (reducable.length > 0) {
+  const configSet = [...state.automaton.getCurrentState().configSet];
+  const reducables = configSet.filter(p => p.isReducableForTerminal(symbol));
+  if (reducables.length > 0) {
     throw new ParseError('shift/reduce conflict.', symbol);
   }
   return true;
@@ -92,20 +92,20 @@ const updateAutomatonStateForReduce = (
 };
 
 const findProduction = (state: BU1State): Production => {
-  const items = [...state.automaton.getCurrentState().items].filter(p =>
-    p.isReducableForTerminal(state.remainingInput[0])
-  );
-  if (items.length > 1) {
+  const reducables = [
+    ...state.automaton.getCurrentState().configSet,
+  ].filter(p => p.isReducableForTerminal(state.remainingInput[0]));
+  if (reducables.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
     );
   }
-  if (items.length === 0) {
+  if (reducables.length === 0) {
     throw new Error(
       'No reducable/No shiftable: ' + state.automaton.getCurrentState()
     );
   }
-  return items[0].production;
+  return reducables[0].production;
 };
 
 const action = (state: BU1State): LRAction => {

@@ -14,24 +14,26 @@ import {Terminal} from '../interfaces/Terminal';
 type BU0State = BUState<LR0State>;
 
 const canShift = (state: BU0State): boolean => {
-  const items = [...state.automaton.getCurrentState().items];
-  const reducable = items.filter(p => p.isReducable());
-  const shiftable = items.filter(p => !p.isReducable());
+  const configSet = [...state.automaton.getCurrentState().configSet];
+  const reducable = configSet.filter(p => p.isReducable());
+  const shiftable = configSet.filter(p => !p.isReducable());
   if (reducable.length > 0 && shiftable.length > 0) {
     throw new ParseError(
-      `shift/reduce conflict. productions: ${items.map(p => p.toString())}`,
+      `shift/reduce conflict. productions: ${configSet.map(p => p.toString())}`,
       state.remainingInput[0]
     );
   }
   if (reducable.length > 1) {
     throw new ParseError(
-      `reduce/reduce conflict. productions: ${items.map(p => p.toString())}`,
+      `reduce/reduce conflict. productions: ${configSet.map(p =>
+        p.toString()
+      )}`,
       state.remainingInput[0]
     );
   }
   if (reducable.length === 0 && shiftable.length === 0) {
     throw new ParseError(
-      `no shift or reduce possible. productions: ${items.map(p =>
+      `no shift or reduce possible. productions: ${configSet.map(p =>
         p.toString()
       )}`,
       state.remainingInput[0]
@@ -109,20 +111,20 @@ const updateAutomatonStateForReduce = (
 };
 
 const findProduction = (state: BU0State): Production => {
-  const items = [...state.automaton.getCurrentState().items].filter(p =>
-    p.isReducable()
-  );
-  if (items.length > 1) {
+  const reducables = [
+    ...state.automaton.getCurrentState().configSet,
+  ].filter(p => p.isReducable());
+  if (reducables.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
     );
   }
-  if (items.length === 0) {
+  if (reducables.length === 0) {
     throw new Error(
       'No reducable/No shiftable: ' + state.automaton.getCurrentState()
     );
   }
-  return items[0].production;
+  return reducables[0].production;
 };
 
 const action = (state: BU0State): LRAction => {

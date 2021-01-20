@@ -12,11 +12,11 @@ export const buildLR1Automaton = (
   const startProductions = cfg.productions.filter(
     p => p.LHS === cfg.startSymbol
   );
-  const items = new Set<LR1Item>();
+  const configSet = new Set<LR1Item>();
   for (const prod of startProductions) {
-    items.add(new LR1Item(prod, 0, dollar));
+    configSet.add(new LR1Item(prod, 0, dollar));
   }
-  const startState = new LR1State(cfg, items);
+  const startState = new LR1State(cfg, configSet);
   const automaton = new Automaton<LR1State>(startState);
 
   let previousSize = 0;
@@ -32,14 +32,14 @@ export const buildLR1Automaton = (
         if (automaton.getTransition(s1, symbol)) {
           return;
         }
-        const newItems = new Set<LR1Item>();
-        const items = [...s1.items].filter(
+        const configSet = new Set<LR1Item>();
+        const items = [...s1.configSet].filter(
           item => item.getNextSerializedSymbol() === symbol
         );
         items.forEach(p => {
-          newItems.add(new LR1Item(p.production, p.position + 1, p.lookAhead));
+          configSet.add(new LR1Item(p.production, p.position + 1, p.lookAhead));
         });
-        const newState = new LR1State(cfg, newItems);
+        const newState = new LR1State(cfg, configSet);
         automaton.addTransition(s1, newState, symbol);
       });
     }

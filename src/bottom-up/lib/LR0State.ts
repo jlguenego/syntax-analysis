@@ -8,14 +8,14 @@ const cache: LR0State[] = [];
 export class LR0State {
   static getFromCache(
     cfg: ContextFreeGrammar,
-    items: Set<LR0Item>
+    configSet: Set<LR0Item>
   ): LR0State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
       }
       // same grammar
-      if (s.hasAllItems(items)) {
+      if (s.containsConfigSet(configSet)) {
         return s;
       }
     }
@@ -24,25 +24,25 @@ export class LR0State {
   static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
-  items!: Set<LR0Item>;
-  constructor(cfg: ContextFreeGrammar, items: Set<LR0Item>) {
-    const state = LR0State.getFromCache(cfg, items);
+  configSet!: Set<LR0Item>;
+  constructor(cfg: ContextFreeGrammar, configSet: Set<LR0Item>) {
+    const state = LR0State.getFromCache(cfg, configSet);
     if (state) {
       return state;
     }
     LR0State.seq++;
     this.id = LR0State.seq;
     this.cfg = cfg;
-    this.items = items;
+    this.configSet = configSet;
     cache.push(this);
     this.computeClosure();
   }
 
   computeClosure() {
     let previousSize = -1;
-    let size = this.items.size;
+    let size = this.configSet.size;
     while (size > previousSize) {
-      for (const item of this.items) {
+      for (const item of this.configSet) {
         const nextSymbol = item.getNextSymbol();
         if (!(nextSymbol instanceof NonTerminal)) {
           continue;
@@ -50,22 +50,24 @@ export class LR0State {
         this.cfg.productions
           .filter(p => p.LHS === nextSymbol)
           .forEach(p => {
-            this.items.add(new LR0Item(p, 0));
+            this.configSet.add(new LR0Item(p, 0));
           });
       }
 
       previousSize = size;
-      size = this.items.size;
+      size = this.configSet.size;
     }
   }
 
   toString() {
-    return `[${this.id}] ` + [...this.items].map(p => p.toString()).join(' ');
+    return (
+      `[${this.id}] ` + [...this.configSet].map(p => p.toString()).join(' ')
+    );
   }
 
   getSymbolTransitions(): Set<string> {
     const result = new Set<string>();
-    this.items.forEach(item => {
+    this.configSet.forEach(item => {
       const symbol = item.getNextSymbol();
       if (symbol === undefined) {
         return;
@@ -76,9 +78,9 @@ export class LR0State {
     return result;
   }
 
-  hasAllItems(items: Set<LR0Item>) {
-    for (const item of items.keys()) {
-      if (!this.items.has(item)) {
+  containsConfigSet(configSet: Set<LR0Item>) {
+    for (const item of configSet.keys()) {
+      if (!this.configSet.has(item)) {
         return false;
       }
     }

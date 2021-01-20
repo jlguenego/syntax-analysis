@@ -11,14 +11,14 @@ const cache: LR1State[] = [];
 export class LR1State {
   static getFromCache(
     cfg: ContextFreeGrammar,
-    items: Set<LR1Item>
+    configSet: Set<LR1Item>
   ): LR1State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
       }
-      // same items
-      if (s.hasAllItems(items)) {
+      // configSet included
+      if (s.containsConfigSet(configSet)) {
         return s;
       }
     }
@@ -27,25 +27,25 @@ export class LR1State {
   static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
-  items!: Set<LR1Item>;
-  constructor(cfg: ContextFreeGrammar, items: Set<LR1Item>) {
-    const state = LR1State.getFromCache(cfg, items);
+  configSet!: Set<LR1Item>;
+  constructor(cfg: ContextFreeGrammar, configSet: Set<LR1Item>) {
+    const state = LR1State.getFromCache(cfg, configSet);
     if (state) {
       return state;
     }
     LR1State.seq++;
     this.id = LR1State.seq;
     this.cfg = cfg;
-    this.items = items;
+    this.configSet = configSet;
     cache.push(this);
     this.computeClosure();
   }
 
   computeClosure() {
     let previousSize = -1;
-    let size = this.items.size;
+    let size = this.configSet.size;
     while (size > previousSize) {
-      for (const item of this.items) {
+      for (const item of this.configSet) {
         const nextSymbol = item.getNextSymbol();
         if (!(nextSymbol instanceof NonTerminal)) {
           continue;
@@ -59,19 +59,19 @@ export class LR1State {
               this.cfg,
               new SententialForm(remaining)
             )) {
-              this.items.add(new LR1Item(p, 0, x));
+              this.configSet.add(new LR1Item(p, 0, x));
             }
           });
       }
 
       previousSize = size;
-      size = this.items.size;
+      size = this.configSet.size;
     }
     this.checkReduceReduceConflict();
   }
 
   checkReduceReduceConflict() {
-    const map = [...this.items]
+    const map = [...this.configSet]
       .filter(item => item.isReducable())
       .reduce((acc, item) => {
         const n = acc.get(item.lookAhead) ?? 0;
@@ -80,7 +80,7 @@ export class LR1State {
       }, new Map<Terminal, number>());
     for (const t of map.keys()) {
       if ((map.get(t) as number) > 1) {
-        const str = [...this.items]
+        const str = [...this.configSet]
           .filter(item => item.isReducableForTerminal(t))
           .map(item => item.toString())
           .join(' ');
@@ -93,14 +93,14 @@ export class LR1State {
 
   toString() {
     return (
-      `[${this.id} (${this.items.size})] ` +
-      [...this.items].map(p => p.toString()).join(' ')
+      `[${this.id} (${this.configSet.size})] ` +
+      [...this.configSet].map(p => p.toString()).join(' ')
     );
   }
 
   getSymbolTransitions(): Set<string> {
     const result = new Set<string>();
-    this.items.forEach(item => {
+    this.configSet.forEach(item => {
       const symbol = item.getNextSymbol();
       if (symbol === undefined) {
         return;
@@ -111,9 +111,9 @@ export class LR1State {
     return result;
   }
 
-  hasAllItems(items: Set<LR1Item>) {
-    for (const item of items.keys()) {
-      if (!this.items.has(item)) {
+  containsConfigSet(configSet: Set<LR1Item>) {
+    for (const item of configSet.keys()) {
+      if (!this.configSet.has(item)) {
         return false;
       }
     }
