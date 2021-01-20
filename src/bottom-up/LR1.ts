@@ -17,11 +17,11 @@ const canShift = (state: BUState<LR1State>): boolean => {
     return false;
   }
 
-  if (state.remainingInput.length === 0) {
-    return false;
-  }
   // LR 1
   const symbol = state.remainingInput[0];
+  if (symbol === dollar) {
+    return false;
+  }
 
   // terminal case
   const transition = state.automaton.getCurrentTransition(psSerialize(symbol));
@@ -82,7 +82,7 @@ const updateAutomatonStateForReduce = (
   const s = reducedHandleNode;
   if (s === state.cfg.startSymbol) {
     state.isCompleted = true;
-    if (state.remainingInput.length > 0) {
+    if (state.remainingInput[0] !== dollar) {
       throw new ParseError('remaining text', state.remainingInput[0]);
     }
     return;
@@ -94,7 +94,7 @@ const updateAutomatonStateForReduce = (
 
 const findProduction = (state: BUState<LR1State>): Production => {
   const items = [...state.automaton.getCurrentState().items].filter(p =>
-    p.isReducable(state.remainingInput[0] ?? dollar)
+    p.isReducable(state.remainingInput[0])
   );
   if (items.length > 1) {
     throw new Error(
@@ -122,7 +122,7 @@ export const parseWithLR1 = (
 ): ParseTree => {
   const automaton = buildLR1Automaton(cfg);
   let state: BUState<LR1State> = {
-    remainingInput: [...sentence],
+    remainingInput: [...sentence, dollar],
     parseStack: [],
     lrStateStack: [automaton.getStartState()],
     cfg,
