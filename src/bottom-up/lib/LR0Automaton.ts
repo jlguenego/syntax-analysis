@@ -2,11 +2,14 @@ import {Automaton} from '../../Automaton';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {LR0State} from './LR0State';
 import {LR0Item} from './LR0Item';
+import {checkStartSymbol} from './check';
 
 export const buildLR0Automaton = (
   cfg: ContextFreeGrammar
 ): Automaton<LR0State> => {
   // add a first state with start symbol
+
+  checkStartSymbol(cfg);
 
   const startProductions = cfg.productions.filter(
     p => p.LHS === cfg.startSymbol

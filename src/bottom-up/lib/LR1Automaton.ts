@@ -3,10 +3,13 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {LR1State} from './LR1State';
 import {LR1Item} from './LR1Item';
 import {dollar} from '../../terminals/dollar.terminal';
+import {checkStartSymbol} from './check';
 
 export const buildLR1Automaton = (
   cfg: ContextFreeGrammar
 ): Automaton<LR1State> => {
+  checkStartSymbol(cfg);
+
   // add a first state with start symbol
 
   const startProductions = cfg.productions.filter(
