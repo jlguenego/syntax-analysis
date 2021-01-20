@@ -42,8 +42,8 @@ export class LR1State {
     let previousSize = -1;
     let size = this.items.size;
     while (size > previousSize) {
-      for (const pwp of this.items) {
-        const nextSymbol = pwp.getNextSymbol();
+      for (const item of this.items) {
+        const nextSymbol = item.getNextSymbol();
         if (!(nextSymbol instanceof NonTerminal)) {
           continue;
         }
@@ -65,8 +65,8 @@ export class LR1State {
 
   getSymbolTransitions(): Set<string> {
     const result = new Set<string>();
-    this.items.forEach(pwp => {
-      const symbol = pwp.getNextSymbol();
+    this.items.forEach(item => {
+      const symbol = item.getNextSymbol();
       if (symbol === undefined) {
         return;
       }

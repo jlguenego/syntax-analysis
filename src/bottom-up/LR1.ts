@@ -84,20 +84,20 @@ const updateAutomatonStateForReduce = (
 };
 
 const findProduction = (state: BUState): Production => {
-  const pwps = [...state.automaton.getCurrentState().pwps].filter(p =>
+  const items = [...state.automaton.getCurrentState().items].filter(p =>
     p.isReducable()
   );
-  if (pwps.length > 1) {
+  if (items.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
     );
   }
-  if (pwps.length === 0) {
+  if (items.length === 0) {
     throw new Error(
       'No reducable/No shiftable: ' + state.automaton.getCurrentState()
     );
   }
-  return pwps[0].production;
+  return items[0].production;
 };
 
 const action = (state: BUState): LRAction => {

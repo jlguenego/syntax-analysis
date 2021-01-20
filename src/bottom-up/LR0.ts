@@ -12,24 +12,24 @@ import {NonTerminal} from '../NonTerminal';
 import {Terminal} from '../interfaces/Terminal';
 
 const canShift = (state: BUState): boolean => {
-  const pwps = [...state.automaton.getCurrentState().pwps];
-  const reducable = pwps.filter(p => p.isReducable());
-  const shiftable = pwps.filter(p => !p.isReducable());
+  const items = [...state.automaton.getCurrentState().items];
+  const reducable = items.filter(p => p.isReducable());
+  const shiftable = items.filter(p => !p.isReducable());
   if (reducable.length > 0 && shiftable.length > 0) {
     throw new ParseError(
-      `shift/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
+      `shift/reduce conflict. productions: ${items.map(p => p.toString())}`,
       state.remainingInput[0]
     );
   }
   if (reducable.length > 1) {
     throw new ParseError(
-      `reduce/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
+      `reduce/reduce conflict. productions: ${items.map(p => p.toString())}`,
       state.remainingInput[0]
     );
   }
   if (reducable.length === 0 && shiftable.length === 0) {
     throw new ParseError(
-      `no shift or reduce possible. productions: ${pwps.map(p =>
+      `no shift or reduce possible. productions: ${items.map(p =>
         p.toString()
       )}`,
       state.remainingInput[0]
@@ -107,20 +107,20 @@ const updateAutomatonStateForReduce = (
 };
 
 const findProduction = (state: BUState): Production => {
-  const pwps = [...state.automaton.getCurrentState().pwps].filter(p =>
+  const items = [...state.automaton.getCurrentState().items].filter(p =>
     p.isReducable()
   );
-  if (pwps.length > 1) {
+  if (items.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
     );
   }
-  if (pwps.length === 0) {
+  if (items.length === 0) {
     throw new Error(
       'No reducable/No shiftable: ' + state.automaton.getCurrentState()
     );
   }
-  return pwps[0].production;
+  return items[0].production;
 };
 
 const action = (state: BUState): LRAction => {

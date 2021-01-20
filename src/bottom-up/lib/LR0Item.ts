@@ -13,11 +13,11 @@ export class LR0Item {
         `position too high: ${production.RHS.symbols.length} < ${position}: ${production.RHS} `
       );
     }
-    const pwp = cache.find(
+    const item = cache.find(
       e => e.production === production && e.position === position
     );
-    if (pwp) {
-      return pwp;
+    if (item) {
+      return item;
     }
     this.production = production;
     this.position = position;

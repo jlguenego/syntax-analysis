@@ -8,14 +8,14 @@ const cache: LR0State[] = [];
 export class LR0State {
   static getFromCache(
     cfg: ContextFreeGrammar,
-    pwps: Set<LR0Item>
+    items: Set<LR0Item>
   ): LR0State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
       }
       // same grammar
-      if (s.hasAllPwps(pwps)) {
+      if (s.hasAllItems(items)) {
         return s;
       }
     }
@@ -24,49 +24,49 @@ export class LR0State {
   static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
-  pwps!: Set<LR0Item>;
-  constructor(cfg: ContextFreeGrammar, pwps: Set<LR0Item>) {
-    const state = LR0State.getFromCache(cfg, pwps);
+  items!: Set<LR0Item>;
+  constructor(cfg: ContextFreeGrammar, items: Set<LR0Item>) {
+    const state = LR0State.getFromCache(cfg, items);
     if (state) {
       return state;
     }
     LR0State.seq++;
     this.id = LR0State.seq;
     this.cfg = cfg;
-    this.pwps = pwps;
+    this.items = items;
     cache.push(this);
     this.computeClosure();
   }
 
   computeClosure() {
     let previousSize = -1;
-    let size = this.pwps.size;
+    let size = this.items.size;
     while (size > previousSize) {
-      for (const pwp of this.pwps) {
-        const nextSymbol = pwp.getNextSymbol();
+      for (const item of this.items) {
+        const nextSymbol = item.getNextSymbol();
         if (!(nextSymbol instanceof NonTerminal)) {
           continue;
         }
         this.cfg.productions
           .filter(p => p.LHS === nextSymbol)
           .forEach(p => {
-            this.pwps.add(new LR0Item(p, 0));
+            this.items.add(new LR0Item(p, 0));
           });
       }
 
       previousSize = size;
-      size = this.pwps.size;
+      size = this.items.size;
     }
   }
 
   toString() {
-    return `[${this.id}] ` + [...this.pwps].map(p => p.toString()).join(' ');
+    return `[${this.id}] ` + [...this.items].map(p => p.toString()).join(' ');
   }
 
   getSymbolTransitions(): Set<string> {
     const result = new Set<string>();
-    this.pwps.forEach(pwp => {
-      const symbol = pwp.getNextSymbol();
+    this.items.forEach(item => {
+      const symbol = item.getNextSymbol();
       if (symbol === undefined) {
         return;
       }
@@ -76,9 +76,9 @@ export class LR0State {
     return result;
   }
 
-  hasAllPwps(pwps: Set<LR0Item>) {
-    for (const pwp of pwps.keys()) {
-      if (!this.pwps.has(pwp)) {
+  hasAllItems(items: Set<LR0Item>) {
+    for (const item of items.keys()) {
+      if (!this.items.has(item)) {
         return false;
       }
     }
