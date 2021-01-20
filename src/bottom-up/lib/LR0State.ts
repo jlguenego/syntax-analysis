@@ -58,11 +58,9 @@ export class LR0State {
       previousSize = size;
       size = this.configSet.size;
     }
-
-    this.checkConflict();
   }
 
-  checkConflict() {
+  checkReduceReduceConflict() {
     const configSet = [...this.configSet];
     const reducables = configSet.filter(item => item.isReducable());
     if (reducables.length > 1) {
@@ -72,14 +70,12 @@ export class LR0State {
         )}`
       );
     }
-    const shiftables = configSet.filter(p => !p.isReducable());
-    if (reducables.length === 0 && shiftables.length === 0) {
-      throw new GrammarError(
-        `no shift or reduce possible. productions: ${configSet.map(p =>
-          p.toString()
-        )}`
-      );
-    }
+  }
+
+  checkShiftReduceConflict() {
+    const configSet = [...this.configSet];
+    const reducables = configSet.filter(item => item.isReducable());
+    const shiftables = configSet.filter(item => !item.isReducable());
     if (reducables.length > 0 && shiftables.length > 0) {
       throw new GrammarError(
         `shift/reduce conflict. productions: ${configSet.map(p =>

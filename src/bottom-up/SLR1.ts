@@ -16,27 +16,27 @@ type BU0State = BUState<LR0State>;
 const canShift = (state: BU0State): boolean => {
   const currentState = state.automaton.getCurrentState();
   currentState.checkReduceReduceConflict();
-  currentState.checkShiftReduceConflict();
-  const shiftable = [...currentState.configSet].filter(p => !p.isReducable());
+  const shiftables = [...currentState.configSet].filter(p => !p.isReducable());
+  if (shiftables.length === 0) {
+    return false;
+  }
+  const symbol = state.remainingInput[0];
+  if (symbol === undefined) {
+    return false;
+  }
 
-  return shiftable.length > 0;
+  const follows = [...currentState.configSet]
+    .filter(item => item.isReducable())
+    .map(
+      item => state.cfg.followCache.get(item.production.LHS) as Set<Terminal>
+    );
+  for (const f of follows) {
+    if (f.has(symbol)) {
+      return false;
+    }
+  }
 
-  // if (!state.automaton.hasCurrentTransitions()) {
-  //   return false;
-  // }
-
-  // if (state.remainingSentence.length === 0) {
-  //   return false;
-  // }
-  // // LR 1 !!!
-  // const symbol = state.remainingSentence[0];
-
-  // // terminal case
-  // const transition = state.automaton.getCurrentTransition(psSerialize(symbol));
-  // if (!transition) {
-  //   return false;
-  // }
-  // return true;
+  return true;
 };
 
 const shift = (previousState: BU0State): BU0State => {
@@ -108,7 +108,7 @@ const action = (state: BU0State): LRAction => {
   return new ReduceAction(findProduction(state));
 };
 
-export const parseWithLR0 = (
+export const parseWithSLR1 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {

@@ -39,4 +39,8 @@ describe('BFS Unit Test', () => {
     const parseTree7 = parse(sentence7, cfg7, {method: 'LR1'});
     assert.deepStrictEqual(parseTree7, expectedParseTree7);
   });
+  it('test parse cfg7 with SLR1', () => {
+    const parseTree7 = parse(sentence7, cfg7, {method: 'SLR1'});
+    assert.deepStrictEqual(parseTree7, expectedParseTree7);
+  });
 });
