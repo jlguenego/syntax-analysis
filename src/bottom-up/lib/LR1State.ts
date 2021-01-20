@@ -3,18 +3,18 @@ import {psSerialize} from '../../interfaces/ParseSymbol';
 import {NonTerminal} from '../../NonTerminal';
 import {LR0Item} from './LR0Item';
 
-const cache: LR0State[] = [];
+const cache: LR1State[] = [];
 
-export class LR0State {
+export class LR1State {
   static getFromCache(
     cfg: ContextFreeGrammar,
     pwps: Set<LR0Item>
-  ): LR0State | undefined {
+  ): LR1State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
       }
-      // same grammar
+      // same items
       if (s.hasAllPwps(pwps)) {
         return s;
       }
@@ -26,12 +26,12 @@ export class LR0State {
   cfg!: ContextFreeGrammar;
   pwps!: Set<LR0Item>;
   constructor(cfg: ContextFreeGrammar, pwps: Set<LR0Item>) {
-    const state = LR0State.getFromCache(cfg, pwps);
+    const state = LR1State.getFromCache(cfg, pwps);
     if (state) {
       return state;
     }
-    LR0State.seq++;
-    this.id = LR0State.seq;
+    LR1State.seq++;
+    this.id = LR1State.seq;
     this.cfg = cfg;
     this.pwps = pwps;
     cache.push(this);
