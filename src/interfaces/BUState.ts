@@ -1,6 +1,6 @@
 import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {LRState} from '../bottom-up/lib/LRState';
+import {LR0State} from '../bottom-up/lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
 import {ParseTree} from './ParseTree';
 import {Sentence} from './Sentence';
@@ -8,9 +8,9 @@ import {Sentence} from './Sentence';
 export interface BUState {
   remainingInput: Sentence;
   parseStack: ParseTree[];
-  lrStateStack: LRState[];
+  lrStateStack: LR0State[];
   cfg: ContextFreeGrammar;
-  automaton: Automaton<LRState>;
+  automaton: Automaton<LR0State>;
   isCompleted: boolean;
 }
 

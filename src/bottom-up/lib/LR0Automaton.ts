@@ -1,11 +1,11 @@
 import {Automaton} from '../../Automaton';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
-import {LRState} from './LRState';
+import {LR0State} from './LR0State';
 import {LRItem} from './LRItem';
 
 export const buildLR0Automaton = (
   cfg: ContextFreeGrammar
-): Automaton<LRState> => {
+): Automaton<LR0State> => {
   // add a first state with start symbol
 
   const startProductions = cfg.productions.filter(
@@ -15,8 +15,8 @@ export const buildLR0Automaton = (
   for (const prod of startProductions) {
     pwps.add(new LRItem(prod, 0));
   }
-  const startState = new LRState(cfg, pwps);
-  const automaton = new Automaton<LRState>(startState);
+  const startState = new LR0State(cfg, pwps);
+  const automaton = new Automaton<LR0State>(startState);
 
   let previousSize = 0;
   let size = automaton.getSize();
@@ -38,7 +38,7 @@ export const buildLR0Automaton = (
         pwps.forEach(p => {
           newPwps.add(new LRItem(p.production, p.position + 1));
         });
-        const newState = new LRState(cfg, newPwps);
+        const newState = new LR0State(cfg, newPwps);
         automaton.addTransition(s1, newState, symbol);
       });
     }

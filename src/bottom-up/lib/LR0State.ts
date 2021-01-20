@@ -3,13 +3,13 @@ import {psSerialize} from '../../interfaces/ParseSymbol';
 import {NonTerminal} from '../../NonTerminal';
 import {LRItem} from './LRItem';
 
-const cache: LRState[] = [];
+const cache: LR0State[] = [];
 
-export class LRState {
+export class LR0State {
   static getFromCache(
     cfg: ContextFreeGrammar,
     pwps: Set<LRItem>
-  ): LRState | undefined {
+  ): LR0State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
@@ -26,12 +26,12 @@ export class LRState {
   cfg!: ContextFreeGrammar;
   pwps!: Set<LRItem>;
   constructor(cfg: ContextFreeGrammar, pwps: Set<LRItem>) {
-    const state = LRState.getFromCache(cfg, pwps);
+    const state = LR0State.getFromCache(cfg, pwps);
     if (state) {
       return state;
     }
-    LRState.seq++;
-    this.id = LRState.seq;
+    LR0State.seq++;
+    this.id = LR0State.seq;
     this.cfg = cfg;
     this.pwps = pwps;
     cache.push(this);

@@ -7,7 +7,7 @@ import {Production} from '../interfaces/Production';
 import {buildLR0Automaton} from './lib/LR0Automaton';
 import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
-import {LRState} from './lib/LRState';
+import {LR0State} from './lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
 import {Terminal} from '../interfaces/Terminal';
 
@@ -90,7 +90,7 @@ const updateAutomatonStateForReduce = (
   hLength: number
 ): void => {
   const lrStateStack = state.lrStateStack.slice(0, -hLength);
-  const lrState = lrStateStack.pop() as LRState;
+  const lrState = lrStateStack.pop() as LR0State;
   state.automaton.reset(lrState);
   lrStateStack.push(lrState);
   const s = reducedHandleNode;
