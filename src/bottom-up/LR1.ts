@@ -12,7 +12,9 @@ import {buildLR1Automaton} from './lib/LR1Automaton';
 import {LR1State} from './lib/LR1State';
 import {dollar} from '../terminals/dollar.terminal';
 
-const canShift = (state: BUState<LR1State>): boolean => {
+type BU1State = BUState<LR1State>;
+
+const canShift = (state: BU1State): boolean => {
   if (!state.automaton.hasCurrentTransitions()) {
     return false;
   }
@@ -38,7 +40,7 @@ const canShift = (state: BUState<LR1State>): boolean => {
   return true;
 };
 
-const shift = (previousState: BUState<LR1State>): BUState<LR1State> => {
+const shift = (previousState: BU1State): BU1State => {
   const t = previousState.remainingInput[0];
   const state = {...previousState};
   state.remainingInput = state.remainingInput.slice(1);
@@ -48,15 +50,12 @@ const shift = (previousState: BUState<LR1State>): BUState<LR1State> => {
   return state;
 };
 
-const updateAutomatonStateForShift = (
-  state: BUState<LR1State>,
-  t: Terminal
-): void => {
+const updateAutomatonStateForShift = (state: BU1State, t: Terminal): void => {
   state.automaton.jump(psSerialize(t));
   state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
-const reduce = (previousState: BUState<LR1State>, handleProd: Production) => {
+const reduce = (previousState: BU1State, handleProd: Production) => {
   const state = {...previousState};
   const hLength = handleProd.RHS.symbols.length;
   const semiDigestedStack = state.parseStack.slice(0, -hLength);
@@ -71,7 +70,7 @@ const reduce = (previousState: BUState<LR1State>, handleProd: Production) => {
 };
 
 const updateAutomatonStateForReduce = (
-  state: BUState<LR1State>,
+  state: BU1State,
   reducedHandleNode: NonTerminal,
   hLength: number
 ): void => {
@@ -92,7 +91,7 @@ const updateAutomatonStateForReduce = (
   state.lrStateStack = lrStateStack;
 };
 
-const findProduction = (state: BUState<LR1State>): Production => {
+const findProduction = (state: BU1State): Production => {
   const items = [...state.automaton.getCurrentState().items].filter(p =>
     p.isReducable(state.remainingInput[0])
   );
@@ -109,7 +108,7 @@ const findProduction = (state: BUState<LR1State>): Production => {
   return items[0].production;
 };
 
-const action = (state: BUState<LR1State>): LRAction => {
+const action = (state: BU1State): LRAction => {
   if (canShift(state)) {
     return new ShiftAction();
   }
@@ -121,7 +120,7 @@ export const parseWithLR1 = (
   cfg: ContextFreeGrammar
 ): ParseTree => {
   const automaton = buildLR1Automaton(cfg);
-  let state: BUState<LR1State> = {
+  let state: BU1State = {
     remainingInput: [...sentence, dollar],
     parseStack: [],
     lrStateStack: [automaton.getStartState()],
