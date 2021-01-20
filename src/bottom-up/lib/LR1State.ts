@@ -1,5 +1,6 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {psSerialize} from '../../interfaces/ParseSymbol';
+import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {firstStar} from '../../top-down/lib/first';
@@ -65,6 +66,28 @@ export class LR1State {
 
       previousSize = size;
       size = this.items.size;
+    }
+    this.checkReduceReduceConflict();
+  }
+
+  checkReduceReduceConflict() {
+    const map = [...this.items]
+      .filter(item => item.isReducable())
+      .reduce((acc, item) => {
+        const n = acc.get(item.lookAhead) ?? 0;
+        acc.set(item.lookAhead, n + 1);
+        return acc;
+      }, new Map<Terminal, number>());
+    for (const t of map.keys()) {
+      if ((map.get(t) as number) > 1) {
+        const str = [...this.items]
+          .filter(item => item.isReducableForTerminal(t))
+          .map(item => item.toString())
+          .join(' ');
+        throw new Error(
+          `reduce/reduce conflict while building LR(1) automaton. items: ${str}`
+        );
+      }
     }
   }
 

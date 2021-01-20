@@ -30,11 +30,12 @@ export class LR1Item {
     cache.push(this);
   }
 
-  isReducable(t: Terminal) {
-    return (
-      this.position === this.production.RHS.symbols.length &&
-      t.name === this.lookAhead.name
-    );
+  isReducableForTerminal(t: Terminal) {
+    return this.isReducable() && t.name === this.lookAhead.name;
+  }
+
+  isReducable() {
+    return this.position === this.production.RHS.symbols.length;
   }
 
   getNextSymbol(): ParseSymbol | undefined {
