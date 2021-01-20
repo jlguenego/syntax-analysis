@@ -1,21 +1,21 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {NonTerminal} from '../../NonTerminal';
-import {LR0Item} from './LR0Item';
+import {LR1Item} from './LR1Item';
 
 const cache: LR1State[] = [];
 
 export class LR1State {
   static getFromCache(
     cfg: ContextFreeGrammar,
-    pwps: Set<LR0Item>
+    items: Set<LR1Item>
   ): LR1State | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
         continue;
       }
       // same items
-      if (s.hasAllPwps(pwps)) {
+      if (s.hasAllItems(items)) {
         return s;
       }
     }
@@ -24,25 +24,25 @@ export class LR1State {
   static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
-  pwps!: Set<LR0Item>;
-  constructor(cfg: ContextFreeGrammar, pwps: Set<LR0Item>) {
-    const state = LR1State.getFromCache(cfg, pwps);
+  items!: Set<LR1Item>;
+  constructor(cfg: ContextFreeGrammar, items: Set<LR1Item>) {
+    const state = LR1State.getFromCache(cfg, items);
     if (state) {
       return state;
     }
     LR1State.seq++;
     this.id = LR1State.seq;
     this.cfg = cfg;
-    this.pwps = pwps;
+    this.items = items;
     cache.push(this);
     this.computeClosure();
   }
 
   computeClosure() {
     let previousSize = -1;
-    let size = this.pwps.size;
+    let size = this.items.size;
     while (size > previousSize) {
-      for (const pwp of this.pwps) {
+      for (const pwp of this.items) {
         const nextSymbol = pwp.getNextSymbol();
         if (!(nextSymbol instanceof NonTerminal)) {
           continue;
@@ -50,22 +50,22 @@ export class LR1State {
         this.cfg.productions
           .filter(p => p.LHS === nextSymbol)
           .forEach(p => {
-            this.pwps.add(new LR0Item(p, 0));
+            this.items.add(new LR1Item(p, 0, 'a'));
           });
       }
 
       previousSize = size;
-      size = this.pwps.size;
+      size = this.items.size;
     }
   }
 
   toString() {
-    return `[${this.id}] ` + [...this.pwps].map(p => p.toString()).join(' ');
+    return `[${this.id}] ` + [...this.items].map(p => p.toString()).join(' ');
   }
 
   getSymbolTransitions(): Set<string> {
     const result = new Set<string>();
-    this.pwps.forEach(pwp => {
+    this.items.forEach(pwp => {
       const symbol = pwp.getNextSymbol();
       if (symbol === undefined) {
         return;
@@ -76,9 +76,9 @@ export class LR1State {
     return result;
   }
 
-  hasAllPwps(pwps: Set<LR0Item>) {
-    for (const pwp of pwps.keys()) {
-      if (!this.pwps.has(pwp)) {
+  hasAllItems(items: Set<LR1Item>) {
+    for (const item of items.keys()) {
+      if (!this.items.has(item)) {
         return false;
       }
     }

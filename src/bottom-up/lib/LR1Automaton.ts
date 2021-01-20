@@ -1,7 +1,8 @@
 import {Automaton} from '../../Automaton';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {LR1State} from './LR1State';
-import {LR0Item} from './LR0Item';
+import {LR1Item} from './LR1Item';
+import {dollar} from '../../terminals/dollar.terminal';
 
 export const buildLR1Automaton = (
   cfg: ContextFreeGrammar
@@ -11,9 +12,9 @@ export const buildLR1Automaton = (
   const startProductions = cfg.productions.filter(
     p => p.LHS === cfg.startSymbol
   );
-  const pwps = new Set<LR0Item>();
+  const pwps = new Set<LR1Item>();
   for (const prod of startProductions) {
-    pwps.add(new LR0Item(prod, 0));
+    pwps.add(new LR1Item(prod, 0, '$'));
   }
   const startState = new LR1State(cfg, pwps);
   const automaton = new Automaton<LR1State>(startState);
@@ -31,12 +32,12 @@ export const buildLR1Automaton = (
         if (automaton.getTransition(s1, symbol)) {
           return;
         }
-        const newPwps = new Set<LR0Item>();
-        const pwps = [...s1.pwps].filter(
+        const newPwps = new Set<LR1Item>();
+        const pwps = [...s1.items].filter(
           pwp => pwp.getNextSerializedSymbol() === symbol
         );
         pwps.forEach(p => {
-          newPwps.add(new LR0Item(p.production, p.position + 1));
+          newPwps.add(new LR1Item(p.production, p.position + 1, dollar.name));
         });
         const newState = new LR1State(cfg, newPwps);
         automaton.addTransition(s1, newState, symbol);
