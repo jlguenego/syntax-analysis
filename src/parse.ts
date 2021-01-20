@@ -1,4 +1,5 @@
 import {parseWithLR0} from './bottom-up/LR0';
+import {parseWithLR1} from './bottom-up/LR1';
 import {ContextFreeGrammar} from './ContextFreeGrammar';
 import {ParseTree} from './interfaces/ParseTree';
 import {Sentence} from './interfaces/Sentence';
@@ -37,8 +38,8 @@ export function parse(
       return parseWithLL1(sentence, cfg);
     case 'LR0':
       return parseWithLR0(sentence, cfg);
-    // case 'LR1':
-    //   return parseWithLR1(sentence, cfg);
+    case 'LR1':
+      return parseWithLR1(sentence, cfg);
     default:
       throw new Error('Method not implemented');
   }

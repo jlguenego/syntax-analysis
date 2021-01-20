@@ -49,7 +49,7 @@ describe('LR0 Unit Test', () => {
       }
       assert.deepStrictEqual(
         error.message,
-        'shift/reduce conflict. productions: E->T·,E->T·+E'
+        'shift/reduce conflict. productions: S->E·,E->E·+T'
       );
       assert.deepStrictEqual((error.t as Token).position.col, 5);
     }

@@ -31,7 +31,7 @@ const spec: CFGSpecifications<TA, NTA> = {
   productions: [
     {LHS: 'S', RHS: ['E']},
     {LHS: 'E', RHS: ['T']},
-    {LHS: 'E', RHS: ['T', '+', 'E']},
+    {LHS: 'E', RHS: ['E', '+', 'T']},
     {LHS: 'T', RHS: ['int']},
     {LHS: 'T', RHS: ['(', 'E', ')']},
   ],
@@ -59,17 +59,22 @@ export const expectedParseTree7: ParseTree = {
       node: nt.E,
       children: [
         {
-          node: nt.T,
-          children: [{node: {name: 'int'}}],
-        },
-        {node: {name: '+'}},
-        {
           node: nt.E,
           children: [
             {
               node: nt.T,
+              children: [{node: {name: 'int'}}],
+            },
+          ],
+        },
+        {node: {name: '+'}},
+        {
+          node: nt.T,
+          children: [
+            {node: {name: '('}},
+            {
+              node: nt.E,
               children: [
-                {node: {name: '('}},
                 {
                   node: nt.E,
                   children: [
@@ -77,23 +82,16 @@ export const expectedParseTree7: ParseTree = {
                       node: nt.T,
                       children: [{node: {name: 'int'}}],
                     },
-                    {node: {name: '+'}},
-                    {
-                      node: nt.E,
-                      children: [
-                        {
-                          node: nt.T,
-                          children: [{node: {name: 'int'}}],
-                        },
-                        {node: {name: ';'}},
-                      ],
-                    },
                   ],
                 },
-                {node: {name: ')'}},
+                {node: {name: '+'}},
+                {
+                  node: nt.T,
+                  children: [{node: {name: 'int'}}],
+                },
               ],
             },
-            {node: {name: ';'}},
+            {node: {name: ')'}},
           ],
         },
       ],
