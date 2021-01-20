@@ -103,7 +103,7 @@ const findProduction = (state: BUState): Production => {
   }
   if (pwps.length === 0) {
     throw new Error(
-      'no shift or reduce possible: ' + state.automaton.getCurrentState()
+      'No reducable/No shiftable: ' + state.automaton.getCurrentState()
     );
   }
   return pwps[0].production;
