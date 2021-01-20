@@ -1,9 +1,8 @@
 import {Group, Lexer, Rule} from '@jlguenego/lexer';
-import {Token} from '@jlguenego/lexer/build/src/interfaces/Token';
 
 import assert from 'assert';
 import {parse} from '../src';
-import {ParseError} from '../src/ParseError';
+import {GrammarError} from '../src/GrammarError';
 import {cfg7} from './data/cfg7';
 
 describe('LR0 Unit Test', () => {
@@ -44,14 +43,13 @@ describe('LR0 Unit Test', () => {
       parse(tokenSequence, cfg7, {method: 'LR0'});
       assert.fail('must not be reached.');
     } catch (error) {
-      if (!(error instanceof ParseError)) {
-        assert.fail('error should be ParseError.');
+      if (!(error instanceof GrammarError)) {
+        assert.fail('error should be GrammarError.');
       }
       assert.deepStrictEqual(
         error.message,
         'shift/reduce conflict. productions: S->E·,E->E·+T'
       );
-      assert.deepStrictEqual((error.t as Token).position.col, 5);
     }
   });
 });

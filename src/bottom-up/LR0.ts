@@ -15,30 +15,8 @@ type BU0State = BUState<LR0State>;
 
 const canShift = (state: BU0State): boolean => {
   const configSet = [...state.automaton.getCurrentState().configSet];
-  const reducable = configSet.filter(p => p.isReducable());
   const shiftable = configSet.filter(p => !p.isReducable());
-  if (reducable.length > 0 && shiftable.length > 0) {
-    throw new ParseError(
-      `shift/reduce conflict. productions: ${configSet.map(p => p.toString())}`,
-      state.remainingInput[0]
-    );
-  }
-  if (reducable.length > 1) {
-    throw new ParseError(
-      `reduce/reduce conflict. productions: ${configSet.map(p =>
-        p.toString()
-      )}`,
-      state.remainingInput[0]
-    );
-  }
-  if (reducable.length === 0 && shiftable.length === 0) {
-    throw new ParseError(
-      `no shift or reduce possible. productions: ${configSet.map(p =>
-        p.toString()
-      )}`,
-      state.remainingInput[0]
-    );
-  }
+
   return shiftable.length > 0;
 
   // if (!state.automaton.hasCurrentTransitions()) {
@@ -70,7 +48,11 @@ const shift = (previousState: BU0State): BU0State => {
 };
 
 const updateAutomatonStateForShift = (state: BU0State, t: Terminal): void => {
-  state.automaton.jump(psSerialize(t));
+  try {
+    state.automaton.jump(psSerialize(t));
+  } catch (error) {
+    throw new ParseError('Syntax error.', t);
+  }
   state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
@@ -114,16 +96,6 @@ const findProduction = (state: BU0State): Production => {
   const reducables = [
     ...state.automaton.getCurrentState().configSet,
   ].filter(p => p.isReducable());
-  if (reducables.length > 1) {
-    throw new Error(
-      'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
-    );
-  }
-  if (reducables.length === 0) {
-    throw new Error(
-      'No reducable/No shiftable: ' + state.automaton.getCurrentState()
-    );
-  }
   return reducables[0].production;
 };
 

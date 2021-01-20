@@ -1,4 +1,5 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {NonTerminal} from '../../NonTerminal';
 import {LR0Item} from './LR0Item';
@@ -56,6 +57,35 @@ export class LR0State {
 
       previousSize = size;
       size = this.configSet.size;
+    }
+
+    this.checkConflict();
+  }
+
+  checkConflict() {
+    const configSet = [...this.configSet];
+    const reducables = configSet.filter(item => item.isReducable());
+    if (reducables.length > 1) {
+      throw new GrammarError(
+        `reduce/reduce conflict. productions: ${configSet.map(p =>
+          p.toString()
+        )}`
+      );
+    }
+    const shiftables = configSet.filter(p => !p.isReducable());
+    if (reducables.length === 0 && shiftables.length === 0) {
+      throw new GrammarError(
+        `no shift or reduce possible. productions: ${configSet.map(p =>
+          p.toString()
+        )}`
+      );
+    }
+    if (reducables.length > 0 && shiftables.length > 0) {
+      throw new GrammarError(
+        `shift/reduce conflict. productions: ${configSet.map(p =>
+          p.toString()
+        )}`
+      );
     }
   }
 
