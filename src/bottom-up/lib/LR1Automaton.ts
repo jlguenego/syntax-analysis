@@ -14,7 +14,7 @@ export const buildLR1Automaton = (
   );
   const items = new Set<LR1Item>();
   for (const prod of startProductions) {
-    items.add(new LR1Item(prod, 0, '$'));
+    items.add(new LR1Item(prod, 0, dollar));
   }
   const startState = new LR1State(cfg, items);
   const automaton = new Automaton<LR1State>(startState);
@@ -24,7 +24,7 @@ export const buildLR1Automaton = (
   while (previousSize < size) {
     const array = automaton.getStateArray();
     if (array.length > 10000) {
-      throw new Error('too much states. LR-Grammar too complicated ?');
+      throw new Error('too much states. LR1-Grammar too complicated ?');
     }
     for (const s1 of array) {
       const symbols = s1.getSymbolTransitions();
@@ -37,7 +37,7 @@ export const buildLR1Automaton = (
           item => item.getNextSerializedSymbol() === symbol
         );
         items.forEach(p => {
-          newItems.add(new LR1Item(p.production, p.position + 1, dollar.name));
+          newItems.add(new LR1Item(p.production, p.position + 1, p.lookAhead));
         });
         const newState = new LR1State(cfg, newItems);
         automaton.addTransition(s1, newState, symbol);

@@ -1,5 +1,6 @@
 import {ParseSymbol, psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
+import {Terminal} from '../../interfaces/Terminal';
 import {SententialForm} from '../../SententialForm';
 
 const cache: LR1Item[] = [];
@@ -7,8 +8,8 @@ const cache: LR1Item[] = [];
 export class LR1Item {
   production!: Production;
   position!: number;
-  lookAhead!: string;
-  constructor(production: Production, position: number, lookAhead: string) {
+  lookAhead!: Terminal;
+  constructor(production: Production, position: number, lookAhead: Terminal) {
     if (production.RHS.symbols.length < position) {
       throw new Error(
         `position too high: ${production.RHS.symbols.length} < ${position}: ${production.RHS} `
@@ -37,6 +38,10 @@ export class LR1Item {
     return this.production.RHS.symbols[this.position];
   }
 
+  getAfterNextSymbol(): ParseSymbol[] {
+    return this.production.RHS.symbols.slice(this.position + 1);
+  }
+
   getNextSerializedSymbol(): string | undefined {
     const s = this.getNextSymbol();
     if (s === undefined) {
@@ -53,7 +58,7 @@ export class LR1Item {
       this.production.RHS.symbols.slice(this.position)
     );
     return `${this.production.LHS.toString()} -> ${s1.toString()}·${s2.toString()}[${
-      this.lookAhead
+      this.lookAhead.name
     }]`;
   }
 }

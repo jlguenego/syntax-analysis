@@ -1,6 +1,8 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {NonTerminal} from '../../NonTerminal';
+import {SententialForm} from '../../SententialForm';
+import {firstStar} from '../../top-down/lib/first';
 import {LR1Item} from './LR1Item';
 
 const cache: LR1State[] = [];
@@ -50,7 +52,14 @@ export class LR1State {
         this.cfg.productions
           .filter(p => p.LHS === nextSymbol)
           .forEach(p => {
-            this.items.add(new LR1Item(p, 0, 'a'));
+            const remaining = item.getAfterNextSymbol();
+            remaining.push(item.lookAhead);
+            for (const x of firstStar(
+              this.cfg,
+              new SententialForm(remaining)
+            )) {
+              this.items.add(new LR1Item(p, 0, x));
+            }
           });
       }
 
