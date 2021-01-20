@@ -9,6 +9,7 @@ import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
 import {ParseError} from '../ParseError';
 import {LRState} from '../LRState';
 import {NonTerminal} from '../NonTerminal';
+import {Terminal} from '../interfaces/Terminal';
 
 const canShift = (state: BUState): boolean => {
   const pwps = [...state.automaton.getCurrentState().pwps];
@@ -44,15 +45,14 @@ const shift = (previousState: BUState): BUState => {
   const t = previousState.undigested[0];
   const state = {...previousState};
   state.undigested = state.undigested.slice(1);
-  state.semiDigestedStack = [...state.semiDigestedStack];
-  state.semiDigestedStack.push({node: t});
-  state.automaton.jump(psSerialize(t));
+  state.semiDigestedStack = [...state.semiDigestedStack, {node: t}];
 
-  updateAutomatonStateForShift(state);
+  updateAutomatonStateForShift(state, t);
   return state;
 };
 
-const updateAutomatonStateForShift = (state: BUState): void => {
+const updateAutomatonStateForShift = (state: BUState, t: Terminal): void => {
+  state.automaton.jump(psSerialize(t));
   state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
@@ -99,6 +99,11 @@ const findProduction = (state: BUState): Production => {
   if (pwps.length > 1) {
     throw new Error(
       'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
+    );
+  }
+  if (pwps.length === 0) {
+    throw new Error(
+      'no shift or reduce possible: ' + state.automaton.getCurrentState()
     );
   }
   return pwps[0].production;
