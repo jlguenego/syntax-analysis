@@ -15,7 +15,7 @@ const canShift = (state: BUState): boolean => {
   if (reducable.length > 0 && shiftable.length > 0) {
     throw new ParseError(
       `shift/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
-      state.remainingSentence[0]
+      state.undigested[0]
     );
   }
   return shiftable.length > 0;
@@ -39,37 +39,37 @@ const canShift = (state: BUState): boolean => {
 };
 
 const shift = (previousState: BUState): BUState => {
-  const t = previousState.remainingSentence[0];
+  const t = previousState.undigested[0];
   const state = {...previousState};
-  state.remainingSentence = state.remainingSentence.slice(1);
-  state.parseTrees = [...state.parseTrees];
-  state.parseTrees.push({node: t});
+  state.undigested = state.undigested.slice(1);
+  state.semiDigestedStack = [...state.semiDigestedStack];
+  state.semiDigestedStack.push({node: t});
   state.automaton.jump(psSerialize(t));
-  state.lrstateStack.push(state.automaton.getCurrentState());
+  state.lrStateStack.push(state.automaton.getCurrentState());
   return state;
 };
 
-const reduce = (previousState: BUState, production: Production) => {
+const reduce = (previousState: BUState, handleProd: Production) => {
   const state = {...previousState};
-  const length = production.RHS.symbols.length;
-  const reducedParseTree = state.parseTrees.slice(0, -length);
-  const replacedSlice = state.parseTrees.slice(-length);
-  const pt = {node: production.LHS, children: replacedSlice};
-  reducedParseTree.push(pt);
-  state.parseTrees = reducedParseTree;
+  const hLength = handleProd.RHS.symbols.length;
+  const semiDigestedStack = state.semiDigestedStack.slice(0, -hLength);
+  const handle = state.semiDigestedStack.slice(-hLength);
+  const reducedHandle = {node: handleProd.LHS, children: handle};
+  semiDigestedStack.push(reducedHandle);
+  state.semiDigestedStack = semiDigestedStack;
 
-  state.lrstateStack = state.lrstateStack.slice(0, -length);
-  state.automaton.reset(state.lrstateStack[state.lrstateStack.length - 1]);
-  const s = pt.node;
+  state.lrStateStack = state.lrStateStack.slice(0, -hLength);
+  state.automaton.reset(state.lrStateStack[state.lrStateStack.length - 1]);
+  const s = reducedHandle.node;
   if (s === state.cfg.startSymbol) {
     state.isCompleted = true;
-    if (state.remainingSentence.length > 0) {
-      throw new ParseError('remaining text', state.remainingSentence[0]);
+    if (state.undigested.length > 0) {
+      throw new ParseError('remaining text', state.undigested[0]);
     }
     return state;
   }
   state.automaton.jump(psSerialize(s));
-  state.lrstateStack.push(state.automaton.getCurrentState());
+  state.lrStateStack.push(state.automaton.getCurrentState());
   return state;
 };
 
@@ -98,9 +98,9 @@ export const parseWithLR0 = (
 ): ParseTree => {
   const automaton = buildLR0Automaton(cfg);
   let state: BUState = {
-    remainingSentence: [...sentence],
-    parseTrees: [],
-    lrstateStack: [automaton.getStartState()],
+    undigested: [...sentence],
+    semiDigestedStack: [],
+    lrStateStack: [automaton.getStartState()],
     cfg,
     automaton,
     isCompleted: false,
@@ -120,5 +120,5 @@ export const parseWithLR0 = (
     state = reduce(state, a.production);
   }
 
-  return state.parseTrees[0];
+  return state.semiDigestedStack[0];
 };
