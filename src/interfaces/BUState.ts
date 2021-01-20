@@ -1,20 +1,22 @@
 import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {LR0State} from '../bottom-up/lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
+import {LRState} from './LRState';
 import {ParseTree} from './ParseTree';
 import {Sentence} from './Sentence';
 
-export interface BUState {
+export interface BUState<State extends LRState> {
   remainingInput: Sentence;
   parseStack: ParseTree[];
-  lrStateStack: LR0State[];
+  lrStateStack: State[];
   cfg: ContextFreeGrammar;
-  automaton: Automaton<LR0State>;
+  automaton: Automaton<State>;
   isCompleted: boolean;
 }
 
-export const getForm = (state: BUState): string => {
+export const getForm = <State extends LRState>(
+  state: BUState<State>
+): string => {
   const left = state.parseStack
     .map(pt => pt.node)
     .map(s => (s instanceof NonTerminal ? s.label : s.name))

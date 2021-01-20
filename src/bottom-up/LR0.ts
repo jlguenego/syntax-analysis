@@ -11,7 +11,7 @@ import {LR0State} from './lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
 import {Terminal} from '../interfaces/Terminal';
 
-const canShift = (state: BUState): boolean => {
+const canShift = (state: BUState<LR0State>): boolean => {
   const items = [...state.automaton.getCurrentState().items];
   const reducable = items.filter(p => p.isReducable());
   const shiftable = items.filter(p => !p.isReducable());
@@ -55,7 +55,7 @@ const canShift = (state: BUState): boolean => {
   // return true;
 };
 
-const shift = (previousState: BUState): BUState => {
+const shift = (previousState: BUState<LR0State>): BUState<LR0State> => {
   const t = previousState.remainingInput[0];
   const state = {...previousState};
   state.remainingInput = state.remainingInput.slice(1);
@@ -65,12 +65,15 @@ const shift = (previousState: BUState): BUState => {
   return state;
 };
 
-const updateAutomatonStateForShift = (state: BUState, t: Terminal): void => {
+const updateAutomatonStateForShift = (
+  state: BUState<LR0State>,
+  t: Terminal
+): void => {
   state.automaton.jump(psSerialize(t));
   state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
-const reduce = (previousState: BUState, handleProd: Production) => {
+const reduce = (previousState: BUState<LR0State>, handleProd: Production) => {
   const state = {...previousState};
   const hLength = handleProd.RHS.symbols.length;
   const semiDigestedStack = state.parseStack.slice(0, -hLength);
@@ -85,7 +88,7 @@ const reduce = (previousState: BUState, handleProd: Production) => {
 };
 
 const updateAutomatonStateForReduce = (
-  state: BUState,
+  state: BUState<LR0State>,
   reducedHandleNode: NonTerminal,
   hLength: number
 ): void => {
@@ -106,7 +109,7 @@ const updateAutomatonStateForReduce = (
   state.lrStateStack = lrStateStack;
 };
 
-const findProduction = (state: BUState): Production => {
+const findProduction = (state: BUState<LR0State>): Production => {
   const items = [...state.automaton.getCurrentState().items].filter(p =>
     p.isReducable()
   );
@@ -123,7 +126,7 @@ const findProduction = (state: BUState): Production => {
   return items[0].production;
 };
 
-const action = (state: BUState): LRAction => {
+const action = (state: BUState<LR0State>): LRAction => {
   if (canShift(state)) {
     return new ShiftAction();
   }
@@ -135,7 +138,7 @@ export const parseWithLR0 = (
   cfg: ContextFreeGrammar
 ): ParseTree => {
   const automaton = buildLR0Automaton(cfg);
-  let state: BUState = {
+  let state: BUState<LR0State> = {
     remainingInput: [...sentence],
     parseStack: [],
     lrStateStack: [automaton.getStartState()],
