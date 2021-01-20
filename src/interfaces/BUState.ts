@@ -6,8 +6,8 @@ import {ParseTree} from './ParseTree';
 import {Sentence} from './Sentence';
 
 export interface BUState {
-  undigested: Sentence;
-  semiDigestedStack: ParseTree[];
+  remainingInput: Sentence;
+  parseStack: ParseTree[];
   lrStateStack: LRState[];
   cfg: ContextFreeGrammar;
   automaton: Automaton<LRState>;
@@ -15,11 +15,11 @@ export interface BUState {
 }
 
 export const getForm = (state: BUState): string => {
-  const left = state.semiDigestedStack
+  const left = state.parseStack
     .map(pt => pt.node)
     .map(s => (s instanceof NonTerminal ? s.label : s.name))
     .join('');
-  const right = state.undigested.map(s => s.name).join('');
+  const right = state.remainingInput.map(s => s.name).join('');
   const result = left + ' | ' + right;
   return result;
 };

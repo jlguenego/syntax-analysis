@@ -18,7 +18,21 @@ const canShift = (state: BUState): boolean => {
   if (reducable.length > 0 && shiftable.length > 0) {
     throw new ParseError(
       `shift/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
-      state.undigested[0]
+      state.remainingInput[0]
+    );
+  }
+  if (reducable.length > 1) {
+    throw new ParseError(
+      `reduce/reduce conflict. productions: ${pwps.map(p => p.toString())}`,
+      state.remainingInput[0]
+    );
+  }
+  if (reducable.length === 0 && shiftable.length === 0) {
+    throw new ParseError(
+      `no shift or reduce possible. productions: ${pwps.map(p =>
+        p.toString()
+      )}`,
+      state.remainingInput[0]
     );
   }
   return shiftable.length > 0;
@@ -42,10 +56,10 @@ const canShift = (state: BUState): boolean => {
 };
 
 const shift = (previousState: BUState): BUState => {
-  const t = previousState.undigested[0];
+  const t = previousState.remainingInput[0];
   const state = {...previousState};
-  state.undigested = state.undigested.slice(1);
-  state.semiDigestedStack = [...state.semiDigestedStack, {node: t}];
+  state.remainingInput = state.remainingInput.slice(1);
+  state.parseStack = [...state.parseStack, {node: t}];
 
   updateAutomatonStateForShift(state, t);
   return state;
@@ -59,11 +73,11 @@ const updateAutomatonStateForShift = (state: BUState, t: Terminal): void => {
 const reduce = (previousState: BUState, handleProd: Production) => {
   const state = {...previousState};
   const hLength = handleProd.RHS.symbols.length;
-  const semiDigestedStack = state.semiDigestedStack.slice(0, -hLength);
-  const handle = state.semiDigestedStack.slice(-hLength);
+  const semiDigestedStack = state.parseStack.slice(0, -hLength);
+  const handle = state.parseStack.slice(-hLength);
   const reducedHandle = {node: handleProd.LHS, children: handle};
   semiDigestedStack.push(reducedHandle);
-  state.semiDigestedStack = semiDigestedStack;
+  state.parseStack = semiDigestedStack;
 
   updateAutomatonStateForReduce(state, reducedHandle.node, hLength);
 
@@ -82,8 +96,8 @@ const updateAutomatonStateForReduce = (
   const s = reducedHandleNode;
   if (s === state.cfg.startSymbol) {
     state.isCompleted = true;
-    if (state.undigested.length > 0) {
-      throw new ParseError('remaining text', state.undigested[0]);
+    if (state.remainingInput.length > 0) {
+      throw new ParseError('remaining text', state.remainingInput[0]);
     }
     return;
   }
@@ -122,8 +136,8 @@ export const parseWithLR0 = (
 ): ParseTree => {
   const automaton = buildLR0Automaton(cfg);
   let state: BUState = {
-    undigested: [...sentence],
-    semiDigestedStack: [],
+    remainingInput: [...sentence],
+    parseStack: [],
     lrStateStack: [automaton.getStartState()],
     cfg,
     automaton,
@@ -144,5 +158,5 @@ export const parseWithLR0 = (
     state = reduce(state, a.production);
   }
 
-  return state.semiDigestedStack[0];
+  return state.parseStack[0];
 };
