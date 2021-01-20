@@ -30,6 +30,11 @@ const canShift = (state: BUState<LR1State>): boolean => {
   }
 
   // if shift/reduce conflict, prefer shift.
+  const items = [...state.automaton.getCurrentState().items];
+  const reducable = items.filter(p => p.isReducable(symbol));
+  if (reducable.length > 0) {
+    throw new ParseError('shift/reduce conflict.', symbol);
+  }
   return true;
 };
 
