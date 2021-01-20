@@ -1,9 +1,9 @@
-import {ContextFreeGrammar} from './ContextFreeGrammar';
-import {Terminal} from './interfaces/Terminal';
-import {NonTerminal} from './NonTerminal';
-import {SententialForm} from './SententialForm';
-import {epsilon} from './terminals/epsilon.terminal';
-import {absorbSet} from './utils/set';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {Terminal} from '../../interfaces/Terminal';
+import {NonTerminal} from '../../NonTerminal';
+import {SententialForm} from '../../SententialForm';
+import {epsilon} from '../../terminals/epsilon.terminal';
+import {absorbSet} from '../../utils/set';
 
 const initFirstCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {

@@ -1,6 +1,6 @@
-import {ParseSymbol, psSerialize} from './interfaces/ParseSymbol';
-import {Production} from './interfaces/Production';
-import {SententialForm} from './SententialForm';
+import {ParseSymbol, psSerialize} from '../../interfaces/ParseSymbol';
+import {Production} from '../../interfaces/Production';
+import {SententialForm} from '../../SententialForm';
 
 const cache: LRItem[] = [];
 

@@ -1,6 +1,6 @@
 import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {LRState} from '../LRState';
+import {LRState} from '../bottom-up/lib/LRState';
 import {NonTerminal} from '../NonTerminal';
 import {ParseTree} from './ParseTree';
 import {Sentence} from './Sentence';

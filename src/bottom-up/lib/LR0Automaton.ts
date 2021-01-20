@@ -1,7 +1,7 @@
-import {Automaton} from '../Automaton';
-import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {LRState} from '../LRState';
-import {LRItem} from '../ProductionWithPosition';
+import {Automaton} from '../../Automaton';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {LRState} from './LRState';
+import {LRItem} from './LRItem';
 
 export const buildLR0Automaton = (
   cfg: ContextFreeGrammar

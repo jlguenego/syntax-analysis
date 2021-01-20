@@ -1,7 +1,7 @@
-import {ContextFreeGrammar} from './ContextFreeGrammar';
-import {psSerialize} from './interfaces/ParseSymbol';
-import {NonTerminal} from './NonTerminal';
-import {LRItem} from './ProductionWithPosition';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {psSerialize} from '../../interfaces/ParseSymbol';
+import {NonTerminal} from '../../NonTerminal';
+import {LRItem} from './LRItem';
 
 const cache: LRState[] = [];
 

@@ -1,4 +1,4 @@
-import {Production} from './interfaces/Production';
+import {Production} from '../../interfaces/Production';
 
 export type LRAction = ShiftAction | ReduceAction;
 

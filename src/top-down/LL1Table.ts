@@ -1,5 +1,5 @@
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {firstStar} from '../first';
+import {firstStar} from './lib/first';
 import {Terminal} from '../interfaces/Terminal';
 import {epsilon} from '../terminals/epsilon.terminal';
 import {copyWithoutElt} from '../utils/set';

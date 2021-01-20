@@ -1,11 +1,11 @@
-import {ContextFreeGrammar} from './ContextFreeGrammar';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {firstStar} from './first';
-import {Terminal} from './interfaces/Terminal';
-import {NonTerminal} from './NonTerminal';
-import {SententialForm} from './SententialForm';
-import {dollar} from './terminals/dollar.terminal';
-import {epsilon} from './terminals/epsilon.terminal';
-import {absorbSet} from './utils/set';
+import {Terminal} from '../../interfaces/Terminal';
+import {NonTerminal} from '../../NonTerminal';
+import {SententialForm} from '../../SententialForm';
+import {dollar} from '../../terminals/dollar.terminal';
+import {epsilon} from '../../terminals/epsilon.terminal';
+import {absorbSet} from '../../utils/set';
 
 const initFollowCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {

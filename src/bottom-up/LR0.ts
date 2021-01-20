@@ -4,10 +4,10 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
-import {buildLR0Automaton} from './buildLR0Automaton';
-import {LRAction, ReduceAction, ShiftAction} from '../LRAction';
+import {buildLR0Automaton} from './lib/LR0Automaton';
+import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
-import {LRState} from '../LRState';
+import {LRState} from './lib/LRState';
 import {NonTerminal} from '../NonTerminal';
 import {Terminal} from '../interfaces/Terminal';
 

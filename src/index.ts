@@ -1,5 +1,5 @@
 export * from './Automaton';
-export * from './bottom-up/buildLR0Automaton';
+export * from './bottom-up/lib/LR0Automaton';
 export * from './ContextFreeGrammar';
 export * from './interfaces/ParseSymbol';
 export * from './interfaces/ParseTree';
