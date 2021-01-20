@@ -2,9 +2,9 @@ import {ParseSymbol, psSerialize} from './interfaces/ParseSymbol';
 import {Production} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
 
-const cache: ProductionWithPosition[] = [];
+const cache: LRItem[] = [];
 
-export class ProductionWithPosition {
+export class LRItem {
   production!: Production;
   position!: number;
   constructor(production: Production, position: number) {

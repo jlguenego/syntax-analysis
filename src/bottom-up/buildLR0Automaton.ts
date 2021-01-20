@@ -1,7 +1,7 @@
 import {Automaton} from '../Automaton';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {LRState} from '../LRState';
-import {ProductionWithPosition} from '../ProductionWithPosition';
+import {LRItem} from '../ProductionWithPosition';
 
 export const buildLR0Automaton = (
   cfg: ContextFreeGrammar
@@ -11,9 +11,9 @@ export const buildLR0Automaton = (
   const startProductions = cfg.productions.filter(
     p => p.LHS === cfg.startSymbol
   );
-  const pwps = new Set<ProductionWithPosition>();
+  const pwps = new Set<LRItem>();
   for (const prod of startProductions) {
-    pwps.add(new ProductionWithPosition(prod, 0));
+    pwps.add(new LRItem(prod, 0));
   }
   const startState = new LRState(cfg, pwps);
   const automaton = new Automaton<LRState>(startState);
@@ -31,12 +31,12 @@ export const buildLR0Automaton = (
         if (automaton.getTransition(s1, symbol)) {
           return;
         }
-        const newPwps = new Set<ProductionWithPosition>();
+        const newPwps = new Set<LRItem>();
         const pwps = [...s1.pwps].filter(
           pwp => pwp.getNextSerializedSymbol() === symbol
         );
         pwps.forEach(p => {
-          newPwps.add(new ProductionWithPosition(p.production, p.position + 1));
+          newPwps.add(new LRItem(p.production, p.position + 1));
         });
         const newState = new LRState(cfg, newPwps);
         automaton.addTransition(s1, newState, symbol);

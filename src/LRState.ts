@@ -1,14 +1,14 @@
 import {ContextFreeGrammar} from './ContextFreeGrammar';
 import {psSerialize} from './interfaces/ParseSymbol';
 import {NonTerminal} from './NonTerminal';
-import {ProductionWithPosition} from './ProductionWithPosition';
+import {LRItem} from './ProductionWithPosition';
 
 const cache: LRState[] = [];
 
 export class LRState {
   static getFromCache(
     cfg: ContextFreeGrammar,
-    pwps: Set<ProductionWithPosition>
+    pwps: Set<LRItem>
   ): LRState | undefined {
     for (const s of cache) {
       if (s.cfg !== cfg) {
@@ -24,8 +24,8 @@ export class LRState {
   static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
-  pwps!: Set<ProductionWithPosition>;
-  constructor(cfg: ContextFreeGrammar, pwps: Set<ProductionWithPosition>) {
+  pwps!: Set<LRItem>;
+  constructor(cfg: ContextFreeGrammar, pwps: Set<LRItem>) {
     const state = LRState.getFromCache(cfg, pwps);
     if (state) {
       return state;
@@ -50,7 +50,7 @@ export class LRState {
         this.cfg.productions
           .filter(p => p.LHS === nextSymbol)
           .forEach(p => {
-            this.pwps.add(new ProductionWithPosition(p, 0));
+            this.pwps.add(new LRItem(p, 0));
           });
       }
 
@@ -76,7 +76,7 @@ export class LRState {
     return result;
   }
 
-  hasAllPwps(pwps: Set<ProductionWithPosition>) {
+  hasAllPwps(pwps: Set<LRItem>) {
     for (const pwp of pwps.keys()) {
       if (!this.pwps.has(pwp)) {
         return false;
