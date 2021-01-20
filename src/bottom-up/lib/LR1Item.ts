@@ -57,8 +57,8 @@ export class LR1Item {
     const s2 = new SententialForm(
       this.production.RHS.symbols.slice(this.position)
     );
-    return `${this.production.LHS.toString()} -> ${s1.toString()}·${s2.toString()}[${
+    return `${this.production.LHS.toString()} -> ${s1.toString()}·${s2.toString()}{${
       this.lookAhead.name
-    }]`;
+    }}`;
   }
 }

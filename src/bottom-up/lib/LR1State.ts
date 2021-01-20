@@ -69,7 +69,10 @@ export class LR1State {
   }
 
   toString() {
-    return `[${this.id}] ` + [...this.items].map(p => p.toString()).join(' ');
+    return (
+      `[${this.id} (${this.items.size})] ` +
+      [...this.items].map(p => p.toString()).join(' ')
+    );
   }
 
   getSymbolTransitions(): Set<string> {
