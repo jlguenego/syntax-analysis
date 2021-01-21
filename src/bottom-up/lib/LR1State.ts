@@ -6,14 +6,15 @@ import {SententialForm} from '../../SententialForm';
 import {firstStar} from '../../top-down/lib/first';
 import {LR1Item} from './LR1Item';
 
-const cache: LR1State[] = [];
-
 export class LR1State {
+  static resetCache(cfg: ContextFreeGrammar) {
+    cfg.lr1AutomatonCache.length = 0;
+  }
   static getFromCache(
     cfg: ContextFreeGrammar,
     configSet: Set<LR1Item>
   ): LR1State | undefined {
-    for (const s of cache) {
+    for (const s of cfg.lr1AutomatonCache) {
       if (s.cfg !== cfg) {
         continue;
       }
@@ -24,7 +25,6 @@ export class LR1State {
     }
     return undefined;
   }
-  static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
   configSet!: Set<LR1Item>;
@@ -33,11 +33,10 @@ export class LR1State {
     if (state) {
       return state;
     }
-    LR1State.seq++;
-    this.id = LR1State.seq;
+    this.id = cfg.lr1AutomatonCache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
-    cache.push(this);
+    cfg.lr1AutomatonCache.push(this);
     this.computeClosure();
   }
 

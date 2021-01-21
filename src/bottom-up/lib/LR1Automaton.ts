@@ -9,6 +9,7 @@ export const buildLR1Automaton = (
   cfg: ContextFreeGrammar
 ): Automaton<LR1State> => {
   checkStartSymbol(cfg);
+  LR1State.resetCache(cfg);
 
   // add a first state with start symbol
 
