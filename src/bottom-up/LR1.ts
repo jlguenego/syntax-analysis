@@ -7,10 +7,10 @@ import {Production} from '../interfaces/Production';
 import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
 import {NonTerminal} from '../NonTerminal';
-import {Terminal} from '../interfaces/Terminal';
 import {buildLR1Automaton} from './lib/LR1Automaton';
 import {LR1State} from './lib/LR1State';
 import {dollar} from '../terminals/dollar.terminal';
+import {shift} from './shift';
 
 type BU1State = BUState<LR1State>;
 
@@ -38,21 +38,6 @@ const canShift = (state: BU1State): boolean => {
     throw new ParseError('shift/reduce conflict.', symbol);
   }
   return true;
-};
-
-const shift = (previousState: BU1State): BU1State => {
-  const t = previousState.remainingInput[0];
-  const state = {...previousState};
-  state.remainingInput = state.remainingInput.slice(1);
-  state.parseStack = [...state.parseStack, {node: t}];
-
-  updateAutomatonStateForShift(state, t);
-  return state;
-};
-
-const updateAutomatonStateForShift = (state: BU1State, t: Terminal): void => {
-  state.automaton.jump(psSerialize(t));
-  state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
 const reduce = (previousState: BU1State, handleProd: Production) => {

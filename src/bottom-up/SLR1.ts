@@ -9,7 +9,7 @@ import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
 import {LR0State} from './lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
-import {Terminal} from '../interfaces/Terminal';
+import {shift} from './shift';
 
 type BU0State = BUState<LR0State>;
 
@@ -29,25 +29,6 @@ const canShift = (state: BU0State): boolean => {
   }
 
   return true;
-};
-
-const shift = (previousState: BU0State): BU0State => {
-  const t = previousState.remainingInput[0];
-  const state = {...previousState};
-  state.remainingInput = state.remainingInput.slice(1);
-  state.parseStack = [...state.parseStack, {node: t}];
-
-  updateAutomatonStateForShift(state, t);
-  return state;
-};
-
-const updateAutomatonStateForShift = (state: BU0State, t: Terminal): void => {
-  try {
-    state.automaton.jump(psSerialize(t));
-  } catch (error) {
-    throw new ParseError('Syntax error.', t);
-  }
-  state.lrStateStack.push(state.automaton.getCurrentState());
 };
 
 const reduce = (previousState: BU0State, handleProd: Production) => {
