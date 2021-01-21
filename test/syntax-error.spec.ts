@@ -1,10 +1,9 @@
 import assert from 'assert';
-import {Lexer, Group, Rule} from '@jlguenego/lexer';
+import {Lexer, Group, Rule, Token} from '@jlguenego/lexer';
 
 import {parse} from '../src';
 import {cfg3} from './data/cfg3';
 import {ParseError} from '../src/ParseError';
-import {Token} from '@jlguenego/lexer/build/src/interfaces/Token';
 
 describe('Error Unit Test', () => {
   it('test a syntax error', () => {
