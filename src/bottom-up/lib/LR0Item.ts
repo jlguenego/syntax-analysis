@@ -32,6 +32,10 @@ export class LR0Item {
     return this.production.RHS.symbols[this.position];
   }
 
+  getAfterNextSymbol(): ParseSymbol[] {
+    return this.production.RHS.symbols.slice(this.position + 1);
+  }
+
   getNextSerializedSymbol(): string | undefined {
     const s = this.getNextSymbol();
     if (s === undefined) {

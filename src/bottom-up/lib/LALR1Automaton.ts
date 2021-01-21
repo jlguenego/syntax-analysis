@@ -5,7 +5,7 @@ import {LR1Item} from './LR1Item';
 import {dollar} from '../../terminals/dollar.terminal';
 import {checkStartSymbol} from './check';
 
-export const buildLR1Automaton = (
+export const buildLALR1Automaton = (
   cfg: ContextFreeGrammar
 ): Automaton<LR1State> => {
   checkStartSymbol(cfg);
@@ -28,7 +28,7 @@ export const buildLR1Automaton = (
   while (previousSize < size) {
     const array = automaton.getStateArray();
     if (array.length > 10000) {
-      throw new Error('too much states. LALR1-Grammar too complicated ?');
+      throw new Error('too much states. LR1-Grammar too complicated ?');
     }
     for (const s1 of array) {
       const symbols = s1.getSymbolTransitions();

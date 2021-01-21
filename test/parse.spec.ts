@@ -4,6 +4,7 @@ import {cfg1, expectedParseTree, sentence} from './data/cfg1';
 import {cfg3, expectedParseTree3} from './data/cfg3';
 import {cfg6, expectedParseTree6, sentence6} from './data/cfg6';
 import {cfg7, expectedParseTree7, sentence7} from './data/cfg7';
+import {cfg8, expectedParseTree8, sentence8} from './data/cfg8';
 
 describe('Parse Unit Test', () => {
   it('test parse BFS1_cfg1', () => {
@@ -44,7 +45,7 @@ describe('Parse Unit Test', () => {
     assert.deepStrictEqual(parseTree7, expectedParseTree7);
   });
   it('test parse LALR_cfg8', () => {
-    const parseTree7 = parse(sentence7, cfg7, {method: 'LALR1'});
-    assert.deepStrictEqual(parseTree7, expectedParseTree7);
+    const parseTree8 = parse(sentence8, cfg8, {method: 'LALR1'});
+    assert.deepStrictEqual(parseTree8, expectedParseTree8);
   });
 });

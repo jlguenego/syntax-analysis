@@ -5,11 +5,11 @@ import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {ParseError} from '../ParseError';
-import {buildLR1Automaton} from './lib/LR1Automaton';
 import {dollar} from '../terminals/dollar.terminal';
 import {shift} from './lib/shift';
 import {reduce} from './lib/reduce';
-import {LALR1State} from './lib/LALR1';
+import {LALR1State} from './lib/LALR1State';
+import {buildLALR1Automaton} from './lib/LALR1Automaton';
 
 type BULALR1State = BUState<LALR1State>;
 
@@ -49,7 +49,7 @@ export const parseWithLALR1 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
 ): ParseTree => {
-  const automaton = buildLR1Automaton(cfg);
+  const automaton = buildLALR1Automaton(cfg);
   let state: BULALR1State = {
     remainingInput: [...sentence, dollar],
     parseStack: [],
