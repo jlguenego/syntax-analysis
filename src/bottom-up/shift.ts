@@ -25,5 +25,8 @@ const updateAutomatonStateForShift = <T extends LRState>(
   } catch (error) {
     throw new ParseError('Syntax error.', t);
   }
-  state.lrStateStack.push(state.automaton.getCurrentState());
+  state.lrStateStack = [
+    ...state.lrStateStack,
+    state.automaton.getCurrentState(),
+  ];
 };
