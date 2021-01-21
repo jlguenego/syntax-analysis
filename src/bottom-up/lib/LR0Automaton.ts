@@ -36,14 +36,14 @@ export const buildLR0Automaton = (
         if (automaton.getTransition(s1, symbol)) {
           return;
         }
-        const configSet = new Set<LR0Item>();
+        const newConfigSet = new Set<LR0Item>();
         const items = [...s1.configSet].filter(
           item => item.getNextSerializedSymbol() === symbol
         );
         items.forEach(p => {
-          configSet.add(new LR0Item(p.production, p.position + 1));
+          newConfigSet.add(new LR0Item(p.production, p.position + 1));
         });
-        const newState = new LR0State(cfg, configSet);
+        const newState = new LR0State(cfg, newConfigSet);
         automaton.addTransition(s1, newState, symbol);
       });
     }
