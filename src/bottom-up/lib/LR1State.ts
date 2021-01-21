@@ -1,7 +1,7 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
-import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {firstStar} from '../../top-down/lib/first';
@@ -68,34 +68,21 @@ export class LR1State {
       size = this.configSet.size;
     }
     this.updateCache();
-    this.checkReduceReduceConflict();
   }
 
   updateCache() {
     const reducables = [...this.configSet].filter(item => item.isReducable());
     for (const item of reducables) {
-      this.reducableProductionMap.set(item.lookAhead.name, item.production);
-    }
-  }
-
-  checkReduceReduceConflict() {
-    const map = [...this.configSet]
-      .filter(item => item.isReducable())
-      .reduce((acc, item) => {
-        const n = acc.get(item.lookAhead) ?? 0;
-        acc.set(item.lookAhead, n + 1);
-        return acc;
-      }, new Map<Terminal, number>());
-    for (const [t, n] of map) {
-      if (n > 1) {
+      if (this.reducableProductionMap.get(item.lookAhead.name)) {
         const str = [...this.configSet]
-          .filter(item => item.isReducableForTerminal(t))
-          .map(item => item.toString())
+          .filter(i => i.isReducableForTerminal(item.lookAhead))
+          .map(i => i.toString())
           .join(' ');
-        throw new Error(
+        throw new GrammarError(
           `reduce/reduce conflict while building LR(1) automaton. items: ${str}`
         );
       }
+      this.reducableProductionMap.set(item.lookAhead.name, item.production);
     }
   }
 
