@@ -16,8 +16,7 @@ type BU0State = BUState<LR0State>;
 const canShift = (state: BU0State): boolean => {
   const currentState = state.automaton.getCurrentState();
   currentState.checkReduceReduceConflict();
-  const shiftables = [...currentState.configSet].filter(p => !p.isReducable());
-  if (shiftables.length === 0) {
+  if (currentState.shiftableArrayCache.length === 0) {
     return false;
   }
   const symbol = state.remainingInput[0];
@@ -25,15 +24,8 @@ const canShift = (state: BU0State): boolean => {
     return false;
   }
 
-  const follows = [...currentState.configSet]
-    .filter(item => item.isReducable())
-    .map(
-      item => state.cfg.followCache.get(item.production.LHS) as Set<Terminal>
-    );
-  for (const f of follows) {
-    if (f.has(symbol)) {
-      return false;
-    }
+  if (currentState.followNameArrayCache.includes(symbol.name)) {
+    return false;
   }
 
   return true;

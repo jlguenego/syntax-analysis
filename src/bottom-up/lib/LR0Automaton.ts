@@ -11,6 +11,8 @@ export const buildLR0Automaton = (
 
   checkStartSymbol(cfg);
 
+  LR0State.resetCache();
+
   const startProductions = cfg.productions.filter(
     p => p.LHS === cfg.startSymbol
   );

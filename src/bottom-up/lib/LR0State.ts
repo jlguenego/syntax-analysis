@@ -1,12 +1,18 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
+import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
+import {absorbSet} from '../../utils/set';
 import {LR0Item} from './LR0Item';
 
 const cache: LR0State[] = [];
 
 export class LR0State {
+  static resetCache() {
+    cache.length = 0;
+    LR0State.seq = 0;
+  }
   static getFromCache(
     cfg: ContextFreeGrammar,
     configSet: Set<LR0Item>
@@ -26,6 +32,11 @@ export class LR0State {
   id!: number;
   cfg!: ContextFreeGrammar;
   configSet!: Set<LR0Item>;
+
+  reducableArrayCache!: LR0Item[];
+  shiftableArrayCache!: LR0Item[];
+  followNameArrayCache!: string[];
+
   constructor(cfg: ContextFreeGrammar, configSet: Set<LR0Item>) {
     const state = LR0State.getFromCache(cfg, configSet);
     if (state) {
@@ -37,6 +48,7 @@ export class LR0State {
     this.configSet = configSet;
     cache.push(this);
     this.computeClosure();
+    this.computeCache();
   }
 
   computeClosure() {
@@ -60,25 +72,36 @@ export class LR0State {
     }
   }
 
+  computeCache() {
+    this.reducableArrayCache = [...this.configSet].filter(i => i.isReducable());
+    this.shiftableArrayCache = [...this.configSet].filter(
+      i => !i.isReducable()
+    );
+    const followSet = this.reducableArrayCache
+      .map(
+        item => this.cfg.followCache.get(item.production.LHS) as Set<Terminal>
+      )
+      .reduce((acc, array) => absorbSet(acc, array), new Set<Terminal>());
+    this.followNameArrayCache = [...followSet].map(t => t.name);
+  }
+
   checkReduceReduceConflict() {
-    const configSet = [...this.configSet];
-    const reducables = configSet.filter(item => item.isReducable());
-    if (reducables.length > 1) {
+    if (this.reducableArrayCache.length > 1) {
       throw new GrammarError(
-        `reduce/reduce conflict. productions: ${configSet.map(p =>
-          p.toString()
+        `reduce/reduce conflict. productions: ${this.reducableArrayCache.map(
+          p => p.toString()
         )}`
       );
     }
   }
 
   checkShiftReduceConflict() {
-    const configSet = [...this.configSet];
-    const reducables = configSet.filter(item => item.isReducable());
-    const shiftables = configSet.filter(item => !item.isReducable());
-    if (reducables.length > 0 && shiftables.length > 0) {
+    if (
+      this.reducableArrayCache.length > 0 &&
+      this.shiftableArrayCache.length > 0
+    ) {
       throw new GrammarError(
-        `shift/reduce conflict. productions: ${configSet.map(p =>
+        `shift/reduce conflict. productions: ${[...this.configSet].map(p =>
           p.toString()
         )}`
       );
