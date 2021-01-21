@@ -39,7 +39,7 @@ describe('Parse Unit Test', () => {
     const parseTree7 = parse(sentence7, cfg7, {method: 'LR1'});
     assert.deepStrictEqual(parseTree7, expectedParseTree7);
   });
-  it('test parse  SLR1_cfg7', () => {
+  it('test parse SLR1_cfg7', () => {
     const parseTree7 = parse(sentence7, cfg7, {method: 'SLR1'});
     assert.deepStrictEqual(parseTree7, expectedParseTree7);
   });

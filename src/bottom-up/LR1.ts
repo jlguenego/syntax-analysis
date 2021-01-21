@@ -6,11 +6,11 @@ import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
-import {NonTerminal} from '../NonTerminal';
 import {buildLR1Automaton} from './lib/LR1Automaton';
 import {LR1State} from './lib/LR1State';
 import {dollar} from '../terminals/dollar.terminal';
 import {shift} from './lib/shift';
+import {reduce} from './lib/reduce';
 
 type BU1State = BUState<LR1State>;
 
@@ -38,42 +38,6 @@ const canShift = (state: BU1State): boolean => {
     throw new ParseError('shift/reduce conflict.', symbol);
   }
   return true;
-};
-
-const reduce = (previousState: BU1State, handleProd: Production) => {
-  const state = {...previousState};
-  const hLength = handleProd.RHS.symbols.length;
-  const semiDigestedStack = state.parseStack.slice(0, -hLength);
-  const handle = state.parseStack.slice(-hLength);
-  const reducedHandle = {node: handleProd.LHS, children: handle};
-  semiDigestedStack.push(reducedHandle);
-  state.parseStack = semiDigestedStack;
-
-  updateAutomatonStateForReduce(state, reducedHandle.node, hLength);
-
-  return state;
-};
-
-const updateAutomatonStateForReduce = (
-  state: BU1State,
-  reducedHandleNode: NonTerminal,
-  hLength: number
-): void => {
-  const lrStateStack = state.lrStateStack.slice(0, -hLength);
-  const lrState = lrStateStack.pop() as LR1State;
-  state.automaton.reset(lrState);
-  lrStateStack.push(lrState);
-  const s = reducedHandleNode;
-  if (s === state.cfg.startSymbol) {
-    state.isCompleted = true;
-    if (state.remainingInput[0] !== dollar) {
-      throw new ParseError('remaining text', state.remainingInput[0]);
-    }
-    return;
-  }
-  state.automaton.jump(psSerialize(s));
-  lrStateStack.push(state.automaton.getCurrentState());
-  state.lrStateStack = lrStateStack;
 };
 
 const findProduction = (state: BU1State): Production => {
