@@ -4,6 +4,7 @@ import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
 import {NonTerminal} from '../../NonTerminal';
 import {ParseError} from '../../ParseError';
+import {dollar} from '../../terminals/dollar.terminal';
 
 export const reduce = <T extends LRState>(
   previousState: BUState<T>,
@@ -34,7 +35,7 @@ const updateAutomatonStateForReduce = <T extends LRState>(
   const s = reducedHandleNode;
   if (s === state.cfg.startSymbol) {
     state.isCompleted = true;
-    if (state.remainingInput.length > 0) {
+    if (![undefined, dollar].includes(state.remainingInput[0])) {
       throw new ParseError('remaining text', state.remainingInput[0]);
     }
     return;
