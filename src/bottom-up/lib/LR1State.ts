@@ -15,9 +15,6 @@ export class LR1State {
     configSet: Set<LR1Item>
   ): LR1State | undefined {
     for (const s of cfg.lr1AutomatonCache) {
-      if (s.cfg !== cfg) {
-        continue;
-      }
       // configSet included
       if (s.containsConfigSet(configSet)) {
         return s;
