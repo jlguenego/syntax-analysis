@@ -4,7 +4,6 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
-import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
 import {buildLR1Automaton} from './lib/LR1Automaton';
 import {LR1State} from './lib/LR1State';
@@ -46,13 +45,6 @@ const findProduction = (state: BU1State): Production => {
     .reducableProductionMap.get(state.remainingInput[0].name) as Production;
 };
 
-const action = (state: BU1State): LRAction => {
-  if (canShift(state)) {
-    return new ShiftAction();
-  }
-  return new ReduceAction(findProduction(state));
-};
-
 export const parseWithLR1 = (
   sentence: Sentence,
   cfg: ContextFreeGrammar
@@ -73,12 +65,11 @@ export const parseWithLR1 = (
       throw new Error('Too much parsing.');
     }
     // find if you need to shift or reduce.
-    const a = action(state);
-    if (a instanceof ShiftAction) {
+    if (canShift(state)) {
       state = shift(state);
       continue;
     }
-    state = reduce(state, a.production);
+    state = reduce(state, findProduction(state));
   }
 
   return state.parseStack[0];
