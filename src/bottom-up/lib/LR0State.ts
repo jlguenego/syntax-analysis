@@ -6,18 +6,15 @@ import {NonTerminal} from '../../NonTerminal';
 import {absorbSet} from '../../utils/set';
 import {LR0Item} from './LR0Item';
 
-const cache: LR0State[] = [];
-
 export class LR0State {
-  static resetCache() {
-    cache.length = 0;
-    LR0State.seq = 0;
+  static resetCache(cfg: ContextFreeGrammar) {
+    cfg.lr0AutomatonCache.length = 0;
   }
   static getFromCache(
     cfg: ContextFreeGrammar,
     configSet: Set<LR0Item>
   ): LR0State | undefined {
-    for (const s of cache) {
+    for (const s of cfg.lr0AutomatonCache) {
       if (s.cfg !== cfg) {
         continue;
       }
@@ -28,7 +25,6 @@ export class LR0State {
     }
     return undefined;
   }
-  static seq = 0;
   id!: number;
   cfg!: ContextFreeGrammar;
   configSet!: Set<LR0Item>;
@@ -42,11 +38,10 @@ export class LR0State {
     if (state) {
       return state;
     }
-    LR0State.seq++;
-    this.id = LR0State.seq;
+    this.id = cfg.lr0AutomatonCache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
-    cache.push(this);
+    cfg.lr0AutomatonCache.push(this);
     this.computeClosure();
     this.computeCache();
   }
