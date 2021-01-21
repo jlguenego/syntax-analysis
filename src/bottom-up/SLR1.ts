@@ -5,7 +5,6 @@ import {Sentence} from '../interfaces/Sentence';
 import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {buildLR0Automaton} from './lib/LR0Automaton';
-import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
 import {LR0State} from './lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
@@ -68,17 +67,7 @@ const updateAutomatonStateForReduce = (
 };
 
 const findProduction = (state: BU0State): Production => {
-  const reducables = [
-    ...state.automaton.getCurrentState().configSet,
-  ].filter(p => p.isReducable());
-  return reducables[0].production;
-};
-
-const action = (state: BU0State): LRAction => {
-  if (canShift(state)) {
-    return new ShiftAction();
-  }
-  return new ReduceAction(findProduction(state));
+  return state.automaton.getCurrentState().reducableArrayCache[0].production;
 };
 
 export const parseWithSLR1 = (
@@ -101,12 +90,12 @@ export const parseWithSLR1 = (
       throw new Error('Too much parsing.');
     }
     // find if you need to shift or reduce.
-    const a = action(state);
-    if (a instanceof ShiftAction) {
+
+    if (canShift(state)) {
       state = shift(state);
       continue;
     }
-    state = reduce(state, a.production);
+    state = reduce(state, findProduction(state));
   }
 
   return state.parseStack[0];
