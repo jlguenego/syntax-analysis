@@ -5,6 +5,7 @@ import {Production} from '../../interfaces/Production';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {firstStar} from '../../top-down/lib/first';
+import {computeLR1Closure} from './computeClosure';
 import {LR1Item} from './LR1Item';
 
 export class LR1State {
@@ -42,31 +43,7 @@ export class LR1State {
   }
 
   computeClosure() {
-    let previousSize = -1;
-    let size = this.configSet.size;
-    while (size > previousSize) {
-      for (const item of this.configSet) {
-        const nextSymbol = item.getNextSymbol();
-        if (!(nextSymbol instanceof NonTerminal)) {
-          continue;
-        }
-        this.cfg.productions
-          .filter(p => p.LHS === nextSymbol)
-          .forEach(p => {
-            const remaining = item.getAfterNextSymbol();
-            remaining.push(item.lookAhead);
-            for (const x of firstStar(
-              this.cfg,
-              new SententialForm(remaining)
-            )) {
-              this.configSet.add(new LR1Item(p, 0, x));
-            }
-          });
-      }
-
-      previousSize = size;
-      size = this.configSet.size;
-    }
+    computeLR1Closure(this.cfg, this.configSet);
     this.updateCache();
   }
 
