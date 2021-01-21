@@ -2,14 +2,12 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {BUState} from '../interfaces/BUState';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
-import {psSerialize} from '../interfaces/ParseSymbol';
 import {Production} from '../interfaces/Production';
 import {buildLR0Automaton} from './lib/LR0Automaton';
 import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
-import {ParseError} from '../ParseError';
 import {LR0State} from './lib/LR0State';
-import {NonTerminal} from '../NonTerminal';
-import {shift} from './shift';
+import {shift} from './lib/shift';
+import {reduce} from './lib/reduce';
 
 type BU0State = BUState<LR0State>;
 
@@ -20,42 +18,6 @@ const canShift = (state: BU0State): boolean => {
   const shiftable = [...currentState.configSet].filter(p => !p.isReducable());
 
   return shiftable.length > 0;
-};
-
-const reduce = (previousState: BU0State, handleProd: Production) => {
-  const state = {...previousState};
-  const hLength = handleProd.RHS.symbols.length;
-  const semiDigestedStack = state.parseStack.slice(0, -hLength);
-  const handle = state.parseStack.slice(-hLength);
-  const reducedHandle = {node: handleProd.LHS, children: handle};
-  semiDigestedStack.push(reducedHandle);
-  state.parseStack = semiDigestedStack;
-
-  updateAutomatonStateForReduce(state, reducedHandle.node, hLength);
-
-  return state;
-};
-
-const updateAutomatonStateForReduce = (
-  state: BU0State,
-  reducedHandleNode: NonTerminal,
-  hLength: number
-): void => {
-  const lrStateStack = state.lrStateStack.slice(0, -hLength);
-  const lrState = lrStateStack.pop() as LR0State;
-  state.automaton.reset(lrState);
-  lrStateStack.push(lrState);
-  const s = reducedHandleNode;
-  if (s === state.cfg.startSymbol) {
-    state.isCompleted = true;
-    if (state.remainingInput.length > 0) {
-      throw new ParseError('remaining text', state.remainingInput[0]);
-    }
-    return;
-  }
-  state.automaton.jump(psSerialize(s));
-  lrStateStack.push(state.automaton.getCurrentState());
-  state.lrStateStack = lrStateStack;
 };
 
 const findProduction = (state: BU0State): Production => {

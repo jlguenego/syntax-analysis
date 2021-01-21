@@ -9,7 +9,7 @@ import {LRAction, ReduceAction, ShiftAction} from './lib/LRAction';
 import {ParseError} from '../ParseError';
 import {LR0State} from './lib/LR0State';
 import {NonTerminal} from '../NonTerminal';
-import {shift} from './shift';
+import {shift} from './lib/shift';
 
 type BU0State = BUState<LR0State>;
 

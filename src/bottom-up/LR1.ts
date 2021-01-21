@@ -10,7 +10,7 @@ import {NonTerminal} from '../NonTerminal';
 import {buildLR1Automaton} from './lib/LR1Automaton';
 import {LR1State} from './lib/LR1State';
 import {dollar} from '../terminals/dollar.terminal';
-import {shift} from './shift';
+import {shift} from './lib/shift';
 
 type BU1State = BUState<LR1State>;
 

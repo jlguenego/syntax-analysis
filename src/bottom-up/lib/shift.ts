@@ -1,8 +1,8 @@
-import {BUState} from '../interfaces/BUState';
-import {LRState} from '../interfaces/LRState';
-import {psSerialize} from '../interfaces/ParseSymbol';
-import {Terminal} from '../interfaces/Terminal';
-import {ParseError} from '../ParseError';
+import {BUState} from '../../interfaces/BUState';
+import {LRState} from '../../interfaces/LRState';
+import {psSerialize} from '../../interfaces/ParseSymbol';
+import {Terminal} from '../../interfaces/Terminal';
+import {ParseError} from '../../ParseError';
 
 export const shift = <T extends LRState>(
   previousState: BUState<T>
