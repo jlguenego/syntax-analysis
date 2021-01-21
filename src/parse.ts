@@ -1,3 +1,4 @@
+import {parseWithLALR1} from './bottom-up/LALR1';
 import {parseWithLR0} from './bottom-up/LR0';
 import {parseWithLR1} from './bottom-up/LR1';
 import {parseWithSLR1} from './bottom-up/SLR1';
@@ -53,8 +54,8 @@ export function parse(
       return parseWithLR1(sentence, cfg);
     case 'SLR1':
       return parseWithSLR1(sentence, cfg);
-    // case 'LALR1':
-    //   return parseWithLALR1(sentence, cfg);
+    case 'LALR1':
+      return parseWithLALR1(sentence, cfg);
     default:
       throw new Error('Method not implemented');
   }

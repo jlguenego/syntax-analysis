@@ -1,7 +1,7 @@
 import assert from 'assert';
 import {parse} from '../src';
 import {ParseError} from '../src/ParseError';
-import {cfg8, sentence8} from './data/cf8';
+import {cfg8, sentence8} from './data/cfg8';
 
 describe('SLR1 Unit Test', () => {
   it('test conflict', () => {
