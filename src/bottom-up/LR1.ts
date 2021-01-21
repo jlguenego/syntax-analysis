@@ -61,7 +61,7 @@ export const parseWithLR1 = (
   let seq = 0;
   while (!state.isCompleted) {
     seq++;
-    if (seq > 40) {
+    if (seq > 10000) {
       throw new Error('Too much parsing.');
     }
     // find if you need to shift or reduce.
