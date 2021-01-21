@@ -41,20 +41,9 @@ const canShift = (state: BU1State): boolean => {
 };
 
 const findProduction = (state: BU1State): Production => {
-  const reducables = [
-    ...state.automaton.getCurrentState().configSet,
-  ].filter(p => p.isReducableForTerminal(state.remainingInput[0]));
-  if (reducables.length > 1) {
-    throw new Error(
-      'Reduce/Reduce conflict: ' + state.automaton.getCurrentState()
-    );
-  }
-  if (reducables.length === 0) {
-    throw new Error(
-      'No reducable/No shiftable: ' + state.automaton.getCurrentState()
-    );
-  }
-  return reducables[0].production;
+  return state.automaton
+    .getCurrentState()
+    .reducableProductionMap.get(state.remainingInput[0].name) as Production;
 };
 
 const action = (state: BU1State): LRAction => {

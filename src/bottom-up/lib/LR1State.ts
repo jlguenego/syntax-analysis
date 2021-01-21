@@ -1,5 +1,6 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {psSerialize} from '../../interfaces/ParseSymbol';
+import {Production} from '../../interfaces/Production';
 import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
@@ -25,6 +26,9 @@ export class LR1State {
   id!: number;
   cfg!: ContextFreeGrammar;
   configSet!: Set<LR1Item>;
+
+  reducableProductionMap = new Map<string, Production>();
+
   constructor(cfg: ContextFreeGrammar, configSet: Set<LR1Item>) {
     const state = LR1State.getFromCache(cfg, configSet);
     if (state) {
@@ -63,7 +67,15 @@ export class LR1State {
       previousSize = size;
       size = this.configSet.size;
     }
+    this.updateCache();
     this.checkReduceReduceConflict();
+  }
+
+  updateCache() {
+    const reducables = [...this.configSet].filter(item => item.isReducable());
+    for (const item of reducables) {
+      this.reducableProductionMap.set(item.lookAhead.name, item.production);
+    }
   }
 
   checkReduceReduceConflict() {
