@@ -5,19 +5,22 @@ import {Production} from '../../interfaces/Production';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {firstStar} from '../../top-down/lib/first';
+import {absorbSet, areSetEquals} from '../../utils/set';
+import {LR0Item} from './LR0Item';
 import {LR1Item} from './LR1Item';
 
 export class LALR1State {
   static resetCache(cfg: ContextFreeGrammar) {
-    cfg.lr1AutomatonCache.length = 0;
+    cfg.lalr1AutomatonCache.length = 0;
   }
   static getFromCache(
     cfg: ContextFreeGrammar,
     configSet: Set<LR1Item>
   ): LALR1State | undefined {
-    for (const s of cfg.lr1AutomatonCache) {
-      // configSet included
-      if (s.containsConfigSet(configSet)) {
+    computeClosure(cfg, configSet);
+    for (const s of cfg.lalr1AutomatonCache) {
+      if (s.equalsCoreConfigSet(configSet)) {
+        absorbSet(s.configSet, configSet);
         return s;
       }
     }
@@ -37,36 +40,12 @@ export class LALR1State {
     this.id = cfg.lr1AutomatonCache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
-    cfg.lr1AutomatonCache.push(this);
+    cfg.lalr1AutomatonCache.push(this);
     this.computeClosure();
   }
 
   computeClosure() {
-    let previousSize = -1;
-    let size = this.configSet.size;
-    while (size > previousSize) {
-      for (const item of this.configSet) {
-        const nextSymbol = item.getNextSymbol();
-        if (!(nextSymbol instanceof NonTerminal)) {
-          continue;
-        }
-        this.cfg.productions
-          .filter(p => p.LHS === nextSymbol)
-          .forEach(p => {
-            const remaining = item.getAfterNextSymbol();
-            remaining.push(item.lookAhead);
-            for (const x of firstStar(
-              this.cfg,
-              new SententialForm(remaining)
-            )) {
-              this.configSet.add(new LR1Item(p, 0, x));
-            }
-          });
-      }
-
-      previousSize = size;
-      size = this.configSet.size;
-    }
+    computeClosure(this.cfg, this.configSet);
     this.updateCache();
   }
 
@@ -106,12 +85,43 @@ export class LALR1State {
     return result;
   }
 
-  containsConfigSet(configSet: Set<LR1Item>) {
-    for (const item of configSet) {
-      if (!this.configSet.has(item)) {
-        return false;
-      }
-    }
-    return true;
+  equalsCoreConfigSet(configSet: Set<LR1Item>) {
+    const c1 = getCore(configSet);
+    const c2 = getCore(this.configSet);
+
+    return areSetEquals(c1, c2);
   }
 }
+
+const getCore = (configSet: Set<LR1Item>): Set<LR0Item> => {
+  const result = new Set<LR0Item>();
+  configSet.forEach(item =>
+    result.add(new LR0Item(item.production, item.position))
+  );
+  return result;
+};
+
+const computeClosure = (cfg: ContextFreeGrammar, configSet: Set<LR1Item>) => {
+  let previousSize = -1;
+  let size = configSet.size;
+  while (size > previousSize) {
+    for (const item of configSet) {
+      const nextSymbol = item.getNextSymbol();
+      if (!(nextSymbol instanceof NonTerminal)) {
+        continue;
+      }
+      cfg.productions
+        .filter(p => p.LHS === nextSymbol)
+        .forEach(p => {
+          const remaining = item.getAfterNextSymbol();
+          remaining.push(item.lookAhead);
+          for (const x of firstStar(cfg, new SententialForm(remaining))) {
+            configSet.add(new LR1Item(p, 0, x));
+          }
+        });
+    }
+
+    previousSize = size;
+    size = configSet.size;
+  }
+};
