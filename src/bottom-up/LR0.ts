@@ -21,10 +21,7 @@ const canShift = (state: BU0State): boolean => {
 };
 
 const findProduction = (state: BU0State): Production => {
-  const reducables = [
-    ...state.automaton.getCurrentState().configSet,
-  ].filter(p => p.isReducable());
-  return reducables[0].production;
+  return state.automaton.getCurrentState().reducableArrayCache[0].production;
 };
 
 const action = (state: BU0State): LRAction => {
