@@ -15,12 +15,10 @@ export class Automaton<S extends {id: number}> {
   toObject() {
     return {
       states: [...this.states].map(s => s.toString()),
-      transitions: [...this.transitions.keys()].map(fromState => {
-        const fromId = fromState.id;
-        const map = this.transitions.get(fromState) as Map<string, S>;
+      transitions: [...this.transitions].map(([fromState, map]) => {
         const result: string[] = [];
-        for (const [trans, {id: toId}] of map.entries()) {
-          result.push(`${fromId}->${trans}->${toId}`);
+        for (const [trans, {id: toId}] of map) {
+          result.push(`${fromState.id}->${trans}->${toId}`);
         }
         return result;
       }),

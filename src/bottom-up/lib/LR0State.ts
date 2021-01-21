@@ -120,7 +120,7 @@ export class LR0State {
   }
 
   containsConfigSet(configSet: Set<LR0Item>) {
-    for (const item of configSet.keys()) {
+    for (const item of configSet) {
       if (!this.configSet.has(item)) {
         return false;
       }

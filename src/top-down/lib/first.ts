@@ -39,8 +39,7 @@ export const buildFirst = (cfg: ContextFreeGrammar): void => {
   let previousSize = -1;
   let size = getFirstCacheSize(cfg);
   while (size > previousSize) {
-    for (const nt of cfg.firstCache.keys()) {
-      const firstNt = cfg.firstCache.get(nt) as Set<Terminal>;
+    for (const [nt, firstNt] of cfg.firstCache) {
       const rhsArray = cfg.getProdRHSArray(nt) as SententialForm[];
       for (const rhs of rhsArray) {
         if (rhs.symbols.length === 0) {

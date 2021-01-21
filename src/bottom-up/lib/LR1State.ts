@@ -74,8 +74,8 @@ export class LR1State {
         acc.set(item.lookAhead, n + 1);
         return acc;
       }, new Map<Terminal, number>());
-    for (const t of map.keys()) {
-      if ((map.get(t) as number) > 1) {
+    for (const [t, n] of map) {
+      if (n > 1) {
         const str = [...this.configSet]
           .filter(item => item.isReducableForTerminal(t))
           .map(item => item.toString())
@@ -108,7 +108,7 @@ export class LR1State {
   }
 
   containsConfigSet(configSet: Set<LR1Item>) {
-    for (const item of configSet.keys()) {
+    for (const item of configSet) {
       if (!this.configSet.has(item)) {
         return false;
       }
