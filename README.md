@@ -17,19 +17,11 @@ npm i @jlguenego/syntax-analysis
 You should use Typescript in order to check your grammar in a easier way.
 
 ```ts
-class TA extends TerminalAlphabet {
-  '+': Terminal = {name: '+'};
-  'int': Terminal = {name: 'int'};
-}
+const t = defineTerminalAlphabet(['+', 'int'] as const);
+const nt = defineNonTerminalAlphabet(['S', 'E', 'F'] as const);
 
-class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  F = new NonTerminal('F');
-}
-
-const nt = new NTA();
-const t = new TA();
+type TA = typeof t;
+type NTA = typeof nt;
 
 const spec: CFGSpec<TA, NTA> = {
   startSymbol: 'S',
@@ -72,10 +64,10 @@ const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
 
 ## Bottom up algorithm
 
-- **LR(0)**: Use an LR0 automaton, and decide to shift or reduce without lookahead.
-- **LR(1)**: Use an LR1 automaton, and decide to shift or reduce with one lookahead.
-- **SLR(1)**: Use the LR0 automaton augmented with the FOLLOW terminals, and decide to shift or reduce with one lookahead.
-- **LALR(1)**: Use the LALR1 automaton (constructed with the "Lazy Merging" technique), and decide to shift or reduce with one lookahead.
+- **LR0**: Use an LR0 automaton, and decide to shift or reduce without lookahead.
+- **LR1**: Use an LR1 automaton, and decide to shift or reduce with one lookahead.
+- **SLR1**: Use the LR0 automaton augmented with the FOLLOW terminals, and decide to shift or reduce with one lookahead.
+- **LALR1**: Use the LALR1 automaton (constructed with the "Lazy Merging" technique), and decide to shift or reduce with one lookahead.
 
 ## Project related
 
