@@ -7,14 +7,12 @@ import {absorbSet} from '../../utils/set';
 import {LR0Item} from './LR0Item';
 
 export class LR0State {
-  static resetCache(cfg: ContextFreeGrammar) {
-    cfg.lr0AutomatonCache.length = 0;
-  }
   static getFromCache(
     cfg: ContextFreeGrammar,
-    configSet: Set<LR0Item>
+    configSet: Set<LR0Item>,
+    cache: LR0State[]
   ): LR0State | undefined {
-    for (const s of cfg.lr0AutomatonCache) {
+    for (const s of cache) {
       // same grammar
       if (s.containsConfigSet(configSet)) {
         return s;
@@ -30,15 +28,19 @@ export class LR0State {
   shiftableArrayCache!: LR0Item[];
   followNameArrayCache!: string[];
 
-  constructor(cfg: ContextFreeGrammar, configSet: Set<LR0Item>) {
-    const state = LR0State.getFromCache(cfg, configSet);
+  constructor(
+    cfg: ContextFreeGrammar,
+    configSet: Set<LR0Item>,
+    cache: LR0State[]
+  ) {
+    const state = LR0State.getFromCache(cfg, configSet, cache);
     if (state) {
       return state;
     }
-    this.id = cfg.lr0AutomatonCache.length + 1;
+    this.id = cache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
-    cfg.lr0AutomatonCache.push(this);
+    cache.push(this);
     this.computeClosure();
     this.computeCache();
   }
