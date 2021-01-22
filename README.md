@@ -2,15 +2,13 @@
 
 Syntax analysis (compiler step just after lexer).
 
-Algorithms: BFS, DFS, LL(1), LR(0), LR(1), SLR(1), LALR(1).
-
-Typescript integration.
-
 ## Install
 
 ```
 npm i @jlguenego/syntax-analysis
 ```
+
+[![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 
 ## Usage
 
