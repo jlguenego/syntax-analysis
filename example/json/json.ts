@@ -12,9 +12,9 @@ import {
 const str = `
 {
     "toto0": ["titi", "tete", 123.234],
-    "toto1": ["titi", "tete", 123.234],
-    "toto2": ["titi", "tete", 123.234],
-    "toto3": ["titi", "tete", 123.234]
+    "toto1": ["titi", "tete", null],
+    "toto2": ["titi", "tete", false],
+    "toto3": ["titi", "tete", true]
 }
 `;
 
@@ -33,6 +33,23 @@ const blank = new Rule({
   pattern: /\s+/,
   ignore: true,
 });
+
+const nullRule = new Rule({
+  name: 'null',
+  pattern: /null/,
+  generateTokenAttribute: (lexeme: string) => null,
+});
+const falseRule = new Rule({
+  name: 'false',
+  pattern: /false/,
+  generateTokenAttribute: (lexeme: string) => false,
+});
+const trueRule = new Rule({
+  name: 'true',
+  pattern: /true/,
+  generateTokenAttribute: (lexeme: string) => true,
+});
+
 const operators = Rule.createGroup(Group.OPERATORS, [
   {
     name: ':',
@@ -69,7 +86,16 @@ const numberRule = new Rule({
   generateTokenAttribute: (lexeme: string) => +lexeme,
 });
 
-const rules = [stringRule, blank, ...separators, ...operators, numberRule];
+const rules = [
+  stringRule,
+  blank,
+  ...separators,
+  ...operators,
+  nullRule,
+  falseRule,
+  trueRule,
+  numberRule,
+];
 const tokenSequence = new Lexer(rules).tokenize(str);
 console.log('tokenSequence: ', tokenSequence);
 
@@ -82,6 +108,9 @@ const t = defineTerminalAlphabet([
   ',',
   'number',
   'string',
+  'true',
+  'false',
+  'null',
 ]);
 const nt = defineNonTerminalAlphabet([
   'Json',
@@ -103,6 +132,9 @@ const spec: CFGSpecifications<typeof t, typeof nt> = {
     {LHS: 'Value', RHS: ['Array']},
     {LHS: 'Value', RHS: ['string']},
     {LHS: 'Value', RHS: ['number']},
+    {LHS: 'Value', RHS: ['true']},
+    {LHS: 'Value', RHS: ['false']},
+    {LHS: 'Value', RHS: ['null']},
     {LHS: 'Object', RHS: ['{', '}']},
     {LHS: 'Object', RHS: ['{', 'Members', '}']},
     {LHS: 'Members', RHS: ['Member']},
