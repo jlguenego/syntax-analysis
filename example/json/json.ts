@@ -30,24 +30,24 @@ const stringRule = new Rule({
 
 const blank = new Rule({
   name: 'blank',
-  pattern: /\s+/,
+  pattern: /[ \r\n\t]+/,
   ignore: true,
 });
 
 const nullRule = new Rule({
   name: 'null',
   pattern: /null/,
-  generateTokenAttribute: (lexeme: string) => null,
+  generateTokenAttribute: () => null,
 });
 const falseRule = new Rule({
   name: 'false',
   pattern: /false/,
-  generateTokenAttribute: (lexeme: string) => false,
+  generateTokenAttribute: () => false,
 });
 const trueRule = new Rule({
   name: 'true',
   pattern: /true/,
-  generateTokenAttribute: (lexeme: string) => true,
+  generateTokenAttribute: () => true,
 });
 
 const operators = Rule.createGroup(Group.OPERATORS, [
@@ -81,7 +81,7 @@ const separators = Rule.createGroup(Group.SEPARATORS, [
 
 const numberRule = new Rule({
   name: 'number',
-  pattern: /[-]{0,1}[\d]*[.]{0,1}[\d]+/,
+  pattern: /[-]{0,1}[\d]*[.]{0,1}[\d]+[eE]{0,1}[\d]+/,
   group: Group.IDENTIFIERS,
   generateTokenAttribute: (lexeme: string) => +lexeme,
 });
