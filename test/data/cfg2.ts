@@ -2,12 +2,17 @@ import {
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
-  tDef,
-  ntDef,
+  defineTerminalAlphabet,
+  defineNonTerminalAlphabet,
 } from '../../src';
 
-const t = tDef(['+', '-', 'd'] as const);
-export const nt = ntDef(['Num', 'Sign', 'Digits', 'More'] as const);
+const t = defineTerminalAlphabet(['+', '-', 'd'] as const);
+export const nt = defineNonTerminalAlphabet([
+  'Num',
+  'Sign',
+  'Digits',
+  'More',
+] as const);
 
 export const spec: CFGSpecifications<typeof t, typeof nt> = {
   startSymbol: 'Num',

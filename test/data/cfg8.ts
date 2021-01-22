@@ -4,8 +4,8 @@ import {
   CFGSpec,
   ParseTree,
   Sentence,
-  ntDef,
-  tDef,
+  defineNonTerminalAlphabet,
+  defineTerminalAlphabet,
 } from '../../src';
 
 // Source:
@@ -13,8 +13,8 @@ import {
 // Slide 95
 // Grammar not SLR(1)
 
-const t = tDef(['=', 'id', '*'] as const);
-const nt = ntDef(['S', 'E', 'L', 'R'] as const);
+const t = defineTerminalAlphabet(['=', 'id', '*'] as const);
+const nt = defineNonTerminalAlphabet(['S', 'E', 'L', 'R'] as const);
 
 type TA = typeof t;
 type NTA = typeof nt;

@@ -4,12 +4,12 @@ import {
   CFGSpec,
   ParseTree,
   Sentence,
-  ntDef,
-  tDef,
+  defineNonTerminalAlphabet,
+  defineTerminalAlphabet,
 } from '../../src';
 
-const t = tDef(['+', ';', '(', ')', 'int'] as const);
-const nt = ntDef(['S', 'E', 'T'] as const);
+const t = defineTerminalAlphabet(['+', ';', '(', ')', 'int'] as const);
+const nt = defineNonTerminalAlphabet(['S', 'E', 'T'] as const);
 
 type TA = typeof t;
 type NTA = typeof nt;

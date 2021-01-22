@@ -2,12 +2,12 @@ import {
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
-  tDef,
-  ntDef,
+  defineTerminalAlphabet,
+  defineNonTerminalAlphabet,
 } from '../../src';
 
-const t = tDef(['+', 'int', '(', ')'] as const);
-const nt = ntDef(['E', 'T', 'Y'] as const);
+const t = defineTerminalAlphabet(['+', 'int', '(', ')'] as const);
+const nt = defineNonTerminalAlphabet(['E', 'T', 'Y'] as const);
 
 type TA = typeof t;
 type NTA = typeof nt;

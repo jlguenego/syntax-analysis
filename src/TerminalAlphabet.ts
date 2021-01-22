@@ -16,5 +16,5 @@ export class TerminalAlphabet {
   }
 }
 
-export const tDef = <T extends string>(a: readonly T[]) =>
+export const defineTerminalAlphabet = <T extends string>(a: readonly T[]) =>
   new (TerminalAlphabet.getClass(a))();

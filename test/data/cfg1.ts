@@ -4,12 +4,12 @@ import {
   Sentence,
   ParseTree,
   CFGSpec,
-  ntDef,
-  tDef,
+  defineNonTerminalAlphabet,
+  defineTerminalAlphabet,
 } from '../../src';
 
-const t = tDef(['+', 'int'] as const);
-const nt = ntDef(['S', 'E', 'F'] as const);
+const t = defineTerminalAlphabet(['+', 'int'] as const);
+const nt = defineNonTerminalAlphabet(['S', 'E', 'F'] as const);
 
 const spec: CFGSpecifications<typeof t, typeof nt> = {
   startSymbol: 'S',
