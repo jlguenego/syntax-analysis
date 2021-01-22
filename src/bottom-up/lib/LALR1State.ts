@@ -37,7 +37,7 @@ export class LALR1State {
     if (state) {
       return state;
     }
-    this.id = cfg.lr1AutomatonCache.length + 1;
+    this.id = cache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
     cache.push(this);

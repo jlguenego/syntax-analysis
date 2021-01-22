@@ -13,7 +13,6 @@ import {buildLL1Table} from './top-down/LL1Table';
 import {epsilon} from './terminals/epsilon.terminal';
 import {ParseError} from './ParseError';
 import {LR0State} from './bottom-up/lib/LR0State';
-import {LR1State} from './bottom-up/lib/LR1State';
 
 export interface CFGSpecifications<
   T extends TerminalAlphabet,
@@ -42,7 +41,6 @@ export class ContextFreeGrammar {
   followCache = new Map<NonTerminal, Set<Terminal>>();
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
   lr0AutomatonCache: LR0State[] = [];
-  lr1AutomatonCache: LR1State[] = [];
 
   options: CFGOptions = {
     ll1: false,
