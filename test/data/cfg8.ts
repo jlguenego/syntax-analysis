@@ -1,13 +1,11 @@
 import {
-  NonTerminalAlphabet,
-  NonTerminal,
-  TerminalAlphabet,
-  Terminal,
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
   ParseTree,
   Sentence,
+  ntDef,
+  tDef,
 } from '../../src';
 
 // Source:
@@ -15,21 +13,11 @@ import {
 // Slide 95
 // Grammar not SLR(1)
 
-class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  L = new NonTerminal('L');
-  R = new NonTerminal('R');
-}
+const t = tDef(['=', 'id', '*'] as const);
+const nt = ntDef(['S', 'E', 'L', 'R'] as const);
 
-class TA extends TerminalAlphabet {
-  '=': Terminal = {name: '='};
-  'id': Terminal = {name: 'id'};
-  '*': Terminal = {name: '*'};
-}
-
-const nt = new NTA();
-const t = new TA();
+type TA = typeof t;
+type NTA = typeof nt;
 
 const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'S',

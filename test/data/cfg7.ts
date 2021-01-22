@@ -1,30 +1,18 @@
 import {
-  NonTerminalAlphabet,
-  NonTerminal,
-  TerminalAlphabet,
-  Terminal,
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
   ParseTree,
   Sentence,
+  ntDef,
+  tDef,
 } from '../../src';
 
-class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  T = new NonTerminal('T');
-}
+const t = tDef(['+', '(', ')', 'int'] as const);
+const nt = ntDef(['S', 'E', 'T'] as const);
 
-class TA extends TerminalAlphabet {
-  '+': Terminal = {name: '+'};
-  '(': Terminal = {name: '('};
-  ')': Terminal = {name: ')'};
-  'int': Terminal = {name: 'int'};
-}
-
-const nt = new NTA();
-const t = new TA();
+type TA = typeof t;
+type NTA = typeof nt;
 
 const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'S',
