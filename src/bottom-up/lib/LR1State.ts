@@ -2,9 +2,6 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
-import {NonTerminal} from '../../NonTerminal';
-import {SententialForm} from '../../SententialForm';
-import {firstStar} from '../../top-down/lib/first';
 import {computeLR1Closure} from './computeClosure';
 import {LR1Item} from './LR1Item';
 

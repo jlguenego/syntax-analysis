@@ -1,37 +1,22 @@
 import {
-  NonTerminalAlphabet,
-  NonTerminal,
-  TerminalAlphabet,
-  Terminal,
   CFGSpecifications,
   ContextFreeGrammar,
   CFGSpec,
+  tDef,
+  ntDef,
 } from '../../src';
 
-export class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  MOINS: Terminal = {name: '-'};
-  DIGIT: Terminal = {name: 'd'};
-}
+const t = tDef(['+', '-', 'd'] as const);
+export const nt = ntDef(['Num', 'Sign', 'Digits', 'More'] as const);
 
-export class NTA extends NonTerminalAlphabet {
-  Num = new NonTerminal('Num');
-  Sign = new NonTerminal('Sign');
-  Digits = new NonTerminal('Digits');
-  More = new NonTerminal('More');
-}
-
-export const nt = new NTA();
-const t = new TA();
-
-export const spec: CFGSpecifications<TA, NTA> = {
+export const spec: CFGSpecifications<typeof t, typeof nt> = {
   startSymbol: 'Num',
   productions: [
     {LHS: 'Num', RHS: ['Sign', 'Digits']},
-    {LHS: 'Sign', RHS: ['PLUS']},
-    {LHS: 'Sign', RHS: ['MOINS']},
+    {LHS: 'Sign', RHS: ['+']},
+    {LHS: 'Sign', RHS: ['-']},
     {LHS: 'Sign', RHS: []},
-    {LHS: 'Digits', RHS: ['DIGIT', 'More']},
+    {LHS: 'Digits', RHS: ['d', 'More']},
     {LHS: 'More', RHS: ['Digits']},
     {LHS: 'More', RHS: []},
   ],

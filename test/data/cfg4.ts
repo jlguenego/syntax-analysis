@@ -1,36 +1,26 @@
 import {
-  NonTerminalAlphabet,
-  NonTerminal,
-  TerminalAlphabet,
-  Terminal,
   CFGSpecifications,
   ContextFreeGrammar,
   Sentence,
   ParseTree,
   CFGSpec,
+  tDef,
+  ntDef,
 } from '../../src';
 
-export class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  F = new NonTerminal('F');
-}
+const t = tDef(['+', 'int'] as const);
+const nt = ntDef(['S', 'E', 'F'] as const);
 
-export class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  INT: Terminal = {name: 'int'};
-}
-
-export const nt = new NTA();
-const t = new TA();
+type TA = typeof t;
+type NTA = typeof nt;
 
 export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'S',
   productions: [
     {LHS: 'S', RHS: ['E']},
     {LHS: 'E', RHS: ['F']},
-    {LHS: 'E', RHS: ['F', 'PLUS', 'E']},
-    {LHS: 'F', RHS: ['INT']},
+    {LHS: 'E', RHS: ['F', '+', 'E']},
+    {LHS: 'F', RHS: ['int']},
   ],
 };
 export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
@@ -53,25 +43,25 @@ export const expectedParseTree: ParseTree = {
               children: [
                 {
                   node: nt.F,
-                  children: [{node: t.INT}],
+                  children: [{node: t.int}],
                 },
               ],
             },
             {
-              node: t.PLUS,
+              node: t['+'],
             },
             {
               node: nt.F,
-              children: [{node: t.INT}],
+              children: [{node: t.int}],
             },
           ],
         },
         {
-          node: t.PLUS,
+          node: t['+'],
         },
         {
           node: nt.F,
-          children: [{node: t.INT}],
+          children: [{node: t.int}],
         },
       ],
     },
