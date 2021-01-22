@@ -16,7 +16,8 @@
     "pretest": "npm.cmd run compile",
     "posttest": "npm.cmd run lint",
     "prerelease": "npm run compile && npm run compile:esm",
-    "release": "standard-version"
+    "release": "standard-version",
+    "json": "ts-node example/json/json.ts"
   },
   "keywords": [
     "syntax analysis",
