@@ -8,8 +8,8 @@ import {LALR1State} from './LALR1State';
 export const buildLALR1Automaton = (
   cfg: ContextFreeGrammar
 ): Automaton<LALR1State> => {
+  const cache: LALR1State[] = [];
   checkStartSymbol(cfg);
-  LALR1State.resetCache(cfg);
 
   // add a first state with start symbol
 
@@ -20,7 +20,7 @@ export const buildLALR1Automaton = (
   for (const prod of startProductions) {
     configSet.add(new LR1Item(prod, 0, dollar));
   }
-  const startState = new LALR1State(cfg, configSet);
+  const startState = new LALR1State(cfg, configSet, cache);
   const automaton = new Automaton<LALR1State>(startState);
 
   let previousSize = 0;
@@ -45,7 +45,7 @@ export const buildLALR1Automaton = (
             new LR1Item(p.production, p.position + 1, p.lookAhead)
           );
         });
-        const newState = new LALR1State(cfg, newConfigSet);
+        const newState = new LALR1State(cfg, newConfigSet, cache);
         automaton.addTransition(s1, newState, symbol);
       });
     }

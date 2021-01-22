@@ -8,15 +8,13 @@ import {LR0Item} from './LR0Item';
 import {LR1Item} from './LR1Item';
 
 export class LALR1State {
-  static resetCache(cfg: ContextFreeGrammar) {
-    cfg.lalr1AutomatonCache.length = 0;
-  }
   static getFromCache(
     cfg: ContextFreeGrammar,
-    configSet: Set<LR1Item>
+    configSet: Set<LR1Item>,
+    cache: LALR1State[]
   ): LALR1State | undefined {
     computeLR1Closure(cfg, configSet);
-    for (const s of cfg.lalr1AutomatonCache) {
+    for (const s of cache) {
       if (s.equalsCoreConfigSet(configSet)) {
         absorbSet(s.configSet, configSet);
         return s;
@@ -30,15 +28,19 @@ export class LALR1State {
 
   reducableProductionMap = new Map<string, Production>();
 
-  constructor(cfg: ContextFreeGrammar, configSet: Set<LR1Item>) {
-    const state = LALR1State.getFromCache(cfg, configSet);
+  constructor(
+    cfg: ContextFreeGrammar,
+    configSet: Set<LR1Item>,
+    cache: LALR1State[]
+  ) {
+    const state = LALR1State.getFromCache(cfg, configSet, cache);
     if (state) {
       return state;
     }
     this.id = cfg.lr1AutomatonCache.length + 1;
     this.cfg = cfg;
     this.configSet = configSet;
-    cfg.lalr1AutomatonCache.push(this);
+    cache.push(this);
     this.computeClosure();
   }
 
