@@ -2,6 +2,10 @@
 
 Syntax analysis (compiler step just after lexer).
 
+Algorithms: BFS, DFS, LL(1), LR(0), LR(1), SLR(1), LALR(1).
+
+Typescript integration.
+
 ## Install
 
 ```
