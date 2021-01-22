@@ -70,6 +70,8 @@ const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
 
 - **LR(0)**: Use an LR0 automaton, and decide to shift or reduce without lookahead.
 - **LR(1)**: Use an LR1 automaton, and decide to shift or reduce with one lookahead.
+- **SLR(1)**: Use the LR0 automaton augmented with the FOLLOW terminals, and decide to shift or reduce with one lookahead.
+- **LALR(1)**: Use the LALR1 automaton (constructed with the "Lazy Merging" technique), and decide to shift or reduce with one lookahead.
 
 ## Project related
 
