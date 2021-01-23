@@ -37,6 +37,7 @@ export const parseWithBFS1 = (
     getChildren
   );
   const pt = bfsTree.search() as PartialParseTree;
+  pt.tree.getLeaves().forEach((leaf, i) => (leaf.node = sentence[i]));
   const parseTree = pt.tree.toObject() as ParseTree;
   return parseTree;
 };
