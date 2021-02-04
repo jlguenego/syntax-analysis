@@ -17,3 +17,12 @@ export const testFn = (sentence: Sentence) => (
   }
   return false;
 };
+
+export const testFnAsync = (sentence: Sentence) => async (
+  ppt: PartialParseTree
+): Promise<boolean> => {
+  if (ppt.sententialForm.isEqualsToSentence(sentence)) {
+    return true;
+  }
+  return false;
+};
