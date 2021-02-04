@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/jlguenego/syntax-analysis/compare/v1.2.0...v1.3.0) (2021-02-04)
+
+
+### Features
+
+* added bfs1 async ([ff8f75c](https://github.com/jlguenego/syntax-analysis/commit/ff8f75ca167673ec123b36999b12c37f3f890208))
+
+
+### Bug Fixes
+
+* bug detected ([2a95424](https://github.com/jlguenego/syntax-analysis/commit/2a954245ebd50d0afea75315086fd65c79b1f1aa))
+* bug of tree ([6931eb1](https://github.com/jlguenego/syntax-analysis/commit/6931eb1872b78542835e65152024b4730a9d800f))
+* replace leaves with exact terminals ([0a37a2b](https://github.com/jlguenego/syntax-analysis/commit/0a37a2b929f560908e5e4acf922dc7d047daadd7))
+
 ## [1.2.0](https://github.com/jlguenego/syntax-analysis/compare/v1.1.0...v1.2.0) (2021-01-22)
 
 
