@@ -20,15 +20,18 @@ export const bfs1GetChildren = (cfg: ContextFreeGrammar) => (
   // need a tree.query(path) with path as an array of node
   // need a tree.getPath(subTree)
 
-  const ntsArray = ppt.sententialForm.symbols.filter(
-    s => s instanceof NonTerminal
-  );
+  const paths = ppt.tree
+    .getLeaves()
+    .filter(t => t.node instanceof NonTerminal)
+    .map(t => ppt.tree.getPath(t) as number[]);
+
   const result = [];
-  for (const nts of ntsArray) {
+  for (const path of paths) {
+    const nts = ppt.tree.getSubTree(path).node;
     const productions = cfg.productions.filter(p => p.LHS === nts);
     for (const prod of productions) {
       const child = ppt.tree.clone();
-      const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+      const ntl = child.getSubTree(path);
       for (const s of prod.RHS.symbols) {
         child.graft(ntl, new Tree<ParseSymbol>(s));
       }
