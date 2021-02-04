@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.3.1](https://github.com/jlguenego/syntax-analysis/compare/v1.3.0...v1.3.1) (2021-02-04)
+
+
+### Bug Fixes
+
+* last tree version ([3b4192f](https://github.com/jlguenego/syntax-analysis/commit/3b4192f40d98844f97ae1b39ca6149a029b8d5fa))
+* missing export ([9250fa8](https://github.com/jlguenego/syntax-analysis/commit/9250fa8c99407a566c380683b2c4bb6e1d1c7637))
+
 ## [1.3.0](https://github.com/jlguenego/syntax-analysis/compare/v1.2.0...v1.3.0) (2021-02-04)
 
 
