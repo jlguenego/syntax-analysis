@@ -9,6 +9,7 @@ export * from './interfaces/Terminal';
 export * from './NonTerminal';
 export * from './NonTerminalAlphabet';
 export * from './parse';
+export * from './PartialParseTree';
 export * from './SententialForm';
 export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
