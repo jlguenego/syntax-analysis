@@ -1,13 +1,15 @@
-import {Tree, BFSTree} from '@jlguenego/tree';
+import {Tree, BFSTree, BFSTreeAsync} from '@jlguenego/tree';
+import {Observable} from 'rxjs';
+import {first} from 'rxjs/operators';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {NonTerminal} from '../NonTerminal';
 import {PartialParseTree} from '../PartialParseTree';
-import {testFn} from './common';
+import {testFn, testFnAsync} from './common';
 
-const getChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
+const bfs2GetChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
   ppt: PartialParseTree
 ): PartialParseTree[] => {
   // JLG optimization. This is true exept if there is a production with RHS empty.
@@ -52,9 +54,25 @@ export const parseWithBFS2 = (
   const bfsTree = new BFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
     testFn(sentence),
-    getChildren(sentence, cfg)
+    bfs2GetChildren(sentence, cfg)
   );
   const pt = bfsTree.search() as PartialParseTree;
   const parseTree = pt.tree.toObject() as ParseTree;
   return parseTree;
+};
+
+export const getBFS2TreeAsync = (
+  sentence: Sentence,
+  cfg: ContextFreeGrammar,
+  observable: Observable<number>
+): BFSTreeAsync<PartialParseTree> => {
+  const bfsTree = new BFSTreeAsync<PartialParseTree>(
+    new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
+    testFnAsync(sentence),
+    async (ppt: PartialParseTree) => {
+      await observable.pipe(first()).toPromise();
+      return bfs2GetChildren(sentence, cfg)(ppt);
+    }
+  );
+  return bfsTree;
 };
