@@ -14,12 +14,6 @@ export const bfs1GetChildren = (cfg: ContextFreeGrammar) => (
 ): PartialParseTree[] => {
   // foreach leaves generate all possible production rules, and add the node to the tree.
 
-  // TODO: there is a bug when same terminal appears many times in the tree.
-  // when cloning the tree, it is not possible to retrieve the exact subtree.
-  // child.find will retrieve only the first one.
-  // need a tree.query(path) with path as an array of node
-  // need a tree.getPath(subTree)
-
   const paths = ppt.tree
     .getLeaves()
     .filter(t => t.node instanceof NonTerminal)
