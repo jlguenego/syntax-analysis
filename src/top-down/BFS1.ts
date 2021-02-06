@@ -50,7 +50,7 @@ export const parseWithBFS1 = (
   return parseTree;
 };
 
-export const getBFSTreeAsync = (
+export const getBFS1TreeAsync = (
   sentence: Sentence,
   cfg: ContextFreeGrammar,
   observable: Observable<number>
