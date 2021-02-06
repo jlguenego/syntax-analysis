@@ -26,6 +26,7 @@ export const parseWithBFS3 = (
       return [];
     }
 
+    // We take ONLY the first nonterminal for expansion. The leftmost derivation.
     const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
 
     const result = [];
