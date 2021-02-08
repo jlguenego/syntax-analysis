@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.4.0](https://github.com/jlguenego/syntax-analysis/compare/v1.3.5...v1.4.0) (2021-02-08)
+
+
+### Features
+
+* add dfs1 ([085ed0d](https://github.com/jlguenego/syntax-analysis/commit/085ed0d01da3e8663d84d00453f2070cf376ccfd))
+
+
+### Bug Fixes
+
+* export common ([021def6](https://github.com/jlguenego/syntax-analysis/commit/021def6f37a58365169478d16d3ed752c527643f))
+
 ### [1.3.5](https://github.com/jlguenego/syntax-analysis/compare/v1.3.4...v1.3.5) (2021-02-08)
 
 ### [1.3.4](https://github.com/jlguenego/syntax-analysis/compare/v1.3.3...v1.3.4) (2021-02-08)
