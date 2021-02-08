@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.4.1](https://github.com/jlguenego/syntax-analysis/compare/v1.4.0...v1.4.1) (2021-02-08)
+
+
+### Bug Fixes
+
+* empty rules ([09bcb79](https://github.com/jlguenego/syntax-analysis/commit/09bcb79fb38d93d82a780e9160ca60abaa4138d1))
+
 ## [1.4.0](https://github.com/jlguenego/syntax-analysis/compare/v1.3.5...v1.4.0) (2021-02-08)
 
 
