@@ -59,7 +59,7 @@
     "url": "https://github.com/sponsors/jlguenego"
   },
   "dependencies": {
-    "@jlguenego/tree": "^1.5.0",
+    "@jlguenego/tree": "^1.6.0",
     "rxjs": "^6.6.3"
   }
 }
