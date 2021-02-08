@@ -10,7 +10,6 @@ import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './top-down/lib/first';
 import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/LL1Table';
-import {epsilon} from './terminals/epsilon.terminal';
 import {ParseError} from './ParseError';
 
 export interface CFGSpecifications<
@@ -55,13 +54,16 @@ export class ContextFreeGrammar {
     this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
     this.productions = spec.productions.map(p => {
       const lhs = (nt[p.LHS] as unknown) as NonTerminal;
-      const symbols = p.RHS.map(
-        c =>
-          ((nt[c] as unknown) as NonTerminal) ?? ((t[c] as unknown) as Terminal)
-      );
       const rhs = new SententialForm(
-        symbols.length === 0 ? [epsilon] : symbols
+        p.RHS.map(
+          c =>
+            ((nt[c] as unknown) as NonTerminal) ??
+            ((t[c] as unknown) as Terminal)
+        )
       );
+      // const rhs = new SententialForm(
+      //   symbols.length === 0 ? [epsilon] : symbols
+      // );
       return {
         LHS: lhs,
         RHS: rhs,
