@@ -15,6 +15,7 @@ export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
 export * from './terminals/epsilon.terminal';
 
+export * from './top-down/common';
 export * from './top-down/BFS1';
 export * from './top-down/BFS2';
 export * from './top-down/BFS3';
