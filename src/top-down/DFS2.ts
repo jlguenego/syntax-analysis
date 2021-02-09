@@ -21,10 +21,11 @@ export const parseWithDFS2 = (
     }
 
     // only the first non terminal needs to be yielded. (left most derivation)
-    const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
-    if (nts === undefined) {
+    const subtreePath = ppt.getFirstNonTerminal();
+    if (!subtreePath) {
       return [];
     }
+    const nts = subtreePath.subtree.node;
 
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
@@ -33,6 +34,7 @@ export const parseWithDFS2 = (
     if (!terminals.map(t => t.name).includes(lookAheadToken.name)) {
       return [];
     }
+
     const result = [];
     const productions = cfg.productions
       .filter(p => p.LHS === nts)
@@ -42,12 +44,8 @@ export const parseWithDFS2 = (
           p.RHS.symbols[0].name === lookAheadToken.name
       );
     for (const prod of productions) {
-      const child = ppt.tree.clone();
-      const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
-      for (const s of prod.RHS.symbols) {
-        child.graft(ntl, new Tree<ParseSymbol>(s));
-      }
-      result.push(new PartialParseTree(child));
+      const child = ppt.yield(subtreePath, prod);
+      result.push(child);
     }
 
     return result;

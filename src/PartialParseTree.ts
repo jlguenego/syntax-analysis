@@ -1,3 +1,4 @@
+import {Production} from './interfaces/Production';
 import {Tree} from '@jlguenego/tree';
 import {epsilon} from './terminals/epsilon.terminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
@@ -49,6 +50,15 @@ export class PartialParseTree {
     }
     const path = this.tree.getPath(subtree) as number[];
     return {subtree, path};
+  }
+
+  yield(nt: SubtreePath, prod: Production): PartialParseTree {
+    const child = this.tree.clone();
+    const ntl = child.getSubTree(nt.path);
+    for (const s of prod.RHS.symbols) {
+      child.graft(ntl, new Tree<ParseSymbol>(s));
+    }
+    return new PartialParseTree(child);
   }
 
   getLookAheadToken(sentence: Sentence): Terminal {
