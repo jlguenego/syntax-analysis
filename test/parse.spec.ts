@@ -1,6 +1,7 @@
 import assert from 'assert';
 import {parse} from '../src';
 import {cfg1, expectedParseTree, sentence} from './data/cfg1';
+import {cfg3, expectedParseTree3, sentence3} from './data/cfg3';
 import {cfg6, expectedParseTree6, sentence6} from './data/cfg6';
 import {cfg7, expectedParseTree7, sentence7} from './data/cfg7';
 import {cfg8, expectedParseTree8, sentence8} from './data/cfg8';
@@ -26,12 +27,11 @@ describe('Parse Unit Test', () => {
     const parseTree = parse(sentence, cfg1, {method: 'DFS2'});
     assert.deepStrictEqual(parseTree, expectedParseTree);
   });
-  // TODO: !!!
-  // it('test parse LL1_cfg3', () => {
-  //   const s = ['int', '+', '(', 'int', '+', 'int', ')'].map(n => ({name: n}));
-  //   const parseTree3 = parse(s, cfg3, {method: 'LL1'});
-  //   assert.deepStrictEqual(parseTree3, expectedParseTree3);
-  // });
+
+  it('test parse LL1_cfg3', () => {
+    const parseTree3 = parse(sentence3, cfg3, {method: 'LL1'});
+    assert.deepStrictEqual(parseTree3, expectedParseTree3);
+  });
   it('test parse LR0_cfg6', () => {
     const parseTree6 = parse(sentence6, cfg6, {method: 'LR0'});
     assert.deepStrictEqual(parseTree6, expectedParseTree6);

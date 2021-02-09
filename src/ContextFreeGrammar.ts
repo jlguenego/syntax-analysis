@@ -13,7 +13,7 @@ import {
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './top-down/lib/first';
 import {buildFollow} from './top-down/lib/follow';
-import {buildLL1Table} from './top-down/LL1Table';
+import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
 import {CFGSpecifications} from './interfaces/CFGSpec';
 

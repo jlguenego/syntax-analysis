@@ -3,6 +3,7 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
+import {ParseError} from '../ParseError';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn} from './common';
 
@@ -14,6 +15,10 @@ export const parseWithLL1 = (
     // only the first non terminal needs to be yielded. (left most derivation)
     const nts = ppt.sententialForm.findFirstNonTerminal();
     if (nts === undefined) {
+      const length = ppt.sententialForm.symbols.length;
+      if (length < sentence.length) {
+        throw new ParseError('LL(1) Parser: Syntax Error.', sentence[length]);
+      }
       return [];
     }
 
