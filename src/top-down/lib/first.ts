@@ -22,7 +22,7 @@ const getFirstCache = (cfg: ContextFreeGrammar, nt: NonTerminal) => {
 };
 
 /**
- * For a all given non-terminal `nt`,
+ * For all given non-terminal `nt`,
  * returns the list of all terminals
  * that are prefix to sentence that derives from `nt`
  *
