@@ -1,6 +1,7 @@
 export * from './Automaton';
 export * from './bottom-up/lib/LR0Automaton';
 export * from './ContextFreeGrammar';
+export * from './interfaces/CFGSpec';
 export * from './interfaces/ParseSymbol';
 export * from './interfaces/ParseTree';
 export * from './interfaces/Production';
@@ -14,6 +15,7 @@ export * from './SententialForm';
 export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
 export * from './terminals/epsilon.terminal';
+export * from './utils/check';
 
 export * from './top-down/common';
 export * from './top-down/BFS1';

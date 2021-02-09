@@ -1,26 +1,21 @@
 import {ParseSymbol} from './interfaces/ParseSymbol';
-import {Production, ProductionSpec} from './interfaces/Production';
+import {Production} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
 import {Terminal} from './interfaces/Terminal';
 import {NonTerminal} from './NonTerminal';
 import {NonTerminalAlphabet} from './NonTerminalAlphabet';
 import {TerminalAlphabet} from './TerminalAlphabet';
-import {checkAlphabetAreDisjoint} from './utils/check';
+import {
+  checkAlphabetAreDisjoint,
+  getUnReachableProductionRule,
+  removeUnreachableProductionRules,
+} from './utils/check';
 import {isLeftRecursiveNonTerminal} from './left-recursion/left-recursion';
 import {buildFirst} from './top-down/lib/first';
 import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/LL1Table';
 import {ParseError} from './ParseError';
-
-export interface CFGSpecifications<
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
-> {
-  startSymbol: keyof NT;
-  productions: ProductionSpec<T, NT>[];
-}
-
-export type CFGSpec = CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>;
+import {CFGSpecifications} from './interfaces/CFGSpec';
 
 export interface CFGOptions {
   ll1: boolean;
@@ -44,7 +39,7 @@ export class ContextFreeGrammar {
   };
 
   constructor(
-    spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
+    public spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
     public t: TerminalAlphabet,
     public nt: NonTerminalAlphabet,
     opts: Partial<CFGOptions> = {}
@@ -88,6 +83,8 @@ export class ContextFreeGrammar {
 
   check() {
     checkAlphabetAreDisjoint(this.t, this.nt);
+    const rules = getUnReachableProductionRule(this.spec);
+    this.spec = removeUnreachableProductionRules(this.spec, rules);
   }
 
   hasEmptyProduction(): boolean {

@@ -11,6 +11,8 @@ export interface ProductionSpec<
   RHS: (keyof T | keyof NT)[];
 }
 
+export type PSpec = ProductionSpec<TerminalAlphabet, NonTerminalAlphabet>;
+
 export interface Production {
   LHS: NonTerminal;
   RHS: SententialForm;
