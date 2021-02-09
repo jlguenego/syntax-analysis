@@ -121,7 +121,7 @@ export class ContextFreeGrammar {
       return [nt];
     }
     const set = this.firstCache.get(nt) as Set<Terminal>;
-    return [...set].sort();
+    return [...set];
   }
 
   getfromLL1Table(nt: NonTerminal, t: Terminal): SententialForm {
