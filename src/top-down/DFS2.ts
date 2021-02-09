@@ -44,8 +44,7 @@ export const parseWithDFS2 = (
           p.RHS.symbols[0].name === lookAheadToken.name
       );
     for (const prod of productions) {
-      const child = ppt.yield(subtreePath, prod);
-      result.push(child);
+      result.push(ppt.yield(subtreePath, prod));
     }
 
     return result;
