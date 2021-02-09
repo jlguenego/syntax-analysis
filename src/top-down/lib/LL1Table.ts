@@ -19,7 +19,7 @@ export const buildLL1Table = (cfg: ContextFreeGrammar): void => {
     const fs = firstStar(cfg, prod.RHS);
     const firstStarMinusEpsilon = copyWithoutElt(fs, epsilon);
     for (const t of firstStarMinusEpsilon) {
-      if (ll1TableA.get(t.name)) {
+      if (ll1TableA.get(t.name) !== undefined) {
         throw new Error(
           `Grammar is not LL1: FIRST/FIRST conflict for (${a.label}, ${t.name})`
         );
@@ -29,7 +29,7 @@ export const buildLL1Table = (cfg: ContextFreeGrammar): void => {
     if (fs.has(epsilon)) {
       const followA = cfg.followCache.get(a) as Set<Terminal>;
       for (const t of followA) {
-        if (ll1TableA.get(t.name)) {
+        if (ll1TableA.get(t.name) !== undefined) {
           throw new Error(
             `Grammar is not LL1: FIRST/FOLLOW conflict for (${a.label}, ${t.name})`
           );
