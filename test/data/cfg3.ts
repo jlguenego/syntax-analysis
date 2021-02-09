@@ -12,6 +12,7 @@ const nt = defineNonTerminalAlphabet(['E', 'Op'] as const);
 type TA = typeof t;
 type NTA = typeof nt;
 
+// This grammar is LL1.
 export const spec: CFGSpecifications<TA, NTA> = {
   startSymbol: 'E',
   productions: [
