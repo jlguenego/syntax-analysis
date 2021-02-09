@@ -5,7 +5,6 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
-import {NonTerminal} from '../NonTerminal';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn, testFnAsync} from './common';
 
@@ -28,17 +27,18 @@ export const dfs1GetChildren = (
   }
 
   // CS143 slide 51 : consider only left most derivation.
-  const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
-  if (nts === undefined) {
+  const subtreePath = ppt.getFirstNonTerminal();
+  if (!subtreePath) {
     return [];
   }
+  const {subtree, path} = subtreePath;
 
   const result = [];
-
+  const nts = subtree.node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
     const child = ppt.tree.clone();
-    const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+    const ntl = child.getSubTree(path);
     for (const s of prod.RHS.symbols) {
       child.graft(ntl, new Tree<ParseSymbol>(s));
     }
