@@ -21,11 +21,11 @@ export const parseWithDFS2 = (
     }
 
     // only the first non terminal needs to be yielded. (left most derivation)
-    const subtreePath = ppt.getFirstNonTerminal();
-    if (!subtreePath) {
+    const fnt = ppt.getFirstNonTerminal();
+    if (!fnt) {
       return [];
     }
-    const nts = subtreePath.subtree.node;
+    const nts = fnt.subtree.node;
 
     // CS143 slide
     // the order of productions is now important. We take the one by looking at one lookahead token.
@@ -44,7 +44,7 @@ export const parseWithDFS2 = (
           p.RHS.symbols[0].name === lookAheadToken.name
       );
     for (const prod of productions) {
-      result.push(ppt.yield(subtreePath, prod));
+      result.push(ppt.yield(fnt.path, prod));
     }
 
     return result;

@@ -52,9 +52,9 @@ export class PartialParseTree {
     return {subtree, path};
   }
 
-  yield(nt: SubtreePath, prod: Production): PartialParseTree {
+  yield(path: number[], prod: Production): PartialParseTree {
     const child = this.tree.clone();
-    const ntl = child.getSubTree(nt.path);
+    const ntl = child.getSubTree(path);
     for (const s of prod.RHS.symbols) {
       child.graft(ntl, new Tree<ParseSymbol>(s));
     }

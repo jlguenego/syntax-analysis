@@ -27,15 +27,15 @@ export const dfs1GetChildren = (
   }
 
   // CS143 slide 51 : consider only left most derivation.
-  const subtreePath = ppt.getFirstNonTerminal();
-  if (!subtreePath) {
+  const fnt = ppt.getFirstNonTerminal();
+  if (!fnt) {
     return [];
   }
   const result = [];
-  const nts = subtreePath.subtree.node;
+  const nts = fnt.subtree.node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
-    result.push(ppt.yield(subtreePath, prod));
+    result.push(ppt.yield(fnt.path, prod));
   }
 
   return result;

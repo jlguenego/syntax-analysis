@@ -27,22 +27,15 @@ export const bfs3GetChildren = (
   }
 
   // We take ONLY the first nonterminal for expansion. The leftmost derivation.
-  const subtreePath = ppt.getFirstNonTerminal();
-  if (!subtreePath) {
+  const fnt = ppt.getFirstNonTerminal();
+  if (!fnt) {
     return [];
   }
-  const {subtree, path} = subtreePath;
-
   const result = [];
-  const nts = subtree.node;
+  const nts = fnt.subtree.node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
-    const child = ppt.tree.clone();
-    const ntl = child.getSubTree(path);
-    for (const s of prod.RHS.symbols) {
-      child.graft(ntl, new Tree<ParseSymbol>(s));
-    }
-    result.push(new PartialParseTree(child));
+    result.push(ppt.yield(fnt.path, prod));
   }
 
   return result;
