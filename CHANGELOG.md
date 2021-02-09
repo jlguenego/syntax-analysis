@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.5.0](https://github.com/jlguenego/syntax-analysis/compare/v1.4.1...v1.5.0) (2021-02-09)
+
+
+### Features
+
+* add unreachable rules tracking ([0a22cb3](https://github.com/jlguenego/syntax-analysis/commit/0a22cb38d9bacf381c92a60749ff3e6347e65f09))
+* added dfs2 async ([3b6cf23](https://github.com/jlguenego/syntax-analysis/commit/3b6cf2360215c5c6f5ed288b183298e3232c9f96))
+* export ll1GetChildren ([ed59bc1](https://github.com/jlguenego/syntax-analysis/commit/ed59bc1e7a770b088c4b4481ece5aae215fa37c8))
+
+
+### Bug Fixes
+
+* bug in buildLL1Table ([db3f954](https://github.com/jlguenego/syntax-analysis/commit/db3f95463fba5b67a6d40bb199a66c3125789a0e))
+* LL1 working ([1b157ac](https://github.com/jlguenego/syntax-analysis/commit/1b157ac640f9217821f52f36d73541b5159811f7))
+
 ### [1.4.1](https://github.com/jlguenego/syntax-analysis/compare/v1.4.0...v1.4.1) (2021-02-08)
 
 
