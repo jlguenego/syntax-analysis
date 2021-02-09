@@ -28,21 +28,15 @@ export const bfs3GetChildren = (
   }
 
   // We take ONLY the first nonterminal for expansion. The leftmost derivation.
-
-  const paths = ppt.tree
+  const ntSubTree = ppt.tree
     .getLeaves()
-    .filter(t => t.node instanceof NonTerminal)
-    .slice(0, 1)
-    .map(t => ppt.tree.getPath(t) as number[]);
-
-  if (paths.length === 0) {
+    .find(t => t.node instanceof NonTerminal);
+  if (!ntSubTree) {
     return [];
   }
-
-  const path = paths[0];
+  const path = ppt.tree.getPath(ntSubTree) as number[];
 
   const result = [];
-
   const nts = ppt.tree.getSubTree(path).node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
