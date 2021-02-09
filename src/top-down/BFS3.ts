@@ -5,7 +5,6 @@ import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
-import {NonTerminal} from '../NonTerminal';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn, testFnAsync} from './common';
 
@@ -28,16 +27,14 @@ export const bfs3GetChildren = (
   }
 
   // We take ONLY the first nonterminal for expansion. The leftmost derivation.
-  const ntSubTree = ppt.tree
-    .getLeaves()
-    .find(t => t.node instanceof NonTerminal);
-  if (!ntSubTree) {
+  const subtreePath = ppt.getFirstNonTerminal();
+  if (!subtreePath) {
     return [];
   }
-  const path = ppt.tree.getPath(ntSubTree) as number[];
+  const {subtree, path} = subtreePath;
 
   const result = [];
-  const nts = ppt.tree.getSubTree(path).node;
+  const nts = subtree.node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
     const child = ppt.tree.clone();

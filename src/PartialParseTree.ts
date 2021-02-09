@@ -7,6 +7,11 @@ import {NonTerminal} from './NonTerminal';
 import {Terminal} from './interfaces/Terminal';
 import {dollar} from './terminals/dollar.terminal';
 
+export interface SubtreePath {
+  subtree: Tree<ParseSymbol>;
+  path: number[];
+}
+
 export class PartialParseTree {
   sententialForm = new SententialForm(
     this.tree
@@ -33,6 +38,17 @@ export class PartialParseTree {
       }
     }
     return true;
+  }
+
+  getFirstNonTerminal(): SubtreePath | undefined {
+    const subtree = this.tree
+      .getLeaves()
+      .find(t => t.node instanceof NonTerminal);
+    if (!subtree) {
+      return undefined;
+    }
+    const path = this.tree.getPath(subtree) as number[];
+    return {subtree, path};
   }
 
   getLookAheadToken(sentence: Sentence): Terminal {
