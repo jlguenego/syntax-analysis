@@ -24,12 +24,7 @@ export const bfs1GetChildren = (cfg: ContextFreeGrammar) => (
     const nts = ppt.tree.getSubTree(path).node;
     const productions = cfg.productions.filter(p => p.LHS === nts);
     for (const prod of productions) {
-      const child = ppt.tree.clone();
-      const ntl = child.getSubTree(path);
-      for (const s of prod.RHS.symbols) {
-        child.graft(ntl, new Tree<ParseSymbol>(s));
-      }
-      result.push(new PartialParseTree(child));
+      result.push(ppt.yield(path, prod));
     }
   }
   return result;
