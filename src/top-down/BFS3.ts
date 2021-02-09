@@ -28,18 +28,32 @@ export const bfs3GetChildren = (
   }
 
   // We take ONLY the first nonterminal for expansion. The leftmost derivation.
-  const nts = ppt.sententialForm.symbols.find(s => s instanceof NonTerminal);
+
+  const paths = ppt.tree
+    .getLeaves()
+    .filter(t => t.node instanceof NonTerminal)
+    .slice(0, 1)
+    .map(t => ppt.tree.getPath(t) as number[]);
+
+  if (paths.length === 0) {
+    return [];
+  }
+
+  const path = paths[0];
 
   const result = [];
+
+  const nts = ppt.tree.getSubTree(path).node;
   const productions = cfg.productions.filter(p => p.LHS === nts);
   for (const prod of productions) {
     const child = ppt.tree.clone();
-    const ntl = child.find(t => t.node === nts) as Tree<ParseSymbol>;
+    const ntl = child.getSubTree(path);
     for (const s of prod.RHS.symbols) {
       child.graft(ntl, new Tree<ParseSymbol>(s));
     }
     result.push(new PartialParseTree(child));
   }
+
   return result;
 };
 
