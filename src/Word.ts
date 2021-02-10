@@ -1,5 +1,5 @@
 import {Terminal} from './interfaces/Terminal';
-// a word is a suite of terminals.
+// a word is a suite of terminals. (Aho Ullman: w ∊ Σ*)
 // for performance reason, two identical words are the same memory reference.
 
 const cache: Word[] = [];
@@ -10,7 +10,7 @@ function findFromCache(terminals: Terminal[]): Word | undefined {
       return false;
     }
     for (let i = 0; i < terminals.length; i++) {
-      if (terminals[i] !== w.terminals[i]) {
+      if (terminals[i].name !== w.terminals[i].name) {
         return false;
       }
     }
@@ -27,5 +27,9 @@ export class Word {
     }
     this.terminals = terminals;
     cache.push(this);
+  }
+
+  concat(word: Word) {
+    return new Word([...this.terminals, ...word.terminals]);
   }
 }
