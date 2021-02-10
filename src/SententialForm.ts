@@ -86,4 +86,8 @@ export class SententialForm {
   getLength() {
     return this.symbols.length;
   }
+
+  isEmpty() {
+    return this.symbols.length === 0;
+  }
 }

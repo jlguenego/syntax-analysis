@@ -16,6 +16,8 @@ export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
 export * from './terminals/epsilon.terminal';
 export * from './utils/check';
+export * from './top-down/lib/firstk';
+export * from './Word';
 
 export * from './top-down/common';
 export * from './top-down/BFS1';

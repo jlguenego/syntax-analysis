@@ -1,4 +1,5 @@
 import {Terminal} from './interfaces/Terminal';
+import {epsilon} from './terminals/epsilon.terminal';
 // a word is a suite of terminals. (Aho Ullman: w ∊ Σ*)
 // for performance reason, two identical words are the same memory reference.
 
@@ -29,7 +30,24 @@ export class Word {
     cache.push(this);
   }
 
-  concat(word: Word) {
-    return new Word([...this.terminals, ...word.terminals]);
+  concat(word: Word, k?: number) {
+    if (this === epsilonWord) {
+      return word;
+    }
+    if (word === epsilonWord) {
+      return this;
+    }
+    let array = [...this.terminals, ...word.terminals];
+    if (k !== undefined) {
+      // truncate the array to the k first elements.
+      array = array.slice(0, k);
+    }
+    return new Word(array);
+  }
+
+  toObject(): Object {
+    return {...this};
   }
 }
+
+export const epsilonWord = new Word([epsilon]);

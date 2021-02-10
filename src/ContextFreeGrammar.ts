@@ -1,3 +1,4 @@
+import {Word} from './Word';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Production} from './interfaces/Production';
 import {SententialForm} from './SententialForm';
@@ -33,6 +34,8 @@ export class ContextFreeGrammar {
   firstCache = new Map<NonTerminal, Set<Terminal>>();
   followCache = new Map<NonTerminal, Set<Terminal>>();
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
+
+  firstkCache = new Map<NonTerminal, Set<Word>>();
   llkTableCache!: Map<NonTerminal, unknown>;
 
   options: CFGOptions = {
@@ -133,9 +136,9 @@ export class ContextFreeGrammar {
     return this.productions[index].RHS;
   }
 
-  firstk(form: SententialForm, k = 2): Set<Terminal[]> {
-    console.log('k: ', k);
-    return new Set<Terminal[]>();
+  firstk(nt: NonTerminal): Set<Word> {
+    const set = this.firstkCache.get(nt) as Set<Word>;
+    return set;
   }
 
   getfromLLkTable(

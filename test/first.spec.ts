@@ -1,5 +1,6 @@
 import assert from 'assert';
-import {SententialForm, Terminal} from '../src';
+import {buildFirstk} from '../src';
+import {Word} from '../src';
 import {cfg2, nt} from './data/cfg2';
 
 describe('First Unit Test', () => {
@@ -21,16 +22,26 @@ describe('First Unit Test', () => {
   });
 
   it('test the firstk function', () => {
+    buildFirstk(cfg2, 2);
     const array = Object.values(nt).map(s => ({
       nt: s.label,
-      firstk: cfg2.firstk(new SententialForm([s]), 2),
+      firstk: [...cfg2.firstk(s)].map(w => w.terminals.map(t => t.name)),
     }));
     const expectedArray = [
-      {nt: 'Num', firstk: new Set<Terminal[]>([])},
-      {nt: 'Sign', firstk: new Set<Terminal[]>([])},
-      {nt: 'Digits', firstk: new Set<Terminal[]>([])},
-      {nt: 'More', firstk: new Set<Terminal[]>([])},
+      {
+        nt: 'Num',
+        firstk: [['d'], ['+', 'd'], ['-', 'd'], ['d', 'd']],
+      },
+      {nt: 'Sign', firstk: [[''], ['+'], ['-']]},
+      {nt: 'Digits', firstk: [['d'], ['d', 'd']]},
+      {nt: 'More', firstk: [[''], ['d'], ['d', 'd']]},
     ];
     assert.deepStrictEqual(array, expectedArray);
+  });
+
+  it('test the word class', () => {
+    const w1 = new Word(['1', '2'].map(s => ({name: s})));
+    const w2 = new Word(['1', '2'].map(s => ({name: s})));
+    assert(w1 === w2);
   });
 });
