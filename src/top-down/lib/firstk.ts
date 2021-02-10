@@ -4,7 +4,9 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {epsilonWord, Word} from '../../Word';
 import {absorbSet} from '../../utils/set';
 
-// See algorithm in book Aho Ullman Chapter 5.1, page 357 and 358.
+// See algorithm in book Aho Ullman (Theory of Parsing, Translation, and Compiling) Volume 1.
+// https://dl.acm.org/doi/pdf/10.5555/578789
+// Chapter 5.1, page 357 and 358.
 
 const initFirstkCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
@@ -20,11 +22,14 @@ const getFirstkCacheSize = (cfg: ContextFreeGrammar): number => {
 
 const fi = (cfg: ContextFreeGrammar, s: ParseSymbol) => {
   if (s instanceof NonTerminal) {
+    // Aho Ullman: (2) Fi-1(A)={...}
     return cfg.firstkCache.get(s) as Set<Word>;
   }
+  // Aho Ullman: (1) Fi(a)={a}
   return new Set([new Word([s])]);
 };
 
+// Aho Ullman: Operator ⊕k
 const concat = (k: number, ...sets: Set<Word>[]): Set<Word> => {
   if (sets.length === 0) {
     return new Set<Word>();
@@ -65,6 +70,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
   }
   let size = getFirstkCacheSize(cfg);
   // other rounds: Fi(A) until the sets stop growing.
+  // Aho Ullman: (4)
   while (size > previousSize) {
     for (const [nt, firstkNt] of cfg.firstkCache) {
       const rhsArray = cfg.getProdRHSArray(nt);
@@ -72,7 +78,9 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
         if (rhs.isEmpty()) {
           continue;
         }
+        // Aho Ullman: (3) Fi-1(Yp) A=Y1Y2...YN
         const fis = rhs.symbols.map(s => fi(cfg, s));
+        // Aho Ullman: Operator ⊕k on Fi-1(Yp)
         const set = concat(k, ...fis);
         absorbSet(firstkNt, set);
       }
