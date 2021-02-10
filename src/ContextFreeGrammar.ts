@@ -36,7 +36,8 @@ export class ContextFreeGrammar {
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
   firstkCache = new Map<NonTerminal, Set<Word>>();
-  llkTableCache!: Map<NonTerminal, unknown>;
+  llkTableCache = new Map<NonTerminal, Map<Word, number>>();
+  lookaheadTokenNbr = 0;
 
   options: CFGOptions = {
     ll1: false,
@@ -145,26 +146,21 @@ export class ContextFreeGrammar {
     nt: NonTerminal,
     lookAheadTokens: Terminal[]
   ): SententialForm {
-    let index = this.llkTableCache.get(nt);
-
-    for (let i = 0; i < lookAheadTokens.length; i++) {
-      if (typeof index === 'number') {
-        return this.productions[index].RHS;
-      }
+    const word = new Word(lookAheadTokens);
+    for (let i = 0; i < word.terminals.length; i++) {
+      const subword = new Word(
+        word.terminals.slice(0, word.terminals.length - i)
+      );
+      const index = this.llkTableCache.get(nt)?.get(subword);
       if (index === undefined) {
-        throw new ParseError(
-          'LL(k) Parser: Syntax Error.',
-          lookAheadTokens[i],
-          nt
-        );
+        continue;
       }
-      if (index instanceof Map) {
-        index = (index as Map<string, unknown>).get(lookAheadTokens[i].name);
-      }
+      return this.productions[index].RHS;
     }
+
     throw new ParseError(
-      'LL(k) Parser: Not enough lookAheadToken to decide which production rule to use. Grammar ambigous?',
-      lookAheadTokens[lookAheadTokens.length],
+      `LL(${this.lookaheadTokenNbr}) Parser: Syntax Error.`,
+      lookAheadTokens[0],
       nt
     );
   }

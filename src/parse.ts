@@ -26,6 +26,7 @@ export interface ParseOptions {
     | 'LR1'
     | 'SLR1'
     | 'LALR1';
+  lookaheadTokenNbr: number;
 }
 
 export function parse(
@@ -35,6 +36,7 @@ export function parse(
 ): ParseTree {
   const opts: ParseOptions = {
     method: 'BFS1',
+    lookaheadTokenNbr: 2,
     ...options,
   };
   switch (opts.method) {
@@ -51,7 +53,7 @@ export function parse(
     case 'LL1':
       return parseWithLL1(sentence, cfg);
     case 'LLk':
-      return parseWithLLk(sentence, cfg);
+      return parseWithLLk(sentence, cfg, opts.lookaheadTokenNbr);
     case 'LR0':
       return parseWithLR0(sentence, cfg);
     case 'LR1':

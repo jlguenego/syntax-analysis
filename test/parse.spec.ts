@@ -32,10 +32,13 @@ describe('Parse Unit Test', () => {
     const parseTree3 = parse(sentence3, cfg3, {method: 'LL1'});
     assert.deepStrictEqual(parseTree3, expectedParseTree3);
   });
-  // it('test parse LLk_cfg3', () => {
-  //   const parseTree3 = parse(sentence3, cfg3, {method: 'LLk'});
-  //   assert.deepStrictEqual(parseTree3, expectedParseTree3);
-  // });
+  it('test parse LLk_cfg3', () => {
+    const parseTree3 = parse(sentence3, cfg3, {
+      method: 'LLk',
+      lookaheadTokenNbr: 2,
+    });
+    assert.deepStrictEqual(parseTree3, expectedParseTree3);
+  });
   it('test parse LR0_cfg6', () => {
     const parseTree6 = parse(sentence6, cfg6, {method: 'LR0'});
     assert.deepStrictEqual(parseTree6, expectedParseTree6);

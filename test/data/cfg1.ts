@@ -11,6 +11,7 @@ import {
 const t = defineTerminalAlphabet(['+', 'int', '(', ')'] as const);
 const nt = defineNonTerminalAlphabet(['E', 'T'] as const);
 
+// this grammar is not LL(k) (Left recursion)
 const spec: CFGSpecifications<typeof t, typeof nt> = {
   startSymbol: 'E',
   productions: [

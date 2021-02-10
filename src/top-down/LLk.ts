@@ -6,7 +6,7 @@ import {Sentence} from '../interfaces/Sentence';
 import {ParseError} from '../ParseError';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn} from './common';
-import {checkLL2Table} from './lib/LL2Table';
+import {checkLLkTable} from './lib/LLkTable';
 
 export const llkGetChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
   ppt: PartialParseTree
@@ -39,9 +39,10 @@ export const llkGetChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
 
 export const parseWithLLk = (
   sentence: Sentence,
-  cfg: ContextFreeGrammar
+  cfg: ContextFreeGrammar,
+  lookaheadTokenNbr: number
 ): ParseTree => {
-  checkLL2Table(cfg);
+  checkLLkTable(cfg, lookaheadTokenNbr);
   const dfsTree = new DFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
     testFn(sentence),

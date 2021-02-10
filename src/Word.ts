@@ -48,6 +48,10 @@ export class Word {
   toObject(): Object {
     return {...this};
   }
+
+  toString(): string {
+    return this.terminals.map(t => t.name).join(',');
+  }
 }
 
 export const epsilonWord = new Word([epsilon]);

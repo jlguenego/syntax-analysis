@@ -1,3 +1,4 @@
+import {SententialForm} from './../../SententialForm';
 import {NonTerminal} from './../../NonTerminal';
 import {ParseSymbol} from './../../interfaces/ParseSymbol';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
@@ -50,9 +51,10 @@ const concat = (k: number, ...sets: Set<Word>[]): Set<Word> => {
   return result;
 };
 
-export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
+export const buildFirstk = (cfg: ContextFreeGrammar): void => {
+  const k = cfg.lookaheadTokenNbr;
   initFirstkCache(cfg);
-  let previousSize = getFirstkCacheSize(cfg); // 0
+  let previousSize = -1; // 0
   // first round : F0(A)
   for (const [nt, firstkNt] of cfg.firstkCache) {
     const rhsArray = cfg.getProdRHSArray(nt);
@@ -88,4 +90,13 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
     previousSize = size;
     size = getFirstkCacheSize(cfg);
   }
+};
+
+export const firstkStar = (
+  cfg: ContextFreeGrammar,
+  form: SententialForm
+): Set<Word> => {
+  const fis = form.symbols.map(s => fi(cfg, s));
+  const set = concat(cfg.lookaheadTokenNbr, ...fis);
+  return set;
 };

@@ -22,7 +22,8 @@ describe('First Unit Test', () => {
   });
 
   it('test the firstk function', () => {
-    buildFirstk(cfg2, 2);
+    cfg2.lookaheadTokenNbr = 2;
+    buildFirstk(cfg2);
     const array = Object.values(nt).map(s => ({
       nt: s.label,
       firstk: [...cfg2.firstk(s)].map(w => w.terminals.map(t => t.name)),

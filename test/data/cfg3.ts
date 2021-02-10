@@ -22,7 +22,9 @@ export const spec: CFGSpecifications<TA, NTA> = {
     {LHS: 'Op', RHS: ['*']},
   ],
 };
-export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt, {ll1: true});
+export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt, {
+  ll1: true,
+});
 
 export const sentence3 = '( ( int + int ) * int )'
   .split(' ')
