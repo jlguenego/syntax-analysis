@@ -11,6 +11,7 @@ import {parseWithBFS3} from './top-down/BFS3';
 import {parseWithDFS1} from './top-down/DFS1';
 import {parseWithDFS2} from './top-down/DFS2';
 import {parseWithLL1} from './top-down/LL1';
+import {parseWithLLk} from './top-down/LLk';
 
 export interface ParseOptions {
   method:
@@ -20,6 +21,7 @@ export interface ParseOptions {
     | 'DFS1'
     | 'DFS2'
     | 'LL1'
+    | 'LLk'
     | 'LR0'
     | 'LR1'
     | 'SLR1'
@@ -48,6 +50,8 @@ export function parse(
       return parseWithDFS2(sentence, cfg);
     case 'LL1':
       return parseWithLL1(sentence, cfg);
+    case 'LLk':
+      return parseWithLLk(sentence, cfg);
     case 'LR0':
       return parseWithLR0(sentence, cfg);
     case 'LR1':

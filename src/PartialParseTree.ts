@@ -73,4 +73,22 @@ export class PartialParseTree {
     }
     return sentence[index];
   }
+
+  getLookAheadTokens(sentence: Sentence, tokenQty: number): Terminal[] {
+    const index = this.sententialForm.symbols.findIndex(
+      s => s instanceof NonTerminal
+    );
+    if (index === -1) {
+      throw new Error('getLookAheadToken should not be called on sentence');
+    }
+    const tokens = [];
+    for (let i = 0; i < tokenQty; i++) {
+      if (index + i >= sentence.length) {
+        tokens.push(dollar);
+        break;
+      }
+      tokens.push(sentence[index + i]);
+    }
+    return tokens;
+  }
 }

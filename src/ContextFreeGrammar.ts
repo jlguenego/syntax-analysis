@@ -33,6 +33,7 @@ export class ContextFreeGrammar {
   firstCache = new Map<NonTerminal, Set<Terminal>>();
   followCache = new Map<NonTerminal, Set<Terminal>>();
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
+  llkTableCache!: Map<NonTerminal, unknown>;
 
   options: CFGOptions = {
     ll1: false,
@@ -130,5 +131,38 @@ export class ContextFreeGrammar {
       throw new ParseError('LL(1) Parser: Syntax Error.', t, nt);
     }
     return this.productions[index].RHS;
+  }
+
+  firstk(form: SententialForm, k = 2): Set<Terminal[]> {
+    console.log('k: ', k);
+    return new Set<Terminal[]>();
+  }
+
+  getfromLLkTable(
+    nt: NonTerminal,
+    lookAheadTokens: Terminal[]
+  ): SententialForm {
+    let index = this.llkTableCache.get(nt);
+
+    for (let i = 0; i < lookAheadTokens.length; i++) {
+      if (typeof index === 'number') {
+        return this.productions[index].RHS;
+      }
+      if (index === undefined) {
+        throw new ParseError(
+          'LL(k) Parser: Syntax Error.',
+          lookAheadTokens[i],
+          nt
+        );
+      }
+      if (index instanceof Map) {
+        index = (index as Map<string, unknown>).get(lookAheadTokens[i].name);
+      }
+    }
+    throw new ParseError(
+      'LL(k) Parser: Not enough lookAheadToken to decide which production rule to use. Grammar ambigous?',
+      lookAheadTokens[lookAheadTokens.length],
+      nt
+    );
   }
 }
