@@ -77,4 +77,13 @@ export class SententialForm {
       | NonTerminal
       | undefined;
   }
+
+  getNonTerminalPrefix(): Terminal[] {
+    const index = this.symbols.findIndex(s => s instanceof NonTerminal);
+    return this.symbols.slice(0, index) as Terminal[];
+  }
+
+  getLength() {
+    return this.symbols.length;
+  }
 }

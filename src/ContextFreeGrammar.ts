@@ -102,8 +102,8 @@ export class ContextFreeGrammar {
     return this.emptyProductionSet.has(nt);
   }
 
-  getProdRHSArray(nt: NonTerminal) {
-    return this.productionMap.get(nt);
+  getProdRHSArray(nt: NonTerminal): SententialForm[] {
+    return this.productionMap.get(nt) as SententialForm[];
   }
 
   isLeftRecursive(nt: NonTerminal): boolean {
