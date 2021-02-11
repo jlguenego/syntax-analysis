@@ -7,24 +7,23 @@ import {epsilon} from './terminals/epsilon.terminal';
 
 const cache = new Set<Word>();
 
-function findFromCache(terminals: Terminal[]): Word | undefined {
-  return [...cache].find(w => {
-    if (w.terminals.length !== terminals.length) {
-      return false;
-    }
-    for (let i = 0; i < terminals.length; i++) {
-      if (terminals[i].name !== w.terminals[i].name) {
+export class Word {
+  static retrieve(terminals: Terminal[]): Word | undefined {
+    return [...cache].find(w => {
+      if (w.terminals.length !== terminals.length) {
         return false;
       }
-    }
-    return true;
-  });
-}
-
-export class Word {
+      for (let i = 0; i < terminals.length; i++) {
+        if (terminals[i].name !== w.terminals[i].name) {
+          return false;
+        }
+      }
+      return true;
+    });
+  }
   terminals!: Terminal[];
   constructor(terminals: Terminal[]) {
-    const word = findFromCache(terminals);
+    const word = Word.retrieve(terminals);
     if (word) {
       return word;
     }

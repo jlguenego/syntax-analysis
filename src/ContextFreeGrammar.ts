@@ -147,14 +147,15 @@ export class ContextFreeGrammar {
     nt: NonTerminal,
     lookAheadTokens: Terminal[]
   ): SententialForm {
-    const word = new Word(lookAheadTokens);
-    for (let i = 0; i < word.terminals.length; i++) {
-      const subword = new Word(
-        word.terminals.slice(0, word.terminals.length - i)
+    for (let i = 0; i < lookAheadTokens.length; i++) {
+      const subword = Word.retrieve(
+        lookAheadTokens.slice(0, lookAheadTokens.length - i)
       );
+      if (!subword) {
+        continue;
+      }
       const index = this.llkTableCache.get(nt)?.get(subword);
       if (index === undefined) {
-        subword.destroy();
         continue;
       }
       return this.productions[index].RHS;
