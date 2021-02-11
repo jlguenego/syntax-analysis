@@ -1,4 +1,5 @@
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
+import {NonTerminal} from '../../NonTerminal';
 import {copyWithoutElt} from '../../utils/set';
 import {epsilonWord, Word} from '../../Word';
 import {buildFirstk, firstkStar} from './firstk';
@@ -12,21 +13,30 @@ export const checkLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
   buildLLkTable(cfg, k);
 };
 
-const initLLkTableCache = (cfg: ContextFreeGrammar): void => {
+const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
+  const map = new Map<NonTerminal, Map<Word, number>>();
+  cfg.llkTableCache.set(k, map);
   for (const nt of cfg.productionMap.keys()) {
-    cfg.llkTableCache.set(nt, new Map<Word, number>());
+    map.set(nt, new Map<Word, number>());
   }
+};
+
+const getLLkTableCache = (
+  cfg: ContextFreeGrammar,
+  k: number
+): Map<NonTerminal, Map<Word, number>> => {
+  return cfg.llkTableCache.get(k) as Map<NonTerminal, Map<Word, number>>;
 };
 
 export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
   buildFirstk(cfg, k);
   buildFollowk(cfg, k);
   checkStrongLLkGrammar(cfg, k);
-  initLLkTableCache(cfg);
+  initLLkTableCache(cfg, k);
   for (let i = 0; i < cfg.productions.length; i++) {
     const prod = cfg.productions[i];
     const a = prod.LHS;
-    const llkTableA = cfg.llkTableCache.get(a) as Map<Word, number>;
+    const llkTableA = getLLkTableCache(cfg, k).get(a) as Map<Word, number>;
     const fs = firstkStar(cfg, k, prod.RHS);
     const fsMinusEpsilon = copyWithoutElt(fs, epsilonWord);
     for (const w of fsMinusEpsilon) {

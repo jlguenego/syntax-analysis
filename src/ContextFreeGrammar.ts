@@ -35,8 +35,8 @@ export class ContextFreeGrammar {
   followCache = new Map<NonTerminal, Set<Terminal>>();
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
-  llkTableCache = new Map<NonTerminal, Map<Word, number>>();
-
+  // foreach k (of LL(k)) we set a cache.
+  llkTableCache = new Map<number, Map<NonTerminal, Map<Word, number>>>();
   firstCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
   followCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
 
@@ -155,7 +155,7 @@ export class ContextFreeGrammar {
       if (!subword) {
         continue;
       }
-      const index = this.llkTableCache.get(nt)?.get(subword);
+      const index = this.llkTableCache.get(k)?.get(nt)?.get(subword);
       if (index === undefined) {
         continue;
       }
