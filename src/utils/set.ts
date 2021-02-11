@@ -20,3 +20,15 @@ export const areSetEquals = <T>(set1: Set<T>, set2: Set<T>): boolean => {
   }
   return true;
 };
+
+export const getDistinctCouples = <T>(set: Set<T>): T[][] => {
+  const result: T[][] = [];
+  const remaining = new Set(set);
+  for (const e of set) {
+    remaining.delete(e);
+    for (const f of remaining) {
+      result.push([e, f]);
+    }
+  }
+  return result;
+};

@@ -143,10 +143,7 @@ export class ContextFreeGrammar {
     return set;
   }
 
-  getfromLLkTable(
-    nt: NonTerminal,
-    lookAheadTokens: Terminal[]
-  ): SententialForm {
+  getfromLLkTable(nt: NonTerminal, lookAheadTokens: Terminal[]): number {
     for (let i = 0; i < lookAheadTokens.length; i++) {
       const subword = Word.retrieve(
         lookAheadTokens.slice(0, lookAheadTokens.length - i)
@@ -158,7 +155,7 @@ export class ContextFreeGrammar {
       if (index === undefined) {
         continue;
       }
-      return this.productions[index].RHS;
+      return index;
     }
 
     throw new ParseError(

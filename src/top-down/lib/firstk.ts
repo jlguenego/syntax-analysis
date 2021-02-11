@@ -78,6 +78,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar): void => {
       const rhsArray = cfg.getProdRHSArray(nt);
       for (const rhs of rhsArray) {
         if (rhs.isEmpty()) {
+          firstkNt.add(epsilonWord);
           continue;
         }
         // Aho Ullman: (3) Fi-1(Yp) A=Y1Y2...YN
@@ -96,6 +97,9 @@ export const firstkStar = (
   cfg: ContextFreeGrammar,
   form: SententialForm
 ): Set<Word> => {
+  if (form.isEmpty()) {
+    return new Set([epsilonWord]);
+  }
   const fis = form.symbols.map(s => fi(cfg, s));
   const set = concat(cfg.lookaheadTokenNbr, ...fis);
   return set;

@@ -2,6 +2,8 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {copyWithoutElt} from '../../utils/set';
 import {epsilonWord, Word} from '../../Word';
 import {buildFirstk, firstkStar} from './firstk';
+import {buildFollowk} from './followk';
+import {checkStrongLLkGrammar} from './strongLLk';
 
 export const checkLLkTable = (
   cfg: ContextFreeGrammar,
@@ -22,6 +24,8 @@ const initLLkTableCache = (cfg: ContextFreeGrammar): void => {
 export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.lookaheadTokenNbr = k;
   buildFirstk(cfg);
+  buildFollowk(cfg);
+  checkStrongLLkGrammar(cfg);
   initLLkTableCache(cfg);
   for (let i = 0; i < cfg.productions.length; i++) {
     const prod = cfg.productions[i];

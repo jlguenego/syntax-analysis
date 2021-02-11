@@ -55,6 +55,9 @@ export class PartialParseTree {
   yield(path: number[], prod: Production): PartialParseTree {
     const child = this.tree.clone();
     const ntl = child.getSubTree(path);
+    if (prod.RHS.isEmpty()) {
+      child.graft(ntl, new Tree<ParseSymbol>(epsilon));
+    }
     for (const s of prod.RHS.symbols) {
       child.graft(ntl, new Tree<ParseSymbol>(s));
     }
