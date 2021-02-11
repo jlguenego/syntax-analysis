@@ -36,6 +36,7 @@ export class ContextFreeGrammar {
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
   firstkCache = new Map<NonTerminal, Set<Word>>();
+  followkCache = new Map<NonTerminal, Set<Word>>();
   llkTableCache = new Map<NonTerminal, Map<Word, number>>();
   lookaheadTokenNbr = 0;
 

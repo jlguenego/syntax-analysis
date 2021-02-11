@@ -1,4 +1,5 @@
 import {Terminal} from './interfaces/Terminal';
+import {dollar} from './terminals/dollar.terminal';
 import {epsilon} from './terminals/epsilon.terminal';
 // a word is a suite of terminals. (Aho Ullman: w ∊ Σ*)
 // for performance reason, two identical words are the same memory reference.
@@ -55,3 +56,4 @@ export class Word {
 }
 
 export const epsilonWord = new Word([epsilon]);
+export const dollarWord = new Word([dollar]);

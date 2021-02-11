@@ -39,5 +39,18 @@ export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
       }
       llkTableA.set(w, i);
     }
+    if (fs.has(epsilonWord)) {
+      const followA = cfg.followkCache.get(a) as Set<Word>;
+      for (const w of followA) {
+        if (llkTableA.get(w) !== undefined) {
+          throw new Error(
+            `Grammar is not LL1: FIRST/FOLLOW conflict for (${
+              a.label
+            }, ${w.toString()})`
+          );
+        }
+        llkTableA.set(w, i);
+      }
+    }
   }
 };
