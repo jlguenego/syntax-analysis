@@ -113,3 +113,16 @@ export const firstkStar = (
   const set = concat(k, ...fis);
   return set;
 };
+
+export const firstkStarSet = (
+  cfg: ContextFreeGrammar,
+  k: number,
+  formSet: Set<SententialForm>
+): Set<Word> => {
+  const set = new Set<Word>();
+  for (const form of formSet) {
+    const subset = firstkStar(cfg, k, form);
+    absorbSet(set, subset);
+  }
+  return set;
+};
