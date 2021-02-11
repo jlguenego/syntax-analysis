@@ -11,12 +11,16 @@ import {NonTerminal} from '../NonTerminal';
 export const llkGetChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
   ppt: PartialParseTree
 ): PartialParseTree[] => {
-  // only the first non terminal needs to be yielded. (left most derivation)
-  const fnt = ppt.getFirstNonTerminal();
-  if (!fnt) {
+  if (!ppt.sharePrefixWith(sentence)) {
     return [];
   }
-  const nts = fnt.subtree.node as NonTerminal;
+
+  // only the first non terminal needs to be yielded. (left most derivation)
+  const firstNonTerminal = ppt.getFirstNonTerminal();
+  if (!firstNonTerminal) {
+    return [];
+  }
+  const nts = firstNonTerminal.subtree.node as NonTerminal;
 
   // CS143 slide
   // the order of productions is now important. We take the one by looking at one lookahead token.
@@ -26,7 +30,7 @@ export const llkGetChildren = (sentence: Sentence, cfg: ContextFreeGrammar) => (
   );
   const index = cfg.getfromLLkTable(nts, lookAheadTokens);
 
-  return [ppt.yield(fnt.path, cfg.productions[index])];
+  return [ppt.yield(firstNonTerminal.path, cfg.productions[index])];
 };
 
 export const parseWithLLk = (

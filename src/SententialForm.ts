@@ -68,7 +68,15 @@ export class SententialForm {
     return true;
   }
 
-  findNonTerminalIndex(nt: NonTerminal): number {
+  /**
+   * The index of first non-terminal in the left-sentential form.
+   * See Aho Ullman Definition 5.1.1
+   *
+   * @param {NonTerminal} nt
+   * @returns {number}
+   * @memberof SententialForm
+   */
+  findLeftBorderIndex(nt: NonTerminal): number {
     return this.symbols.findIndex(s => s === nt);
   }
 
@@ -78,7 +86,14 @@ export class SententialForm {
       | undefined;
   }
 
-  getNonTerminalPrefix(): Terminal[] {
+  /**
+   * The closed portion of a left-sentential form is the bigest prefix string of terminal.
+   * See Aho Ullman Definition 5.1.1
+   *
+   * @returns {Terminal[]}
+   * @memberof SententialForm
+   */
+  getLeftClosedPortion(): Terminal[] {
     const index = this.symbols.findIndex(s => s instanceof NonTerminal);
     return this.symbols.slice(0, index) as Terminal[];
   }

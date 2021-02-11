@@ -63,7 +63,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar): void => {
         firstkNt.add(epsilonWord);
         continue;
       }
-      const x = rhs.getNonTerminalPrefix().slice(0, k);
+      const x = rhs.getLeftClosedPortion().slice(0, k);
       if (x.length < k && x.length < rhs.getLength()) {
         continue;
       }
