@@ -154,6 +154,7 @@ export class ContextFreeGrammar {
       );
       const index = this.llkTableCache.get(nt)?.get(subword);
       if (index === undefined) {
+        subword.destroy();
         continue;
       }
       return this.productions[index].RHS;

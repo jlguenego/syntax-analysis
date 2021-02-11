@@ -1,13 +1,14 @@
 import {Terminal} from './interfaces/Terminal';
 import {dollar} from './terminals/dollar.terminal';
 import {epsilon} from './terminals/epsilon.terminal';
-// a word is a suite of terminals. (Aho Ullman: w ∊ Σ*)
+// a word (or string) is a suite of terminals. (Aho Ullman: w ∊ Σ*)
+// Javascript (Typescript) string already means something, so we take something else.
 // for performance reason, two identical words are the same memory reference.
 
-const cache: Word[] = [];
+const cache = new Set<Word>();
 
 function findFromCache(terminals: Terminal[]): Word | undefined {
-  return cache.find(w => {
+  return [...cache].find(w => {
     if (w.terminals.length !== terminals.length) {
       return false;
     }
@@ -28,7 +29,7 @@ export class Word {
       return word;
     }
     this.terminals = terminals;
-    cache.push(this);
+    cache.add(this);
   }
 
   concat(word: Word, k?: number) {
@@ -52,6 +53,10 @@ export class Word {
 
   toString(): string {
     return this.terminals.map(t => t.name).join(',');
+  }
+
+  destroy(): void {
+    cache.delete(this);
   }
 }
 
