@@ -29,5 +29,19 @@ export const sentence53: Sentence = 'abaa'.split('').map(str => ({
 
 export const expectedParseTree53: ParseTree = {
   node: nt.S,
-  children: [],
+  children: [
+    {node: {name: 'a'}},
+    {node: {name: 'b'}},
+    {
+      node: nt.A,
+      children: [
+        {
+          node: nt.S,
+          children: [{node: {name: ''}}],
+        },
+        {node: {name: 'a'}},
+        {node: {name: 'a'}},
+      ],
+    },
+  ],
 };

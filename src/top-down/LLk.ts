@@ -14,7 +14,7 @@ export const llkGetChildren = (
   k: number
 ) => (ppt: PartialParseTree): PartialParseTree[] => {
   if (!ppt.sharePrefixWith(sentence)) {
-    return [];
+    throw new Error('should not come here...');
   }
 
   // only the first non terminal needs to be yielded. (left most derivation)

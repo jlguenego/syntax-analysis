@@ -24,10 +24,7 @@ describe('LL2 Unit Test', () => {
         lookaheadTokenNbr: 2,
       });
     } catch (e) {
-      assert.deepStrictEqual(
-        e.message,
-        'did not worked. Syntax error in sentence?'
-      );
+      assert.deepStrictEqual(e.message, 'should not come here...');
     }
   });
   // it('test cfg58 is LL3', () => {
