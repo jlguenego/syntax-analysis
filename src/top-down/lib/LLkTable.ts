@@ -5,14 +5,11 @@ import {buildFirstk, firstkStar} from './firstk';
 import {buildFollowk} from './followk';
 import {checkStrongLLkGrammar} from './strongLLk';
 
-export const checkLLkTable = (
-  cfg: ContextFreeGrammar,
-  lookaheadTokenNbr: number
-): void => {
-  if (cfg.lookaheadTokenNbr === lookaheadTokenNbr) {
+export const checkLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
+  if (cfg.firstCacheSet.get(k)) {
     return;
   }
-  buildLLkTable(cfg, lookaheadTokenNbr);
+  buildLLkTable(cfg, k);
 };
 
 const initLLkTableCache = (cfg: ContextFreeGrammar): void => {
@@ -22,16 +19,15 @@ const initLLkTableCache = (cfg: ContextFreeGrammar): void => {
 };
 
 export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
-  cfg.lookaheadTokenNbr = k;
-  buildFirstk(cfg);
-  buildFollowk(cfg);
-  checkStrongLLkGrammar(cfg);
+  buildFirstk(cfg, k);
+  buildFollowk(cfg, k);
+  checkStrongLLkGrammar(cfg, k);
   initLLkTableCache(cfg);
   for (let i = 0; i < cfg.productions.length; i++) {
     const prod = cfg.productions[i];
     const a = prod.LHS;
     const llkTableA = cfg.llkTableCache.get(a) as Map<Word, number>;
-    const fs = firstkStar(cfg, prod.RHS);
+    const fs = firstkStar(cfg, k, prod.RHS);
     const fsMinusEpsilon = copyWithoutElt(fs, epsilonWord);
     for (const w of fsMinusEpsilon) {
       if (llkTableA.get(w) !== undefined) {
@@ -44,7 +40,7 @@ export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
       llkTableA.set(w, i);
     }
     if (fs.has(epsilonWord)) {
-      const followA = cfg.followkCache.get(a) as Set<Word>;
+      const followA = cfg.followCacheSet.get(k)?.get(a) as Set<Word>;
       for (const w of followA) {
         if (llkTableA.get(w) !== undefined) {
           throw new Error(

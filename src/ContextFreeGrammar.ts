@@ -35,10 +35,10 @@ export class ContextFreeGrammar {
   followCache = new Map<NonTerminal, Set<Terminal>>();
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
-  firstkCache = new Map<NonTerminal, Set<Word>>();
-  followkCache = new Map<NonTerminal, Set<Word>>();
   llkTableCache = new Map<NonTerminal, Map<Word, number>>();
-  lookaheadTokenNbr = 0;
+
+  firstCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
+  followCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
 
   options: CFGOptions = {
     ll1: false,
@@ -138,12 +138,16 @@ export class ContextFreeGrammar {
     return this.productions[index].RHS;
   }
 
-  firstk(nt: NonTerminal): Set<Word> {
-    const set = this.firstkCache.get(nt) as Set<Word>;
+  firstk(k: number, nt: NonTerminal): Set<Word> {
+    const set = this.firstCacheSet.get(k)?.get(nt) as Set<Word>;
     return set;
   }
 
-  getfromLLkTable(nt: NonTerminal, lookAheadTokens: Terminal[]): number {
+  getfromLLkTable(
+    k: number,
+    nt: NonTerminal,
+    lookAheadTokens: Terminal[]
+  ): number {
     for (let i = 0; i < lookAheadTokens.length; i++) {
       const subword = Word.retrieve(
         lookAheadTokens.slice(0, lookAheadTokens.length - i)
@@ -159,7 +163,7 @@ export class ContextFreeGrammar {
     }
 
     throw new ParseError(
-      `LL(${this.lookaheadTokenNbr}) Parser: Syntax Error.`,
+      `LL(${k}) Parser: Syntax Error.`,
       lookAheadTokens[0],
       nt
     );

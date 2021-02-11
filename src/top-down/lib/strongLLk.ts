@@ -7,9 +7,9 @@ import {ContextFreeGrammar} from './../../ContextFreeGrammar';
  *
  * @param {ContextFreeGrammar} cfg
  */
-export const checkStrongLLkGrammar = (cfg: ContextFreeGrammar) => {
+export const checkStrongLLkGrammar = (cfg: ContextFreeGrammar, k: number) => {
   // All LL(1) grammars are strong.
-  if (cfg.lookaheadTokenNbr <= 1) {
+  if (k <= 1) {
     return;
   }
   for (const nt of cfg.productionMap.keys()) {
