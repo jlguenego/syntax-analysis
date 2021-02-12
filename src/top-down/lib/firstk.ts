@@ -4,6 +4,7 @@ import {ParseSymbol} from './../../interfaces/ParseSymbol';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {epsilonWord, Word} from '../../Word';
 import {absorbSet} from '../../utils/set';
+import {concatk} from './concatk';
 
 // See algorithm in book Aho Ullman (Theory of Parsing, Translation, and Compiling) Volume 1.
 // https://dl.acm.org/doi/pdf/10.5555/578789
@@ -58,27 +59,6 @@ const f0 = (cfg: ContextFreeGrammar, k: number, nt: NonTerminal): Set<Word> => {
   return result;
 };
 
-// Aho Ullman: Operator ⊕k
-const concat = (k: number, ...sets: Set<Word>[]): Set<Word> => {
-  if (sets.length === 0) {
-    return new Set<Word>();
-  }
-  if (sets.length === 1) {
-    return sets[0];
-  }
-  const allButLast = concat(k, ...sets.slice(0, -1));
-  const last = sets[sets.length - 1];
-  // now concat the first and the rest
-  const result = new Set<Word>();
-  for (const w1 of allButLast) {
-    for (const w2 of last) {
-      const w = w1.concat(w2, k);
-      result.add(w);
-    }
-  }
-  return result;
-};
-
 export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
   initFirstkCache(cfg, k);
   let previousSize = -1; // 0
@@ -100,7 +80,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
         // Aho Ullman: (3) Fi-1(Yp) A=Y1Y2...YN
         const fis = rhs.symbols.map(s => fi(cfg, k, s));
         // Aho Ullman: Operator ⊕k on Fi-1(Yp)
-        const set = concat(k, ...fis);
+        const set = concatk(k, ...fis);
         absorbSet(firstkNt, set);
       }
     }
@@ -118,7 +98,7 @@ export const firstkStar = (
     return new Set([epsilonWord]);
   }
   const fis = form.symbols.map(s => fi(cfg, k, s));
-  const set = concat(k, ...fis);
+  const set = concatk(k, ...fis);
   return set;
 };
 
