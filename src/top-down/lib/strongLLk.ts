@@ -1,4 +1,4 @@
-import {Word, wordSetToString} from './../../Word';
+import {Word} from './../../Word';
 import {firstkStarSet} from './firstk';
 import {NonTerminal} from './../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
