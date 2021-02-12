@@ -39,6 +39,25 @@ const fi = (cfg: ContextFreeGrammar, k: number, s: ParseSymbol) => {
   return new Set([new Word([s])]);
 };
 
+const f0 = (cfg: ContextFreeGrammar, k: number, nt: NonTerminal): Set<Word> => {
+  const rhsArray = cfg.getProdRHSArray(nt);
+  const result = new Set<Word>();
+  for (const rhs of rhsArray) {
+    if (rhs.isEmpty()) {
+      result.add(epsilonWord);
+      continue;
+    }
+    // Aho Ullman {x ∊ Σ*k | A -> xα is in P, where |x|=k or |x|<k with α=ε}
+    const x = rhs.getLeftClosedPortion().slice(0, k);
+    if (x.length < k && x.length < rhs.getLength()) {
+      continue;
+    }
+    result.add(new Word(x));
+  }
+
+  return result;
+};
+
 // Aho Ullman: Operator ⊕k
 const concat = (k: number, ...sets: Set<Word>[]): Set<Word> => {
   if (sets.length === 0) {
@@ -65,18 +84,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
   let previousSize = -1; // 0
   // first round : F0(A)
   for (const [nt, firstkNt] of getFirstkCache(cfg, k)) {
-    const rhsArray = cfg.getProdRHSArray(nt);
-    for (const rhs of rhsArray) {
-      if (rhs.isEmpty()) {
-        firstkNt.add(epsilonWord);
-        continue;
-      }
-      const x = rhs.getLeftClosedPortion().slice(0, k);
-      if (x.length < k && x.length < rhs.getLength()) {
-        continue;
-      }
-      firstkNt.add(new Word(x));
-    }
+    absorbSet(firstkNt, f0(cfg, k, nt));
   }
   let size = getFirstkCacheSize(cfg, k);
   // other rounds: Fi(A) until the sets stop growing.
