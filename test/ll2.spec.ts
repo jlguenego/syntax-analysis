@@ -1,7 +1,10 @@
+import {wordSetToString} from './../src/Word';
+import {getFirstFollowIntersec} from './../src/top-down/lib/strongLLk';
 import {cfg58, sentence58} from './data/aho_ullman/cfg5.8';
 import assert from 'assert';
 import {buildLLkTable} from '../src/top-down/lib/LLkTable';
 import {parse} from '../src';
+import {isStrongLLk} from '../src/top-down/lib/strongLLk';
 
 describe('LL2 Unit Test', () => {
   it('test cfg58 is not LL1', () => {
@@ -14,6 +17,14 @@ describe('LL2 Unit Test', () => {
         'Grammar is not LL1: FIRST/FOLLOW conflict for (A, b)'
       );
     }
+  });
+  it('test cfg58_is_strongLL2', async () => {
+    const result = isStrongLLk(cfg58, 2);
+    assert.deepStrictEqual(result, false);
+  });
+  it('test why cfg58 is not strong LL2', async () => {
+    const result = getFirstFollowIntersec(cfg58, 2);
+    assert.deepStrictEqual(wordSetToString(result), 'ba');
   });
   it('test cfg58 is LL2', () => {
     // a grammar is LL2 if we can build the table. but we have a Aho Ullman 5.1.1.
