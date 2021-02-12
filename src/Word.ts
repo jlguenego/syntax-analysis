@@ -5,6 +5,9 @@ import {epsilon} from './terminals/epsilon.terminal';
 // Javascript (Typescript) string already means something, so we take something else.
 // for performance reason, two identical words are the same memory reference.
 
+export const wordSetToString = (set: Set<Word>) =>
+  [...set].map(w => w.toString()).toString();
+
 const cache = new Set<Word>();
 
 export class Word {
@@ -38,10 +41,10 @@ export class Word {
     if (word === epsilonWord) {
       return this;
     }
-    let array = [...this.terminals, ...word.terminals];
+    const array = [...this.terminals, ...word.terminals];
     if (k !== undefined) {
       // truncate the array to the k first elements.
-      array = array.slice(0, k);
+      return new Word(array.slice(0, k));
     }
     return new Word(array);
   }
@@ -51,7 +54,7 @@ export class Word {
   }
 
   toString(): string {
-    return this.terminals.map(t => t.name).join(',');
+    return this.terminals.map(t => t.name).join('');
   }
 
   destroy(): void {

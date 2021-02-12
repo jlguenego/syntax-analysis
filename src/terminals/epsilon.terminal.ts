@@ -12,5 +12,5 @@ import {Terminal} from '../interfaces/Terminal';
  * @interface Terminal
  */
 export const epsilon: Terminal = {
-  name: '',
+  name: 'ε',
 };
