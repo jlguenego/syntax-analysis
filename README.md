@@ -77,6 +77,7 @@ Note about grammar: LR0 < SLR1 < LALR1 < LR1.
 ## Theory
 
 - [Stanford CS143](https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/)
+- [Theory of Parsing, Translation and Compiling: Compiling vol. 1 - Aho Ullman](https://dl.acm.org/doi/pdf/10.5555/578789)
 
 ## Todo
 
