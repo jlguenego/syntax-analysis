@@ -2,7 +2,6 @@ import {NonTerminal} from './NonTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {Terminal} from './interfaces/Terminal';
-import {ParseTree} from './interfaces/ParseTree';
 
 type ParseSymbolArray = ParseSymbol[];
 
@@ -17,9 +16,6 @@ type ParseSymbolArray = ParseSymbol[];
  * @class SententialForm
  */
 export class SententialForm {
-  static fromParseTreeArray(parseTrees: ParseTree[]) {
-    return new SententialForm(parseTrees.map(pt => pt.node));
-  }
   constructor(public symbols: ParseSymbolArray) {}
 
   isSentence(): this is {array: Sentence} {
