@@ -4,7 +4,6 @@ import {copyWithoutElt} from '../../utils/set';
 import {epsilonWord, Word} from '../../Word';
 import {buildFirstk, firstkStar} from './firstk';
 import {buildFollowk} from './followk';
-import {checkStrongLLkGrammar} from './strongLLk';
 
 export const checkLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
   if (cfg.firstCacheSet.get(k)) {
@@ -31,7 +30,6 @@ const getLLkTableCache = (
 export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
   buildFirstk(cfg, k);
   buildFollowk(cfg, k);
-  checkStrongLLkGrammar(cfg, k);
   initLLkTableCache(cfg, k);
   for (let i = 0; i < cfg.productions.length; i++) {
     const prod = cfg.productions[i];

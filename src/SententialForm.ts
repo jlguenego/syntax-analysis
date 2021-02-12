@@ -2,12 +2,15 @@ import {NonTerminal} from './NonTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {Terminal} from './interfaces/Terminal';
+import {Word} from './Word';
 
 type ParseSymbolArray = ParseSymbol[];
 
 /**
  * A sentential form (also called working tree)
  * represents an array of terminal and nonterminal symbols.
+ *
+ * Note: a sentential form never contains epsilon.
  *
  * source:
  * https://web.stanford.edu/class/archive/cs/cs143/cs143.1128/handouts/080%20Formal%20Grammars.pdf
@@ -100,5 +103,21 @@ export class SententialForm {
 
   isEmpty() {
     return this.symbols.length === 0;
+  }
+
+  concat(s: SententialForm): SententialForm {
+    return new SententialForm([...this.symbols, ...s.symbols]);
+  }
+
+  concatWord(w: Word): SententialForm {
+    return new SententialForm([...this.symbols, ...w.terminals]);
+  }
+
+  concatSet(set: Set<Word>): Set<SententialForm> {
+    const result = new Set<SententialForm>();
+    for (const e of set) {
+      result.add(this.concatWord(e));
+    }
+    return result;
   }
 }

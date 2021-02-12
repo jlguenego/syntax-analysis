@@ -69,3 +69,11 @@ export const buildFollowk = (cfg: ContextFreeGrammar, k: number): void => {
     size = getFollowkCacheSize(cfg, k);
   }
 };
+
+export const followk = (
+  cfg: ContextFreeGrammar,
+  k: number,
+  nt: NonTerminal
+): Set<Word> => {
+  return cfg.followCacheSet.get(k)?.get(nt) as Set<Word>;
+};
