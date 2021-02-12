@@ -75,7 +75,7 @@ export class SententialForm {
    * @returns {number}
    * @memberof SententialForm
    */
-  findLeftBorderIndex(nt: NonTerminal): number {
+  findNonTerminalIndex(nt: NonTerminal): number {
     return this.symbols.findIndex(s => s === nt);
   }
 

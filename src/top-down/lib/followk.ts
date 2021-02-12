@@ -50,7 +50,7 @@ export const buildFollowk = (cfg: ContextFreeGrammar, k: number): void => {
       for (const prod of cfg.productions) {
         const b = prod.LHS;
         const rhs = prod.RHS;
-        const indexA = rhs.findLeftBorderIndex(a);
+        const indexA = rhs.findNonTerminalIndex(a);
         if (indexA === -1) {
           continue;
         }
