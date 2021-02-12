@@ -9,7 +9,7 @@ import {
   TerminalAlphabet,
 } from '../src';
 
-describe('First Unit Test', () => {
+describe('Error Unit Test', () => {
   it('test incorrect alphabets (not disjoint)', () => {
     try {
       class T extends TerminalAlphabet {

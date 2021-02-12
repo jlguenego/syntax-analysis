@@ -37,7 +37,7 @@ export const expectedParseTree53: ParseTree = {
       children: [
         {
           node: nt.S,
-          children: [{node: {name: ''}}],
+          children: [{node: {name: 'ε'}}],
         },
         {node: {name: 'a'}},
         {node: {name: 'a'}},

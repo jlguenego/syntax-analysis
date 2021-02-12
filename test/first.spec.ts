@@ -14,9 +14,9 @@ describe('First Unit Test', () => {
     }));
     const expectedArray = [
       {nt: 'Num', first: ['+', '-', 'd'].sort()},
-      {nt: 'Sign', first: ['+', '-', ''].sort()},
+      {nt: 'Sign', first: ['+', '-', 'ε'].sort()},
       {nt: 'Digits', first: ['d'].sort()},
-      {nt: 'More', first: ['d', ''].sort()},
+      {nt: 'More', first: ['d', 'ε'].sort()},
     ];
     assert.deepStrictEqual(array, expectedArray);
   });
@@ -33,9 +33,9 @@ describe('First Unit Test', () => {
         nt: 'Num',
         firstk: [['d'], ['+', 'd'], ['-', 'd'], ['d', 'd']],
       },
-      {nt: 'Sign', firstk: [[''], ['+'], ['-']]},
+      {nt: 'Sign', firstk: [['ε'], ['+'], ['-']]},
       {nt: 'Digits', firstk: [['d'], ['d', 'd']]},
-      {nt: 'More', firstk: [[''], ['d'], ['d', 'd']]},
+      {nt: 'More', firstk: [['ε'], ['d'], ['d', 'd']]},
     ];
     assert.deepStrictEqual(array, expectedArray);
   });

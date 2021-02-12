@@ -51,7 +51,7 @@ describe('Concatk Unit Test', () => {
     const s1 = new Set([epsilonWord, new Word([t.a])]);
     const s2 = new Set([epsilonWord, new Word([t.b])]);
     const set = concatk(k, s1, s2);
-    console.log('set', wordSetToString(set));
+
     assert.deepStrictEqual(set.size, 4);
     assert.deepStrictEqual(wordSetToString(set), 'ε,b,a,ab');
   });
@@ -61,7 +61,7 @@ describe('Concatk Unit Test', () => {
     const s2 = new Set([epsilonWord, new Word([t.b])]);
     const s3 = new Set([epsilonWord, new Word([t.c])]);
     const set = concatk(k, s1, s2, s3);
-    console.log('set', wordSetToString(set));
+
     assert.deepStrictEqual(set.size, 8);
     assert.deepStrictEqual(wordSetToString(set), 'ε,c,b,bc,a,ac,ab,abc');
   });
@@ -71,7 +71,7 @@ describe('Concatk Unit Test', () => {
     const s2 = new Set([epsilonWord, new Word([t.b])]);
     const s3 = new Set([epsilonWord, new Word([t.c])]);
     const set = concatk(k, s1, s2, s3);
-    console.log('set', wordSetToString(set));
+
     assert.deepStrictEqual(set.size, 7);
     assert.deepStrictEqual(wordSetToString(set), 'ε,c,b,bc,a,ac,ab');
   });
@@ -81,7 +81,7 @@ describe('Concatk Unit Test', () => {
     const s2 = new Set([epsilonWord, new Word([t.b])]);
     const s3 = new Set([epsilonWord, new Word([t.c])]);
     const set = concatk(k, s1, s2, s3);
-    console.log('set', wordSetToString(set));
+
     assert.deepStrictEqual(set.size, 4);
     assert.deepStrictEqual(wordSetToString(set), 'ε,c,b,a');
   });

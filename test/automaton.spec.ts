@@ -6,7 +6,7 @@ import {cfg6, expectedAutomaton6} from './data/cfg6';
 import {cfg7, expectedAutomaton7} from './data/cfg7';
 import {buildLALR1Automaton} from '../src/bottom-up/lib/LALR1Automaton';
 
-describe('First Unit Test', () => {
+describe('Automaton Unit Test', () => {
   it('test building the LR0Automaton_cfg6', () => {
     const automaton = buildLR0Automaton(cfg6);
     assert.deepStrictEqual(automaton.toObject(), expectedAutomaton6);
