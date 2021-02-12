@@ -152,18 +152,21 @@ export class ContextFreeGrammar {
       const subword = Word.retrieve(
         lookAheadTokens.slice(0, lookAheadTokens.length - i)
       );
+
       if (!subword) {
         continue;
       }
       const index = this.llkTableCache.get(k)?.get(nt)?.get(subword);
+
       if (index === undefined) {
         continue;
       }
+
       return index;
     }
 
     throw new ParseError(
-      `LL(${k}) Parser: Syntax Error.`,
+      `LL(${k}) Parser: Syntax Error. terminal = ${lookAheadTokens[0].name}, nonterminal = ${nt.label}`,
       lookAheadTokens[0],
       nt
     );

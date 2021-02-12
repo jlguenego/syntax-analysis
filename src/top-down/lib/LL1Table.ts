@@ -29,7 +29,7 @@ export const buildLL1Table = (cfg: ContextFreeGrammar): void => {
     if (fs.has(epsilon)) {
       const followA = cfg.followCache.get(a) as Set<Terminal>;
       for (const t of followA) {
-        if (ll1TableA.get(t.name) !== undefined) {
+        if (![undefined, i].includes(ll1TableA.get(t.name))) {
           throw new Error(
             `Grammar is not LL1: FIRST/FOLLOW conflict for (${a.label}, ${t.name})`
           );

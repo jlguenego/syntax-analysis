@@ -41,6 +41,9 @@ const getFollowkCacheNt = (
 };
 
 export const buildFollowk = (cfg: ContextFreeGrammar, k: number): void => {
+  if (cfg.followCacheSet.get(k) !== undefined) {
+    return;
+  }
   initFollowkCache(cfg, k);
 
   let previousSize = -1;
@@ -50,18 +53,17 @@ export const buildFollowk = (cfg: ContextFreeGrammar, k: number): void => {
       for (const prod of cfg.productions) {
         const b = prod.LHS;
         const rhs = prod.RHS;
-        const indexA = rhs.findNonTerminalIndex(a);
-        if (indexA === -1) {
-          continue;
-        }
         const followA = getFollowkCacheNt(cfg, k, a);
-        const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
-        const firstStarOmega = firstkStar(cfg, k, omega);
-        absorbSet(followA, firstStarOmega);
-        followA.delete(epsilonWord);
-        if (firstStarOmega.has(epsilonWord)) {
-          const followB = getFollowkCacheNt(cfg, k, b);
-          absorbSet(followA, followB);
+
+        for (const indexA of rhs.getNonTerminalIndexList(a)) {
+          const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
+          const firstStarOmega = firstkStar(cfg, k, omega);
+          absorbSet(followA, firstStarOmega);
+          followA.delete(epsilonWord);
+          if (firstStarOmega.has(epsilonWord)) {
+            const followB = getFollowkCacheNt(cfg, k, b);
+            absorbSet(followA, followB);
+          }
         }
       }
     }
@@ -74,6 +76,4 @@ export const followk = (
   cfg: ContextFreeGrammar,
   k: number,
   nt: NonTerminal
-): Set<Word> => {
-  return cfg.followCacheSet.get(k)?.get(nt) as Set<Word>;
-};
+): Set<Word> => cfg.followCacheSet.get(k)?.get(nt) as Set<Word>;

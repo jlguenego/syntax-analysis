@@ -1,11 +1,10 @@
 import {Word} from './../../Word';
-import {firstkStarSet} from './firstk';
+import {buildFirstk, firstkStarSet} from './firstk';
 import {NonTerminal} from './../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {absorbSet, getDistinctCouples, intersection} from '../../utils/set';
 import {ContextFreeGrammar} from './../../ContextFreeGrammar';
-import {followk} from './followk';
-import {checkLLkTable} from './LLkTable';
+import {followk, buildFollowk} from './followk';
 
 const firstFollow = (
   cfg: ContextFreeGrammar,
@@ -15,6 +14,7 @@ const firstFollow = (
 ) => {
   const followA = followk(cfg, k, a);
   const formSet = rhs.concatSet(followA);
+
   const result = firstkStarSet(cfg, k, formSet);
   return result;
 };
@@ -26,7 +26,8 @@ export const getFirstFollowIntersec = (
   cfg: ContextFreeGrammar,
   k: number
 ): Set<Word> => {
-  checkLLkTable(cfg, k);
+  buildFirstk(cfg, k);
+  buildFollowk(cfg, k);
   const result = new Set<Word>();
   // All LL(1) and LL(0) grammars are strong.
   if (k <= 1) {
@@ -38,8 +39,11 @@ export const getFirstFollowIntersec = (
     const distinctRhsArrayCouples = getDistinctCouples(rhsSet);
     for (const [rhs1, rhs2] of distinctRhsArrayCouples) {
       const set1 = firstFollow(cfg, k, rhs1, nt);
+
       const set2 = firstFollow(cfg, k, rhs2, nt);
+
       const intersec = intersection(set1, set2);
+
       absorbSet(result, intersec);
     }
   }

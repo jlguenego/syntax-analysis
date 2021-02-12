@@ -38,18 +38,19 @@ export const buildFollow = (cfg: ContextFreeGrammar): void => {
       for (const prod of cfg.productions) {
         const b = prod.LHS;
         const rhs = prod.RHS;
-        const indexA = rhs.findNonTerminalIndex(a);
-        if (indexA === -1) {
-          continue;
-        }
-        const followA = getFollowCache(cfg, a);
-        const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
-        const firstStarOmega = firstStar(cfg, omega);
-        absorbSet(followA, firstStarOmega);
-        followA.delete(epsilon);
-        if (firstStarOmega.has(epsilon)) {
-          const followB = getFollowCache(cfg, b);
-          absorbSet(followA, followB);
+        for (const indexA of rhs.getNonTerminalIndexList(a)) {
+          if (indexA === -1) {
+            continue;
+          }
+          const followA = getFollowCache(cfg, a);
+          const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
+          const firstStarOmega = firstStar(cfg, omega);
+          absorbSet(followA, firstStarOmega);
+          followA.delete(epsilon);
+          if (firstStarOmega.has(epsilon)) {
+            const followB = getFollowCache(cfg, b);
+            absorbSet(followA, followB);
+          }
         }
       }
     }

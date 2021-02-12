@@ -67,16 +67,11 @@ export class SententialForm {
     return true;
   }
 
-  /**
-   * The index of first non-terminal in the left-sentential form.
-   * See Aho Ullman Definition 5.1.1
-   *
-   * @param {NonTerminal} nt
-   * @returns {number}
-   * @memberof SententialForm
-   */
-  findNonTerminalIndex(nt: NonTerminal): number {
-    return this.symbols.findIndex(s => s === nt);
+  getNonTerminalIndexList(nt: NonTerminal): number[] {
+    return this.symbols
+      .map((s, i) => ({s, i}))
+      .filter(o => o.s === nt)
+      .map(o => o.i);
   }
 
   findFirstNonTerminal(): NonTerminal | undefined {

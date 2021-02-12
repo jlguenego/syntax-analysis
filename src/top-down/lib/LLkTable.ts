@@ -2,11 +2,11 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {NonTerminal} from '../../NonTerminal';
 import {copyWithoutElt} from '../../utils/set';
 import {epsilonWord, Word} from '../../Word';
-import {buildFirstk, firstkStar} from './firstk';
-import {buildFollowk} from './followk';
+import {buildFirstk, firstkStarSet} from './firstk';
+import {buildFollowk, followk} from './followk';
 
 export const checkLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
-  if (cfg.firstCacheSet.get(k)) {
+  if (cfg.llkTableCache.get(k)) {
     return;
   }
   buildLLkTable(cfg, k);
@@ -35,30 +35,17 @@ export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
     const prod = cfg.productions[i];
     const a = prod.LHS;
     const llkTableA = getLLkTableCache(cfg, k).get(a) as Map<Word, number>;
-    const fs = firstkStar(cfg, k, prod.RHS);
+    const fs = firstkStarSet(cfg, k, prod.RHS.concatSet(followk(cfg, k, a)));
     const fsMinusEpsilon = copyWithoutElt(fs, epsilonWord);
     for (const w of fsMinusEpsilon) {
-      if (llkTableA.get(w) !== undefined) {
+      if (![undefined, i].includes(llkTableA.get(w))) {
         throw new Error(
-          `Grammar is not LL(${k}): FIRST/FIRST conflict for (${
+          `Grammar is not LL(${k}): conflict for (${
             a.label
           }, ${w.toString()}): rules ${llkTableA.get(w)} and ${i}.`
         );
       }
       llkTableA.set(w, i);
-    }
-    if (fs.has(epsilonWord)) {
-      const followA = cfg.followCacheSet.get(k)?.get(a) as Set<Word>;
-      for (const w of followA) {
-        if (llkTableA.get(w) !== undefined) {
-          throw new Error(
-            `Grammar is not LL1: FIRST/FOLLOW conflict for (${
-              a.label
-            }, ${w.toString()})`
-          );
-        }
-        llkTableA.set(w, i);
-      }
     }
   }
 };

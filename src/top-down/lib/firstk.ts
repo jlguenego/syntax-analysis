@@ -60,6 +60,9 @@ const f0 = (cfg: ContextFreeGrammar, k: number, nt: NonTerminal): Set<Word> => {
 };
 
 export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
+  if (cfg.firstCacheSet.get(k) !== undefined) {
+    return;
+  }
   initFirstkCache(cfg, k);
   let previousSize = -1; // 0
   // first round : F0(A)
