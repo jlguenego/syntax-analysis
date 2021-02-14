@@ -1,7 +1,6 @@
 import {
   CFGSpecifications,
   ContextFreeGrammar,
-  CFGSpec,
   ParseTree,
   Sentence,
   defineNonTerminalAlphabet,
@@ -20,7 +19,8 @@ type TA = typeof t;
 type NTA = typeof nt;
 
 const spec: CFGSpecifications<TA, NTA> = {
-  startSymbol: 'S',
+  nt,
+  t,
   productions: [
     {LHS: 'S', RHS: ['E']},
     {LHS: 'E', RHS: ['L', '=', 'R']},
@@ -29,10 +29,11 @@ const spec: CFGSpecifications<TA, NTA> = {
     {LHS: 'L', RHS: ['*', 'R']},
     {LHS: 'R', RHS: ['L']},
   ],
+  startSymbol: 'S',
 };
 
 // note: cfg8 is not SLR1
-export const cfg8 = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg8 = new ContextFreeGrammar(spec);
 
 export const sentence8: Sentence = ['id', '=', '*', 'id'].map(str => ({
   name: str,

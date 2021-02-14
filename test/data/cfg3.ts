@@ -1,7 +1,6 @@
 import {
   CFGSpecifications,
   ContextFreeGrammar,
-  CFGSpec,
   defineTerminalAlphabet,
   defineNonTerminalAlphabet,
 } from '../../src';
@@ -14,6 +13,8 @@ type NTA = typeof nt;
 
 // This grammar is LL1.
 export const spec: CFGSpecifications<TA, NTA> = {
+  nt,
+  t,
   startSymbol: 'E',
   productions: [
     {LHS: 'E', RHS: ['int']},
@@ -22,7 +23,7 @@ export const spec: CFGSpecifications<TA, NTA> = {
     {LHS: 'Op', RHS: ['*']},
   ],
 };
-export const cfg3 = new ContextFreeGrammar(spec as CFGSpec, t, nt, {
+export const cfg3 = new ContextFreeGrammar(spec, {
   ll1: true,
 });
 

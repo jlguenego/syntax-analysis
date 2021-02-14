@@ -4,7 +4,6 @@ import {
   defineNonTerminalAlphabet,
   CFGSpecifications,
   ContextFreeGrammar,
-  CFGSpec,
 } from '../src';
 
 describe('CFG Unit Test', () => {
@@ -13,14 +12,16 @@ describe('CFG Unit Test', () => {
     const nt = defineNonTerminalAlphabet(['A', 'B'] as const);
 
     const spec: CFGSpecifications<typeof t, typeof nt> = {
-      startSymbol: 'A',
+      nt,
+      t,
       productions: [
         {LHS: 'A', RHS: []},
         {LHS: 'A', RHS: ['A', 'a']},
         {LHS: 'A', RHS: ['c']},
       ],
+      startSymbol: 'A',
     };
-    const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+    const cfg = new ContextFreeGrammar(spec);
     const hasEmptyProd = cfg.hasEmptyProduction();
     assert.deepStrictEqual(hasEmptyProd, true);
   });

@@ -12,7 +12,7 @@ describe('Async Unit Test', () => {
     assert.deepStrictEqual(ancestors, new Set(['T', 'E']));
   });
   it('test grammar with unreachable rules', () => {
-    const rules = getUnReachableProductionRule(spec9 as CFGSpec);
+    const rules = getUnReachableProductionRule((spec9 as unknown) as CFGSpec);
     assert.deepStrictEqual(rules, [{LHS: 'E', RHS: ['a']}]);
   });
 

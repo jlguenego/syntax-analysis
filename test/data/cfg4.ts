@@ -3,7 +3,6 @@ import {
   ContextFreeGrammar,
   Sentence,
   ParseTree,
-  CFGSpec,
   defineTerminalAlphabet,
   defineNonTerminalAlphabet,
 } from '../../src';
@@ -15,15 +14,17 @@ type TA = typeof t;
 type NTA = typeof nt;
 
 export const spec: CFGSpecifications<TA, NTA> = {
-  startSymbol: 'S',
+  nt,
+  t,
   productions: [
     {LHS: 'S', RHS: ['E']},
     {LHS: 'E', RHS: ['F']},
     {LHS: 'E', RHS: ['F', '+', 'E']},
     {LHS: 'F', RHS: ['int']},
   ],
+  startSymbol: 'S',
 };
-export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg = new ContextFreeGrammar(spec);
 
 export const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
   name: str,

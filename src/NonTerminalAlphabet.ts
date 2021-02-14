@@ -17,4 +17,5 @@ export class NonTerminalAlphabet {
 }
 
 export const defineNonTerminalAlphabet = <T extends string>(a: readonly T[]) =>
-  new (NonTerminalAlphabet.getClass(a))();
+  new (NonTerminalAlphabet.getClass(a))() as Record<T, NonTerminal> &
+    NonTerminalAlphabet;

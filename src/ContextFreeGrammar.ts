@@ -16,15 +16,19 @@ import {buildFirst} from './top-down/lib/first';
 import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
-import {CFGSpecifications} from './interfaces/CFGSpec';
+import {CFGSpec} from './interfaces/CFGSpec';
 
 export interface CFGOptions {
   ll1: boolean;
 }
 
 export class ContextFreeGrammar {
+  nt: NonTerminalAlphabet;
+  t: TerminalAlphabet;
   startSymbol: NonTerminal;
   productions: Production[];
+
+  spec: CFGSpec;
 
   // for better access performance
   productionMap = new Map<NonTerminal, SententialForm[]>();
@@ -44,22 +48,22 @@ export class ContextFreeGrammar {
     ll1: false,
   };
 
-  constructor(
-    public spec: CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>,
-    public t: TerminalAlphabet,
-    public nt: NonTerminalAlphabet,
-    opts: Partial<CFGOptions> = {}
-  ) {
+  constructor(spec: unknown, opts: Partial<CFGOptions> = {}) {
+    this.spec = spec as CFGSpec;
+    this.nt = this.spec.nt;
+    this.t = this.spec.t;
     this.options = {...this.options, ...opts};
     this.check();
-    this.startSymbol = (nt[spec.startSymbol] as unknown) as NonTerminal;
-    this.productions = spec.productions.map(p => {
-      const lhs = (nt[p.LHS] as unknown) as NonTerminal;
+    this.startSymbol = (this.nt[
+      this.spec.startSymbol
+    ] as unknown) as NonTerminal;
+    this.productions = this.spec.productions.map(p => {
+      const lhs = (this.nt[p.LHS] as unknown) as NonTerminal;
       const rhs = new SententialForm(
         p.RHS.map(
           c =>
-            ((nt[c] as unknown) as NonTerminal) ??
-            ((t[c] as unknown) as Terminal)
+            ((this.nt[c] as unknown) as NonTerminal) ??
+            ((this.t[c] as unknown) as Terminal)
         )
       );
       // const rhs = new SententialForm(

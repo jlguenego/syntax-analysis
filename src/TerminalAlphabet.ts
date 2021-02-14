@@ -17,4 +17,5 @@ export class TerminalAlphabet {
 }
 
 export const defineTerminalAlphabet = <T extends string>(a: readonly T[]) =>
-  new (TerminalAlphabet.getClass(a))();
+  new (TerminalAlphabet.getClass(a))() as Record<T, Terminal> &
+    TerminalAlphabet;

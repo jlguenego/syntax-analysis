@@ -59,6 +59,8 @@ export const removeUnreachableProductionRules = (
   rules: PSpec[]
 ): CFGSpec => {
   return {
+    nt: spec.nt,
+    t: spec.t,
     startSymbol: spec.startSymbol,
     productions: spec.productions.filter(r => !rules.includes(r)),
   };

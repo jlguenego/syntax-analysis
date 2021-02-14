@@ -8,6 +8,8 @@ export interface CFGSpecifications<
   T extends TerminalAlphabet,
   NT extends NonTerminalAlphabet
 > {
+  nt: NT;
+  t: T;
   startSymbol: keyof NT;
   productions: ProductionSpec<T, NT>[];
 }
