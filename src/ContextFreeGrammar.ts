@@ -16,7 +16,7 @@ import {buildFirst} from './top-down/lib/first';
 import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
-import {CFGSpec} from './interfaces/CFGSpec';
+import {CFGSpec, CFGSpecInput} from './interfaces/CFGSpec';
 
 export interface CFGOptions {
   ll1: boolean;
@@ -48,7 +48,7 @@ export class ContextFreeGrammar {
     ll1: false,
   };
 
-  constructor(spec: unknown, opts: Partial<CFGOptions> = {}) {
+  constructor(spec: CFGSpecInput, opts: Partial<CFGOptions> = {}) {
     this.spec = spec as CFGSpec;
     this.nt = this.spec.nt;
     this.t = this.spec.t;

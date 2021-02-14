@@ -13,3 +13,11 @@ export interface CFGSpecifications<
   startSymbol: keyof NT;
   productions: ProductionSpec<T, NT>[];
 }
+
+// just check some typings for ContextFreeGrammar, but not all.
+export type CFGSpecInput = {
+  nt: NonTerminalAlphabet;
+  t: TerminalAlphabet;
+  productions: {LHS: string; RHS: string[]}[];
+  startSymbol: string;
+};
