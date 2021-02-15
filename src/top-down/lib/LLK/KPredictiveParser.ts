@@ -1,9 +1,16 @@
+import {dollar} from './../../../terminals/dollar.terminal';
 import {ParseError} from '../../../ParseError';
 import {ParseSymbol} from '../../../interfaces/ParseSymbol';
 import {ParseTree} from '../../../interfaces/ParseTree';
 import {Sentence} from '../../../interfaces/Sentence';
 import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
 import {ParsingResultRule} from '../../ParsingResultRule';
+import {buildLLkParsingTable} from './buildLLkParsingTable';
+import {
+  ParsingResultEnum,
+  ParsingTableFn,
+} from '../../../interfaces/ParsingTableFn';
+import {getT0} from './buildLLkTables';
 
 export type ProductionIndex = number;
 
@@ -13,34 +20,26 @@ export interface ParserConfiguration {
   outputTape: ProductionIndex[];
 }
 
-export enum ParsingResultEnum {
-  POP,
-  ACCEPT,
-  ERROR,
-}
-
-export type ParsingResult = ParsingResultEnum | ParsingResultRule;
-
-export type ParsingTable = (
-  symbol: ParseSymbol,
-  lookaheadString: Sentence
-) => ParsingResult;
-
 // See Aho Ullman 5.1.2 (page 338) Predictive Parsing Algorithm.
 
-export abstract class KPredictiveParser {
+export class KPredictiveParser {
   outputTape: ProductionIndex[] = [];
   pushdownList!: ParseSymbol[];
+  parsingTable!: ParsingTableFn;
   isFinished = false;
 
   inputTapeCursor = 0;
   constructor(
     public cfg: ContextFreeGrammar,
     public k: number,
-    public inputTape: Sentence,
-    public parsingTable: ParsingTable
+    public inputTape: Sentence
   ) {
+    this.buildParsingTable();
     this.resetPushdownList();
+  }
+
+  buildParsingTable() {
+    this.parsingTable = buildLLkParsingTable(this.cfg, this.k);
   }
 
   /**
@@ -49,7 +48,9 @@ export abstract class KPredictiveParser {
    * @abstract
    * @memberof KPredictiveParser
    */
-  abstract resetPushdownList(): void;
+  resetPushdownList(): void {
+    this.pushdownList = [getT0(this.cfg, this.k), dollar];
+  }
 
   reset() {
     this.outputTape = [];

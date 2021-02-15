@@ -1,3 +1,4 @@
+import {LLkTable} from './../../../LLkTable';
 import {LLkTableRow} from '../../../LLkTableRow';
 import {buildFirstk, firstkStar} from './firstk';
 import {WordSet} from '../../../WordSet';
@@ -6,7 +7,6 @@ import {NonTerminal} from '../../../NonTerminal';
 import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
-import {LLkTable} from '../../../LLkTable';
 import {LLkTables} from '../../../LLkTables';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
@@ -25,6 +25,10 @@ const buildT0 = (cfg: ContextFreeGrammar, k: number) => {
   const e = new WordSet(new Set([epsilonWord]));
   const t0 = buildLLkTable(cfg, k, 0, s, e);
   getLLkTableCache(cfg, k).add(s, e, t0);
+};
+
+export const getT0 = (cfg: ContextFreeGrammar, k: number): LLkTable => {
+  return getLLkTableCache(cfg, k).getTables()[0];
 };
 
 const buildLLkTable = (

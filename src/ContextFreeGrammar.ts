@@ -18,6 +18,7 @@ import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
 import {CFGSpec, CFGSpecInput} from './interfaces/CFGSpec';
 import {LLkTables} from './LLkTables';
+import {LLkParsingTable} from './LLkParsingTable';
 
 export interface CFGOptions {
   ll1: boolean;
@@ -42,7 +43,7 @@ export class ContextFreeGrammar {
 
   // foreach k (of LL(k)) we set a cache.
   llkTableCache = new Map<number, LLkTables>();
-  llkParsingTableCache = new Map<number, Map<NonTerminal, Map<Word, number>>>();
+  llkParsingTableCache = new Map<number, LLkParsingTable>();
   firstCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
   followCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
 
@@ -147,34 +148,5 @@ export class ContextFreeGrammar {
   firstk(k: number, nt: NonTerminal): Set<Word> {
     const set = this.firstCacheSet.get(k)?.get(nt) as Set<Word>;
     return set;
-  }
-
-  getfromLLkTable(
-    k: number,
-    nt: NonTerminal,
-    lookAheadTokens: Terminal[]
-  ): number {
-    for (let i = 0; i < lookAheadTokens.length; i++) {
-      const subword = Word.retrieve(
-        lookAheadTokens.slice(0, lookAheadTokens.length - i)
-      );
-
-      if (!subword) {
-        continue;
-      }
-      const index = this.llkParsingTableCache.get(k)?.get(nt)?.get(subword);
-
-      if (index === undefined) {
-        continue;
-      }
-
-      return index;
-    }
-
-    throw new ParseError(
-      `LL(${k}) Parser: Syntax Error. terminal = ${lookAheadTokens[0].name}, nonterminal = ${nt.label}`,
-      lookAheadTokens[0],
-      nt
-    );
   }
 }

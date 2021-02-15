@@ -6,7 +6,7 @@ import {SententialForm} from './SententialForm';
 import {WordSet} from './WordSet';
 import {concatk} from './top-down/lib/LLK/concatk';
 export class LLkTableRow {
-  followSet = new Set<LocalFollow>();
+  followSet: LocalFollow[] = [];
   constructor(public prodIndex: number) {}
 
   addFollowSets(
@@ -21,13 +21,13 @@ export class LLkTableRow {
       const wordset = new WordSet(
         concatk(k, firstkStar(cfg, k, rhs.slice(i + 1)), l.set)
       );
-      this.followSet.add({nt, wordset});
+      this.followSet.push({nt, wordset});
     }
   }
 
   toString() {
     let result = '' + this.prodIndex + ' | ';
-    if (this.followSet.size === 0) {
+    if (this.followSet.length === 0) {
       result += '<empty>';
     }
     for (const follow of this.followSet) {
