@@ -4,10 +4,12 @@ import {NonTerminal} from './NonTerminal';
 import {Word} from './Word';
 import {WordSet} from './WordSet';
 
-export class LLkTable {
+export class LLkTable extends NonTerminal {
   map = new Map<Word, LLkTableRow>();
 
-  constructor(public nt: NonTerminal, public ws: WordSet) {}
+  constructor(index: number, public nt: NonTerminal, public ws: WordSet) {
+    super('T' + index);
+  }
 
   toString() {
     let result = `LLKTable ${this.nt} ${this.ws}` + '\n';

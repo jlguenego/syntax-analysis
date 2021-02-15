@@ -24,13 +24,13 @@ export const spec: CFGSpecifications<TA, NTA> = {
   ],
   startSymbol: 'S',
 };
-export const cfg = new ContextFreeGrammar(spec);
+export const cfg4 = new ContextFreeGrammar(spec);
 
-export const sentence: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
+export const sentence4: Sentence = ['int', '+', 'int', '+', 'int'].map(str => ({
   name: str,
 }));
 
-export const expectedParseTree: ParseTree = {
+export const expectedParseTree4: ParseTree = {
   node: nt.S,
   children: [
     {
