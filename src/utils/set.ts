@@ -21,6 +21,11 @@ export const areSetEquals = <T>(set1: Set<T>, set2: Set<T>): boolean => {
       return false;
     }
   }
+  for (const e of set2) {
+    if (!set1.has(e)) {
+      return false;
+    }
+  }
   return true;
 };
 

@@ -5,7 +5,7 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn} from './common';
-import {checkLLkTable} from './lib/LLkTable';
+import {checkLLkTable} from './lib/LLkParseTable';
 import {NonTerminal} from '../NonTerminal';
 
 export const llkGetChildren = (

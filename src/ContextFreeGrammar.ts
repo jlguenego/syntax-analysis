@@ -17,6 +17,10 @@ import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
 import {CFGSpec, CFGSpecInput} from './interfaces/CFGSpec';
+import {WordSet} from './WordSet';
+import {LLkTableRow} from './top-down/lib/LLkTableRow';
+
+export type LLkTable = Map<WordSet, Map<Word, LLkTableRow>>;
 
 export interface CFGOptions {
   ll1: boolean;
@@ -40,7 +44,8 @@ export class ContextFreeGrammar {
   ll1TableCache = new Map<NonTerminal, Map<string, number>>();
 
   // foreach k (of LL(k)) we set a cache.
-  llkTableCache = new Map<number, Map<NonTerminal, Map<Word, number>>>();
+  llkTableCache = new Map<number, Map<NonTerminal, LLkTable>>();
+  llkParsingTableCache = new Map<number, Map<NonTerminal, Map<Word, number>>>();
   firstCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
   followCacheSet = new Map<number, Map<NonTerminal, Set<Word>>>();
 
@@ -160,7 +165,7 @@ export class ContextFreeGrammar {
       if (!subword) {
         continue;
       }
-      const index = this.llkTableCache.get(k)?.get(nt)?.get(subword);
+      const index = this.llkParsingTableCache.get(k)?.get(nt)?.get(subword);
 
       if (index === undefined) {
         continue;

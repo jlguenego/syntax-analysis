@@ -2,7 +2,7 @@ import {wordSetToString} from '../src/Word';
 import {getFirstFollowIntersec} from '../src/top-down/lib/strongLLk';
 import {cfg58, sentence58} from './data/aho_ullman/cfg5.8';
 import assert from 'assert';
-import {buildLLkTable} from '../src/top-down/lib/LLkTable';
+import {buildLLkTable} from '../src/top-down/lib/LLkParseTable';
 import {parse} from '../src';
 import {isStrongLLk} from '../src/top-down/lib/strongLLk';
 
