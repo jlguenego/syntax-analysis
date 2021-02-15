@@ -37,7 +37,7 @@ describe('CFG58 Unit Test', () => {
     console.log(
       cfg58.llkTableCache
         .get(2)
-        ?.get(nt58.S)
+        ?.map?.get(nt58.S)
         ?.get(new WordSet(new Set([epsilonWord])))
         ?.toString()
     );

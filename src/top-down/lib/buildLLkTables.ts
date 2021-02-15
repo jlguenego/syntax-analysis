@@ -3,24 +3,23 @@ import {buildFirstk, firstkStar} from './firstk';
 import {WordSet} from '../../WordSet';
 import {epsilonWord} from '../../Word';
 import {NonTerminal} from '../../NonTerminal';
-import {ContextFreeGrammar, LLkTables} from '../../ContextFreeGrammar';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
 import {LLkTable} from '../../LLkTable';
-// purpose is to build for a given grammar, a given k the LLktables.
+import {LLKTables} from '../../LLKTables';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
-  const map = new Map<NonTerminal, LLkTables>();
-  cfg.llkTableCache.set(k, map);
+  cfg.llkTableCache.set(k, new LLKTables());
 };
 
 const buildT0 = (cfg: ContextFreeGrammar, k: number) => {
   const s = cfg.startSymbol;
   const e = new WordSet(new Set([epsilonWord]));
   const t0 = buildLLkTable(cfg, k, s, e);
-  const map: LLkTables = new Map();
+  const map = new Map<WordSet, LLkTable>();
   map.set(e, t0);
-  cfg.llkTableCache.get(k)?.set(s, map);
+  cfg.llkTableCache.get(k)?.map.set(s, map);
 };
 
 const buildLLkTable = (
