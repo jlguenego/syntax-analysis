@@ -13,13 +13,15 @@ const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.llkTableCache.set(k, new LLKTables());
 };
 
+const getLLkTableCache = (cfg: ContextFreeGrammar, k: number): LLKTables => {
+  return cfg.llkTableCache.get(k) as LLKTables;
+};
+
 const buildT0 = (cfg: ContextFreeGrammar, k: number) => {
   const s = cfg.startSymbol;
   const e = new WordSet(new Set([epsilonWord]));
   const t0 = buildLLkTable(cfg, k, s, e);
-  const map = new Map<WordSet, LLkTable>();
-  map.set(e, t0);
-  cfg.llkTableCache.get(k)?.map.set(s, map);
+  getLLkTableCache(cfg, k).add(s, e, t0);
 };
 
 const buildLLkTable = (

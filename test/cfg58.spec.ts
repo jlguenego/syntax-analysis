@@ -2,7 +2,6 @@ import {epsilonWord} from './../src/Word';
 import {wordSetToString} from '../src/Word';
 import {cfg58, nt58} from './data/aho_ullman/cfg5.8';
 import assert from 'assert';
-import {inspect} from 'util';
 import {
   buildLLkParsingTable,
   buildLLkTables,
