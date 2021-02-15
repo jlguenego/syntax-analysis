@@ -5,7 +5,7 @@ import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {PartialParseTree} from '../PartialParseTree';
 import {testFn} from './common';
-import {checkLLkTable} from './lib/LLkParseTable';
+import {checkLLkParsingTable} from './lib/LLkParsingTable';
 import {NonTerminal} from '../NonTerminal';
 
 export const llkGetChildren = (
@@ -37,7 +37,7 @@ export const parseWithLLk = (
   cfg: ContextFreeGrammar,
   k: number
 ): ParseTree => {
-  checkLLkTable(cfg, k);
+  checkLLkParsingTable(cfg, k);
   const dfsTree = new DFSTree<PartialParseTree>(
     new PartialParseTree(new Tree<ParseSymbol>(cfg.startSymbol)),
     testFn(sentence),

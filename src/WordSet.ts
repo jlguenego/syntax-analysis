@@ -18,4 +18,9 @@ export class WordSet {
     this.set = set;
     cache.add(this);
   }
+
+  toString() {
+    const str = [...this.set].map(w => w.toString()).join(', ');
+    return `{ ${str} }`;
+  }
 }

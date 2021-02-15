@@ -5,14 +5,17 @@ import {epsilonWord, Word} from '../../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
 import {buildFollowk, followk} from './followk';
 
-export const checkLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
+export const checkLLkParsingTable = (
+  cfg: ContextFreeGrammar,
+  k: number
+): void => {
   if (cfg.llkParsingTableCache.get(k)) {
     return;
   }
-  buildLLkTable(cfg, k);
+  buildLLkParsingTable(cfg, k);
 };
 
-const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
+const initLLkParsingTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   const map = new Map<NonTerminal, Map<Word, number>>();
   cfg.llkParsingTableCache.set(k, map);
   for (const nt of cfg.productionMap.keys()) {
@@ -20,21 +23,27 @@ const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   }
 };
 
-const getLLkTableCache = (
+const getLLkParsingTableCache = (
   cfg: ContextFreeGrammar,
   k: number
 ): Map<NonTerminal, Map<Word, number>> => {
   return cfg.llkParsingTableCache.get(k) as Map<NonTerminal, Map<Word, number>>;
 };
 
-export const buildLLkTable = (cfg: ContextFreeGrammar, k: number): void => {
+export const buildLLkParsingTable = (
+  cfg: ContextFreeGrammar,
+  k: number
+): void => {
   buildFirstk(cfg, k);
   buildFollowk(cfg, k);
-  initLLkTableCache(cfg, k);
+  initLLkParsingTableCache(cfg, k);
   for (let i = 0; i < cfg.productions.length; i++) {
     const prod = cfg.productions[i];
     const a = prod.LHS;
-    const llkTableA = getLLkTableCache(cfg, k).get(a) as Map<Word, number>;
+    const llkTableA = getLLkParsingTableCache(cfg, k).get(a) as Map<
+      Word,
+      number
+    >;
     const fs = firstkStarSet(cfg, k, prod.RHS.concatSet(followk(cfg, k, a)));
     const fsMinusEpsilon = copyWithoutElt(fs, epsilonWord);
     for (const w of fsMinusEpsilon) {

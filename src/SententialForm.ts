@@ -74,6 +74,13 @@ export class SententialForm {
       .map(o => o.i);
   }
 
+  getAllNonTerminalIndexList(): number[] {
+    return this.symbols
+      .map((s, i) => ({s, i}))
+      .filter(o => o.s instanceof NonTerminal)
+      .map(o => o.i);
+  }
+
   findFirstNonTerminal(): NonTerminal | undefined {
     return this.symbols.find(s => s instanceof NonTerminal) as
       | NonTerminal
@@ -114,5 +121,9 @@ export class SententialForm {
       result.add(this.concatWord(e));
     }
     return result;
+  }
+
+  slice(startIndex: number, endIndex?: number) {
+    return new SententialForm([...this.symbols.slice(startIndex, endIndex)]);
   }
 }
