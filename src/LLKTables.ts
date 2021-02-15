@@ -2,7 +2,7 @@ import {LLkTable} from './LLkTable';
 import {NonTerminal} from './NonTerminal';
 import {WordSet} from './WordSet';
 
-export class LLKTables {
+export class LLkTables {
   map = new Map<NonTerminal, Map<WordSet, LLkTable>>();
   add(nt: NonTerminal, ws: WordSet, table: LLkTable) {
     let m = this.map.get(nt);

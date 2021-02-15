@@ -7,14 +7,14 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
 import {LLkTable} from '../../LLkTable';
-import {LLKTables} from '../../LLKTables';
+import {LLkTables} from '../../LLkTables';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
-  cfg.llkTableCache.set(k, new LLKTables());
+  cfg.llkTableCache.set(k, new LLkTables());
 };
 
-const getLLkTableCache = (cfg: ContextFreeGrammar, k: number): LLKTables => {
-  return cfg.llkTableCache.get(k) as LLKTables;
+const getLLkTableCache = (cfg: ContextFreeGrammar, k: number): LLkTables => {
+  return cfg.llkTableCache.get(k) as LLkTables;
 };
 
 const buildT0 = (cfg: ContextFreeGrammar, k: number) => {
