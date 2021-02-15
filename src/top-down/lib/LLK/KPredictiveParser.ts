@@ -1,9 +1,9 @@
-import {ParseError} from './../../ParseError';
-import {ParseSymbol} from './../../interfaces/ParseSymbol';
-import {ParseTree} from './../../interfaces/ParseTree';
-import {Sentence} from '../../interfaces/Sentence';
-import {ContextFreeGrammar} from './../../ContextFreeGrammar';
-import {ParsingResultRule} from '../ParsingResultRule';
+import {ParseError} from '../../../ParseError';
+import {ParseSymbol} from '../../../interfaces/ParseSymbol';
+import {ParseTree} from '../../../interfaces/ParseTree';
+import {Sentence} from '../../../interfaces/Sentence';
+import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
+import {ParsingResultRule} from '../../ParsingResultRule';
 
 export type ProductionIndex = number;
 

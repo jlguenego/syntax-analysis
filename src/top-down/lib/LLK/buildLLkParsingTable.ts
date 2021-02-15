@@ -1,7 +1,7 @@
-import {ContextFreeGrammar} from '../../ContextFreeGrammar';
-import {NonTerminal} from '../../NonTerminal';
-import {copyWithoutElt} from '../../utils/set';
-import {epsilonWord, Word} from '../../Word';
+import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
+import {NonTerminal} from '../../../NonTerminal';
+import {copyWithoutElt} from '../../../utils/set';
+import {epsilonWord, Word} from '../../../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
 import {buildFollowk, followk} from './followk';
 

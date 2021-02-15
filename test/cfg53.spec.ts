@@ -1,4 +1,4 @@
-import {isStrongLLk} from './../src/top-down/lib/strongLLk';
+import {isStrongLLk} from '../src/top-down/lib/LLK/strongLLk';
 import {isLL1Simple} from '../src/top-down/lib/simpleLL1';
 import assert from 'assert';
 import {cfg53, expectedParseTree53, sentence53} from './data/aho_ullman/cfg5.3';

@@ -1,4 +1,4 @@
-import {Word} from '../../Word';
+import {Word} from '../../../Word';
 
 // Aho Ullman: Operator ⊕k
 export const concatk = (k: number, ...sets: Set<Word>[]): Set<Word> => {
