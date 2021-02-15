@@ -13,7 +13,10 @@ const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.llkTableCache.set(k, new LLkTables());
 };
 
-const getLLkTableCache = (cfg: ContextFreeGrammar, k: number): LLkTables => {
+export const getLLkTableCache = (
+  cfg: ContextFreeGrammar,
+  k: number
+): LLkTables => {
   return cfg.llkTableCache.get(k) as LLkTables;
 };
 
@@ -30,7 +33,7 @@ const buildLLkTable = (
   a: NonTerminal,
   l: WordSet
 ): LLkTable => {
-  const result = new LLkTable();
+  const result = new LLkTable(a, l);
   for (let i = 0; i < cfg.productions.length; i++) {
     if (cfg.productions[i].LHS !== a) {
       // we consider only the a production rules.
@@ -61,4 +64,18 @@ export const buildLLkTables = (cfg: ContextFreeGrammar, k: number) => {
   buildFollowk(cfg, k);
   initLLkTableCache(cfg, k);
   buildT0(cfg, k);
+  const tables = getLLkTableCache(cfg, k);
+  let previousSize = 0;
+  let size = 1;
+  while (previousSize < size) {
+    for (const table of tables.getTables()) {
+      const followSet = table.getFollowSet();
+      for (const localFollow of followSet) {
+        const ti = buildLLkTable(cfg, k, localFollow.nt, localFollow.wordset);
+        getLLkTableCache(cfg, k).add(localFollow.nt, localFollow.wordset, ti);
+      }
+    }
+    previousSize = size;
+    size = tables.getSize();
+  }
 };

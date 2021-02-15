@@ -1,13 +1,12 @@
-import {epsilonWord} from './../src/Word';
 import {wordSetToString} from '../src/Word';
-import {cfg58, nt58} from './data/aho_ullman/cfg5.8';
+import {cfg58, expectedLLkTableString58} from './data/aho_ullman/cfg5.8';
 import assert from 'assert';
 import {
   buildLLkParsingTable,
   buildLLkTables,
   getFirstFollowIntersec,
+  getLLkTableCache,
   isStrongLLk,
-  WordSet,
 } from '../src';
 
 describe('CFG58 Unit Test', () => {
@@ -32,13 +31,11 @@ describe('CFG58 Unit Test', () => {
   });
 
   it('test cfg58_T0', () => {
-    buildLLkTables(cfg58, 2);
-    console.log(
-      cfg58.llkTableCache
-        .get(2)
-        ?.map?.get(nt58.S)
-        ?.get(new WordSet(new Set([epsilonWord])))
-        ?.toString()
+    const k = 2;
+    buildLLkTables(cfg58, k);
+    assert.deepStrictEqual(
+      getLLkTableCache(cfg58, k).toString(),
+      expectedLLkTableString58
     );
   });
 });

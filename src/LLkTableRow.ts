@@ -1,3 +1,4 @@
+import {LocalFollow} from './interfaces/LocalFollow';
 import {firstkStar} from './top-down/lib/firstk';
 import {ContextFreeGrammar} from './ContextFreeGrammar';
 import {NonTerminal} from './NonTerminal';
@@ -5,7 +6,7 @@ import {SententialForm} from './SententialForm';
 import {WordSet} from './WordSet';
 import {concatk} from './top-down/lib/concatk';
 export class LLkTableRow {
-  followSet = new Set<{nt: NonTerminal; wordset: WordSet}>();
+  followSet = new Set<LocalFollow>();
   constructor(public prodIndex: number) {}
 
   addFollowSets(
@@ -26,6 +27,9 @@ export class LLkTableRow {
 
   toString() {
     let result = '' + this.prodIndex + ' | ';
+    if (this.followSet.size === 0) {
+      result += '<empty>';
+    }
     for (const follow of this.followSet) {
       const followStr = follow.nt + ':' + follow.wordset;
       result += followStr;

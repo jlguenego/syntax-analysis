@@ -32,3 +32,18 @@ export const expectedParseTree58: ParseTree = {
   node: nt58.S,
   children: [],
 };
+
+export const expectedLLkTableString58 = `T0 LLKTable S { ε }
+aa: 0 | A:{ aa }
+ab: 0 | A:{ aa }
+bb: 1 | A:{ ba }
+
+T1 LLKTable A { aa }
+aa: 2 | <empty>
+ba: 3 | <empty>
+
+T2 LLKTable A { ba }
+ba: 2 | <empty>
+bb: 3 | <empty>
+
+`;
