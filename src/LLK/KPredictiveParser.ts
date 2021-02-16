@@ -51,6 +51,7 @@ export class KPredictiveParser {
   }
 
   reset() {
+    this.isFinished = false;
     this.outputTape = [];
     this.inputTapeCursor = 0;
     this.resetPushdownList();
