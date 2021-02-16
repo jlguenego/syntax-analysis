@@ -17,7 +17,7 @@ describe('CFG58 Unit Test', () => {
     } catch (e) {
       assert.deepStrictEqual(
         e.message,
-        'Grammar is not LL(1): conflict for (A, b): rules 2 and 3.'
+        'Grammar is not LL(1). Conflict while building the LLk Table. u=b, prod index rule=3 and 2.'
       );
     }
   });

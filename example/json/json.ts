@@ -1,7 +1,6 @@
 import {Group, Lexer, Rule} from '@jlguenego/lexer';
 import {inspect} from 'util';
 import {
-  CFGSpec,
   CFGSpecifications,
   ContextFreeGrammar,
   defineNonTerminalAlphabet,
@@ -97,7 +96,6 @@ const rules = [
   numberRule,
 ];
 const tokenSequence = new Lexer(rules).tokenize(str);
-console.log('tokenSequence: ', tokenSequence);
 
 const t = defineTerminalAlphabet([
   '{',
@@ -124,6 +122,8 @@ const nt = defineNonTerminalAlphabet([
 ] as const);
 
 const spec: CFGSpecifications<typeof t, typeof nt> = {
+  nt,
+  t,
   startSymbol: 'Json',
   productions: [
     {LHS: 'Json', RHS: ['Element']},
@@ -145,7 +145,7 @@ const spec: CFGSpecifications<typeof t, typeof nt> = {
     {LHS: 'Elements', RHS: ['Elements', ',', 'Element']},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec as CFGSpec, t, nt);
+export const cfg = new ContextFreeGrammar(spec);
 
 const parseTree = parse(tokenSequence, cfg, {method: 'SLR1'});
-console.log('parseTree: ', inspect(parseTree, false, null, true));
+console.log('parseTree: ', inspect(parseTree, false, null));

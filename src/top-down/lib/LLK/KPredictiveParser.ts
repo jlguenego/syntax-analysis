@@ -6,13 +6,12 @@ import {Sentence} from '../../../interfaces/Sentence';
 import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
 import {ParsingResultRule} from '../../ParsingResultRule';
 import {buildLLkParsingTable} from './buildLLkParsingTable';
-import {
-  ParsingResultEnum,
-  ParsingTableFn,
-} from '../../../interfaces/ParsingTableFn';
+import {ParsingTableFn} from '../../../interfaces/ParsingTableFn';
 import {getT0} from './buildLLkTables';
-
-export type ProductionIndex = number;
+import {ProductionIndex} from '../../../interfaces/ProductionIndex';
+import {convertInputTapeToTree} from '../../../utils/convert';
+import {ParsingResultEnum} from '../../../interfaces/ParsingResultEnum';
+import {inspect} from 'util';
 
 export interface ParserConfiguration {
   unusedPortion: Sentence;
@@ -109,9 +108,12 @@ export class KPredictiveParser {
     }
   }
 
-  start() {
-    while (this.isFinished) {
+  run() {
+    while (!this.isFinished) {
       this.move();
     }
+    const tree = convertInputTapeToTree(this.cfg, this.outputTape);
+    const parseTree = tree.toObject() as ParseTree;
+    return parseTree;
   }
 }

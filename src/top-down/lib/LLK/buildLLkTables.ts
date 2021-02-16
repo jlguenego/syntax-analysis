@@ -55,7 +55,7 @@ const buildLLkTable = (
         throw new Error(
           `Grammar is not LL(${k}). Conflict while building the LLk Table. u=${u.toString()}, prod index rule=${i} and ${
             existingTableRow.prodIndex
-          }`
+          }.`
         );
       }
       result.map.set(u, row);

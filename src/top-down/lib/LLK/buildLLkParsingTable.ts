@@ -9,12 +9,10 @@ import {buildFirstk} from './firstk';
 import {buildFollowk} from './followk';
 import {ParseSymbol} from '../../../interfaces/ParseSymbol';
 import {Sentence} from '../../../interfaces/Sentence';
-import {
-  ParsingResultEnum,
-  ParsingTableFn,
-} from '../../../interfaces/ParsingTableFn';
+import {ParsingTableFn} from '../../../interfaces/ParsingTableFn';
 import {LLkTable} from '../../../LLkTable';
 import {Word} from '../../../Word';
+import {ParsingResultEnum} from '../../../interfaces/ParsingResultEnum';
 
 export const checkLLkParsingTable = (
   cfg: ContextFreeGrammar,
@@ -47,13 +45,15 @@ export const buildLLkParsingTableCache = (
     for (const [word, tablerow] of ti.map) {
       const rhs = cfg.productions[tablerow.prodIndex].RHS;
       const symbols = [...rhs.symbols];
+      let followSetIndex = 0;
       for (let i = 0; i < symbols.length; i++) {
         const s = symbols[i];
         if (s instanceof NonTerminal) {
           symbols[i] = getLLkTableCache(cfg, k).get(
             s,
-            tablerow.followSet[i].wordset
+            tablerow.followSet[followSetIndex].wordset
           ) as NonTerminal;
+          followSetIndex++;
         }
       }
       const beta = new SententialForm(symbols);
@@ -94,7 +94,7 @@ export const buildLLkParsingTable = (
         return ParsingResultEnum.ACCEPT;
       }
     }
-    if (first === symbol) {
+    if (first.name === symbol.name) {
       return ParsingResultEnum.POP;
     }
 
