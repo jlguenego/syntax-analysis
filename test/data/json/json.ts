@@ -1,14 +1,12 @@
-import {Group, Lexer, Rule} from '@jlguenego/lexer';
-import {inspect} from 'util';
+import {Group, Lexer, Rule, TokenSequence} from '@jlguenego/lexer';
 import {
   CFGSpecifications,
   ContextFreeGrammar,
   defineNonTerminalAlphabet,
   defineTerminalAlphabet,
-  parse,
-} from '../../src/index';
+} from '../../../src/index';
 
-const str = `
+export const jsonStr = `
 {
     "toto0": ["titi", "tete", 123.234],
     "toto1": ["titi", "tete", null],
@@ -95,7 +93,11 @@ const rules = [
   trueRule,
   numberRule,
 ];
-const tokenSequence = new Lexer(rules).tokenize(str);
+
+export function scanJSON(str: string): TokenSequence {
+  const tokenSequence = new Lexer(rules).tokenize(str);
+  return tokenSequence;
+}
 
 const t = defineTerminalAlphabet([
   '{',
@@ -145,7 +147,4 @@ const spec: CFGSpecifications<typeof t, typeof nt> = {
     {LHS: 'Elements', RHS: ['Elements', ',', 'Element']},
   ],
 };
-export const cfg = new ContextFreeGrammar(spec);
-
-const parseTree = parse(tokenSequence, cfg, {method: 'SLR1'});
-console.log('parseTree: ', inspect(parseTree, false, null));
+export const cfgJson = new ContextFreeGrammar(spec);
