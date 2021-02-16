@@ -1,5 +1,5 @@
-import {getDistinctCouples} from './../src/utils/set';
-import {getUnReachableProductionRule} from './../src/utils/check';
+import {getDistinctCouples} from '../src/utils/set';
+import {getUnReachableProductionRule} from '../src/utils/check';
 import assert from 'assert';
 import {cfg1} from './data/cfg1';
 import {CFGSpec, getAncestors} from '../src';

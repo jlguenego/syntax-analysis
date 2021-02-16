@@ -1,4 +1,4 @@
-import {isLL1Simple} from './../src/top-down/lib/simpleLL1';
+import {isLL1Simple} from '../src/top-down/lib/simpleLL1';
 import assert from 'assert';
 import {parse} from '../src';
 import {cfg52, expectedParseTree52, sentence52} from './data/aho_ullman/cfg5.2';

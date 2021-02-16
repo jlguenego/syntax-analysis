@@ -1,4 +1,4 @@
-import {PSpec} from './../interfaces/Production';
+import {PSpec} from '../interfaces/Production';
 import {CFGSpec} from '../interfaces/CFGSpec';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
