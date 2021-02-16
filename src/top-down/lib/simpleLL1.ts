@@ -1,5 +1,5 @@
-import {NonTerminal} from './../../NonTerminal';
-import {ContextFreeGrammar} from './../../ContextFreeGrammar';
+import {NonTerminal} from '../../NonTerminal';
+import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {Terminal} from '../../interfaces/Terminal';
 
 /**

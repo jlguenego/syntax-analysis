@@ -9,7 +9,7 @@ import {buildLLkParsingTable} from './buildLLkParsingTable';
 import {ParsingTableFn} from '../interfaces/ParsingTableFn';
 import {getT0} from './buildLLkTables';
 import {ProductionIndex} from '../interfaces/ProductionIndex';
-import {convertInputTapeToTree} from '../utils/convert';
+import {convertInputTapeToTree} from './convert';
 import {ParsingResultEnum} from '../interfaces/ParsingResultEnum';
 
 export interface ParserConfiguration {
