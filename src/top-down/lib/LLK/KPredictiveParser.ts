@@ -11,7 +11,6 @@ import {getT0} from './buildLLkTables';
 import {ProductionIndex} from '../../../interfaces/ProductionIndex';
 import {convertInputTapeToTree} from '../../../utils/convert';
 import {ParsingResultEnum} from '../../../interfaces/ParsingResultEnum';
-import {inspect} from 'util';
 
 export interface ParserConfiguration {
   unusedPortion: Sentence;

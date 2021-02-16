@@ -28,9 +28,19 @@ export const sentence58: Sentence = 'abaa'.split('').map(str => ({
   name: str,
 }));
 
+const nt = nt58;
+
 export const expectedParseTree58: ParseTree = {
-  node: nt58.S,
-  children: [],
+  node: nt.S,
+  children: [
+    {node: {name: 'a'}},
+    {
+      node: nt.A,
+      children: [{node: {name: 'b'}}],
+    },
+    {node: {name: 'a'}},
+    {node: {name: 'a'}},
+  ],
 };
 
 export const expectedLLkTableString58 = `T0 LLKTable S { ε }

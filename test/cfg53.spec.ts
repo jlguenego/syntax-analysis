@@ -3,7 +3,6 @@ import {isLL1Simple} from '../src/top-down/lib/simpleLL1';
 import assert from 'assert';
 import {cfg53, expectedParseTree53, sentence53} from './data/aho_ullman/cfg5.3';
 import {parse} from '../src';
-import {inspect} from 'util';
 
 describe('cfg53 Unit Test', () => {
   it('test simple_LL1', async () => {

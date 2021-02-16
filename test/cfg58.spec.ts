@@ -1,5 +1,10 @@
 import {wordSetToString} from '../src/Word';
-import {cfg58, expectedLLkTableString58} from './data/aho_ullman/cfg5.8';
+import {
+  cfg58,
+  expectedLLkTableString58,
+  expectedParseTree58,
+  sentence58,
+} from './data/aho_ullman/cfg5.8';
 import assert from 'assert';
 import {
   buildLLkParsingTable,
@@ -7,6 +12,7 @@ import {
   getFirstFollowIntersec,
   getLLkTableCache,
   isStrongLLk,
+  parse,
 } from '../src';
 
 describe('CFG58 Unit Test', () => {
@@ -37,5 +43,13 @@ describe('CFG58 Unit Test', () => {
       getLLkTableCache(cfg58, k).toString(),
       expectedLLkTableString58
     );
+  });
+  it('test parse_cfg58', () => {
+    const k = 2;
+    const parseTree = parse(sentence58, cfg58, {
+      method: 'LLk',
+      lookaheadTokenNbr: k,
+    });
+    assert.deepStrictEqual(parseTree, expectedParseTree58);
   });
 });
