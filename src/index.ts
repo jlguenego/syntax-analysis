@@ -21,6 +21,7 @@ export * from './LLK/concatk';
 export * from './LLK/buildLLkTables';
 export * from './LLK/strongLLk';
 export * from './LLK/buildLLkParsingTable';
+export * from './LLK/KPredictiveParser';
 export * from './Word';
 export * from './WordSet';
 
