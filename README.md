@@ -56,9 +56,12 @@ const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
 
 - **LL1**: Like DFS2 but use a LL1 table to know exactly wich production rule to use for the next sentential form.
   This one is linear O(ng), n is the size of the string to parse, and g is the size of the grammar.
+
   - Warning: the grammar must be LL(1) compatible. So you may have to refactor your grammar in some case:
     - Convert left recursion to right recursion.
     - Left factoring
+
+- **LLk**: This one do not use anymore DFS but a k predictive algorithm, exactly as described in the Aho Ullman book (see [Theory](#theory)). It really parse real LLk grammar (ie not only the strong LLk grammar), k can be any integer ≥ 1.
 
 ## Bottom up algorithm
 
