@@ -1,5 +1,5 @@
 import {LLkTable} from './LLkTable';
-import {ParsingResultRule} from './top-down/ParsingResultRule';
+import {ParsingResultRule} from './LLK/ParsingResultRule';
 import {Word} from './Word';
 
 export class LLkParsingTable {

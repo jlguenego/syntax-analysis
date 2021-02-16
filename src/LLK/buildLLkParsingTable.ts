@@ -1,7 +1,7 @@
 import {dollar} from '../terminals/dollar.terminal';
 import {LLkParsingTable} from '../LLkParsingTable';
 import {SententialForm} from '../SententialForm';
-import {ParsingResultRule} from '../top-down/ParsingResultRule';
+import {ParsingResultRule} from './ParsingResultRule';
 import {buildLLkTables, getLLkTableCache} from './buildLLkTables';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {NonTerminal} from '../NonTerminal';

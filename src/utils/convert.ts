@@ -1,9 +1,11 @@
-import {epsilon} from './../terminals/epsilon.terminal';
-import {ParseSymbol} from './../interfaces/ParseSymbol';
-import {ContextFreeGrammar} from './../ContextFreeGrammar';
-import {OutputTape} from './../interfaces/OutputTape';
 import {Tree} from '@jlguenego/tree';
+
+import {epsilon} from '../terminals/epsilon.terminal';
+import {ParseSymbol} from '../interfaces/ParseSymbol';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {OutputTape} from '../interfaces/OutputTape';
 import {NonTerminal} from '../NonTerminal';
+
 export const convertInputTapeToTree = (
   cfg: ContextFreeGrammar,
   outputTape: OutputTape

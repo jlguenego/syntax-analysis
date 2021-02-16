@@ -4,7 +4,7 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
-import {ParsingResultRule} from '../top-down/ParsingResultRule';
+import {ParsingResultRule} from './ParsingResultRule';
 import {buildLLkParsingTable} from './buildLLkParsingTable';
 import {ParsingTableFn} from '../interfaces/ParsingTableFn';
 import {getT0} from './buildLLkTables';

@@ -1,4 +1,4 @@
-import {ParsingResultRule} from '../top-down/ParsingResultRule';
+import {ParsingResultRule} from '../LLK/ParsingResultRule';
 import {ParseSymbol} from './ParseSymbol';
 import {ParsingResultEnum} from './ParsingResultEnum';
 import {Sentence} from './Sentence';
