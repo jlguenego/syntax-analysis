@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.6.0](https://github.com/jlguenego/syntax-analysis/compare/v1.5.0...v1.6.0) (2021-02-16)
+
+
+### Features
+
+* add LLktable ([72a5f6e](https://github.com/jlguenego/syntax-analysis/commit/72a5f6eff325ca57d5891655983d9b96d48ee2e7))
+* added getFirstFollowIntersec ([6e56eaf](https://github.com/jlguenego/syntax-analysis/commit/6e56eafa817e923725af7c384b03a020cc2af2cf))
+* added isStrongLLk ([86e159b](https://github.com/jlguenego/syntax-analysis/commit/86e159b41fa4153ee5435318e7aafcb9ee8a1b01))
+* added test on simple LL1 grammar ([0912fb7](https://github.com/jlguenego/syntax-analysis/commit/0912fb7de83fa21c4141e3cb26befd32a95f3cd3))
+* adding firstk ([10384de](https://github.com/jlguenego/syntax-analysis/commit/10384de67809f208ab0acaabffcc516cb38d3274))
+* Word class ([61f6b6c](https://github.com/jlguenego/syntax-analysis/commit/61f6b6c723ab3186bd64c277f5ffcd1b48e08666))
+
+
+### Bug Fixes
+
+* word memory leak ([1fe9ad2](https://github.com/jlguenego/syntax-analysis/commit/1fe9ad26b65ca09d0e521b5a7d2d1f0435157065))
+
 ## [1.5.0](https://github.com/jlguenego/syntax-analysis/compare/v1.4.1...v1.5.0) (2021-02-09)
 
 
