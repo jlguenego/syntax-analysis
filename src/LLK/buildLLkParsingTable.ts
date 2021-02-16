@@ -1,18 +1,18 @@
-import {dollar} from './../../../terminals/dollar.terminal';
-import {LLkParsingTable} from './../../../LLkParsingTable';
-import {SententialForm} from './../../../SententialForm';
-import {ParsingResultRule} from './../../ParsingResultRule';
+import {dollar} from '../terminals/dollar.terminal';
+import {LLkParsingTable} from '../LLkParsingTable';
+import {SententialForm} from '../SententialForm';
+import {ParsingResultRule} from '../top-down/ParsingResultRule';
 import {buildLLkTables, getLLkTableCache} from './buildLLkTables';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
-import {NonTerminal} from '../../../NonTerminal';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {NonTerminal} from '../NonTerminal';
 import {buildFirstk} from './firstk';
 import {buildFollowk} from './followk';
-import {ParseSymbol} from '../../../interfaces/ParseSymbol';
-import {Sentence} from '../../../interfaces/Sentence';
-import {ParsingTableFn} from '../../../interfaces/ParsingTableFn';
-import {LLkTable} from '../../../LLkTable';
-import {Word} from '../../../Word';
-import {ParsingResultEnum} from '../../../interfaces/ParsingResultEnum';
+import {ParseSymbol} from '../interfaces/ParseSymbol';
+import {Sentence} from '../interfaces/Sentence';
+import {ParsingTableFn} from '../interfaces/ParsingTableFn';
+import {LLkTable} from '../LLkTable';
+import {Word} from '../Word';
+import {ParsingResultEnum} from '../interfaces/ParsingResultEnum';
 
 export const checkLLkParsingTable = (
   cfg: ContextFreeGrammar,

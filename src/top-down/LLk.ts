@@ -1,4 +1,4 @@
-import {KPredictiveParser} from './lib/LLK/KPredictiveParser';
+import {KPredictiveParser} from '../LLK/KPredictiveParser';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {ParseTree} from '../interfaces/ParseTree';
 import {Sentence} from '../interfaces/Sentence';

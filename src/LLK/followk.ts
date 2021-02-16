@@ -1,8 +1,8 @@
-import {Word, dollarWord, epsilonWord} from '../../../Word';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
-import {NonTerminal} from '../../../NonTerminal';
-import {SententialForm} from '../../../SententialForm';
-import {absorbSet} from '../../../utils/set';
+import {Word, dollarWord, epsilonWord} from '../Word';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {NonTerminal} from '../NonTerminal';
+import {SententialForm} from '../SententialForm';
+import {absorbSet} from '../utils/set';
 import {firstkStar} from './firstk';
 
 const initFollowkCache = (cfg: ContextFreeGrammar, k: number): void => {

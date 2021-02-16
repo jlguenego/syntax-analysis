@@ -16,11 +16,11 @@ export * from './TerminalAlphabet';
 export * from './terminals/dollar.terminal';
 export * from './terminals/epsilon.terminal';
 export * from './utils/check';
-export * from './top-down/lib/LLK/firstk';
-export * from './top-down/lib/LLK/concatk';
-export * from './top-down/lib/LLK/buildLLkTables';
-export * from './top-down/lib/LLK/strongLLk';
-export * from './top-down/lib/LLK/buildLLkParsingTable';
+export * from './LLK/firstk';
+export * from './LLK/concatk';
+export * from './LLK/buildLLkTables';
+export * from './LLK/strongLLk';
+export * from './LLK/buildLLkParsingTable';
 export * from './Word';
 export * from './WordSet';
 

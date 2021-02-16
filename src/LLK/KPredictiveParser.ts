@@ -1,16 +1,16 @@
-import {dollar} from './../../../terminals/dollar.terminal';
-import {ParseError} from '../../../ParseError';
-import {ParseSymbol} from '../../../interfaces/ParseSymbol';
-import {ParseTree} from '../../../interfaces/ParseTree';
-import {Sentence} from '../../../interfaces/Sentence';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
-import {ParsingResultRule} from '../../ParsingResultRule';
+import {dollar} from '../terminals/dollar.terminal';
+import {ParseError} from '../ParseError';
+import {ParseSymbol} from '../interfaces/ParseSymbol';
+import {ParseTree} from '../interfaces/ParseTree';
+import {Sentence} from '../interfaces/Sentence';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {ParsingResultRule} from '../top-down/ParsingResultRule';
 import {buildLLkParsingTable} from './buildLLkParsingTable';
-import {ParsingTableFn} from '../../../interfaces/ParsingTableFn';
+import {ParsingTableFn} from '../interfaces/ParsingTableFn';
 import {getT0} from './buildLLkTables';
-import {ProductionIndex} from '../../../interfaces/ProductionIndex';
-import {convertInputTapeToTree} from '../../../utils/convert';
-import {ParsingResultEnum} from '../../../interfaces/ParsingResultEnum';
+import {ProductionIndex} from '../interfaces/ProductionIndex';
+import {convertInputTapeToTree} from '../utils/convert';
+import {ParsingResultEnum} from '../interfaces/ParsingResultEnum';
 
 export interface ParserConfiguration {
   unusedPortion: Sentence;

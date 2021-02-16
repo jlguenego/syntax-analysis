@@ -1,9 +1,9 @@
-import {SententialForm} from '../../../SententialForm';
-import {NonTerminal} from '../../../NonTerminal';
-import {ParseSymbol} from '../../../interfaces/ParseSymbol';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
-import {epsilonWord, Word} from '../../../Word';
-import {absorbSet} from '../../../utils/set';
+import {SententialForm} from '../SententialForm';
+import {NonTerminal} from '../NonTerminal';
+import {ParseSymbol} from '../interfaces/ParseSymbol';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
+import {epsilonWord, Word} from '../Word';
+import {absorbSet} from '../utils/set';
 import {concatk} from './concatk';
 
 // See algorithm in book Aho Ullman (Theory of Parsing, Translation, and Compiling) Volume 1.

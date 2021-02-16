@@ -1,9 +1,9 @@
-import {Word} from '../../../Word';
+import {Word} from '../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
-import {NonTerminal} from '../../../NonTerminal';
-import {SententialForm} from '../../../SententialForm';
-import {absorbSet, getDistinctCouples, intersection} from '../../../utils/set';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
+import {NonTerminal} from '../NonTerminal';
+import {SententialForm} from '../SententialForm';
+import {absorbSet, getDistinctCouples, intersection} from '../utils/set';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {followk, buildFollowk} from './followk';
 
 const firstFollow = (

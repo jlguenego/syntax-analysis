@@ -1,13 +1,13 @@
-import {LLkTable} from './../../../LLkTable';
-import {LLkTableRow} from '../../../LLkTableRow';
+import {LLkTable} from '../LLkTable';
+import {LLkTableRow} from '../LLkTableRow';
 import {buildFirstk, firstkStar} from './firstk';
-import {WordSet} from '../../../WordSet';
-import {epsilonWord} from '../../../Word';
-import {NonTerminal} from '../../../NonTerminal';
-import {ContextFreeGrammar} from '../../../ContextFreeGrammar';
+import {WordSet} from '../WordSet';
+import {epsilonWord} from '../Word';
+import {NonTerminal} from '../NonTerminal';
+import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
-import {LLkTables} from '../../../LLkTables';
+import {LLkTables} from '../LLkTables';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.llkTableCache.set(k, new LLkTables());
