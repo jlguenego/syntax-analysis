@@ -15,28 +15,32 @@ npm i @jlguenego/syntax-analysis
 You should use Typescript in order to check your grammar in a easier way.
 
 ```ts
-const t = defineTerminalAlphabet(['+', 'int'] as const);
-const nt = defineNonTerminalAlphabet(['S', 'E', 'F'] as const);
+const t = defineTerminalAlphabet(['a', 'b'] as const);
+const nt = defineNonTerminalAlphabet(['S', 'A'] as const);
 
-type TA = typeof t;
-type NTA = typeof nt;
-
-const spec: CFGSpec<TA, NTA> = {
-  startSymbol: 'S',
+const spec: CFGSpecifications<typeof t58, typeof nt58> = {
+  nt,
+  t,
   productions: [
-    {LHS: 'S', RHS: ['E']},
-    {LHS: 'E', RHS: ['E', '+', 'F']},
-    {LHS: 'E', RHS: ['F']},
-    {LHS: 'F', RHS: ['int']},
+    {LHS: 'S', RHS: ['a', 'A', 'a', 'a']},
+    {LHS: 'S', RHS: ['b', 'A', 'b', 'a']},
+    {LHS: 'A', RHS: []},
+    {LHS: 'A', RHS: ['b']},
   ],
+  startSymbol: 'S',
 };
-const cfg = new ContextFreeGrammar(spec, t, nt);
+export const cfg58 = new ContextFreeGrammar(spec);
 
 // coming from a lexer (ex: @jlguenego/lexer)
-const sentence = [{name: 'int'}, {name: '+'}, {name: 'int'}];
+const sentence: Sentence = 'abaa'.split('').map(str => ({
+  name: str,
+}));
 
-// the real job
-const parseTree = parse<NTA, TA>(sentence, cfg, {method: 'LL1');
+// the real job: get the parse tree.
+const parseTree = parse(sentence, cfg, {
+  method: 'LLk',
+  lookaheadTokenNbr: 2,
+});
 ```
 
 ## Top down algorithm
