@@ -18,7 +18,7 @@ You should use Typescript in order to check your grammar in a easier way.
 const t = defineTerminalAlphabet(['a', 'b'] as const);
 const nt = defineNonTerminalAlphabet(['S', 'A'] as const);
 
-const spec: CFGSpecifications<typeof t58, typeof nt58> = {
+const spec: CFGSpecifications<typeof t, typeof nt> = {
   nt,
   t,
   productions: [
@@ -29,7 +29,7 @@ const spec: CFGSpecifications<typeof t58, typeof nt58> = {
   ],
   startSymbol: 'S',
 };
-export const cfg58 = new ContextFreeGrammar(spec);
+export const cfg = new ContextFreeGrammar(spec);
 
 // coming from a lexer (ex: @jlguenego/lexer)
 const sentence: Sentence = 'abaa'.split('').map(str => ({
