@@ -65,7 +65,7 @@ const parseTree = parse(sentence, cfg, {
     - Convert left recursion to right recursion.
     - Left factoring
 
-- **LLk**: This one do not use anymore DFS but a k predictive algorithm, exactly as described in the Aho Ullman book (see [Theory](#theory)). It really parse real LLk grammar (ie not only the strong LLk grammar), k can be any integer ≥ 1.
+- **LLk**: This one do not use anymore search tree algorithm with possible backtracking but a k predictive algorithm, exactly as described in the Aho Ullman book (see [Theory](#theory)). It parses real LLk grammars (ie not only the strong LLk grammar), k can be any integer ≥ 1.
 
 ## Bottom up algorithm
 
