@@ -7,3 +7,4 @@ node_modules
 CHANGELOG.md
 tsconfig.json
 example
+test
