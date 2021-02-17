@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.2](https://github.com/jlguenego/syntax-analysis/compare/v1.6.1...v1.6.2) (2021-02-17)
+
+
+### Bug Fixes
+
+* export ([4ce798c](https://github.com/jlguenego/syntax-analysis/commit/4ce798c37cd4afcafb92f3e3e20d3528834eebc0))
+
 ### [1.6.1](https://github.com/jlguenego/syntax-analysis/compare/v1.6.0...v1.6.1) (2021-02-16)
 
 ## [1.6.0](https://github.com/jlguenego/syntax-analysis/compare/v1.5.0...v1.6.0) (2021-02-16)
