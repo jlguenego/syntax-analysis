@@ -3,8 +3,8 @@ import {NonTerminal} from '../NonTerminal';
 import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {epsilonWord, Word} from '../Word';
-import {absorbSet} from '../utils/set';
 import {concatk} from './concatk';
+import {Sets} from '@jlguenego/set';
 
 // See algorithm in book Aho Ullman (Theory of Parsing, Translation, and Compiling) Volume 1.
 // https://dl.acm.org/doi/pdf/10.5555/578789
@@ -67,7 +67,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
   let previousSize = -1; // 0
   // first round : F0(A)
   for (const [nt, firstkNt] of getFirstkCache(cfg, k)) {
-    absorbSet(firstkNt, f0(cfg, k, nt));
+    Sets.absorb(firstkNt, f0(cfg, k, nt));
   }
   let size = getFirstkCacheSize(cfg, k);
   // other rounds: Fi(A) until the sets stop growing.
@@ -84,7 +84,7 @@ export const buildFirstk = (cfg: ContextFreeGrammar, k: number): void => {
         const fis = rhs.symbols.map(s => fi(cfg, k, s));
         // Aho Ullman: Operator ⊕k on Fi-1(Yp)
         const set = concatk(k, ...fis);
-        absorbSet(firstkNt, set);
+        Sets.absorb(firstkNt, set);
       }
     }
     previousSize = size;
@@ -113,7 +113,7 @@ export const firstkStarSet = (
   const set = new Set<Word>();
   for (const form of formSet) {
     const subset = firstkStar(cfg, k, form);
-    absorbSet(set, subset);
+    Sets.absorb(set, subset);
   }
   return set;
 };

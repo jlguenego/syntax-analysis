@@ -1,9 +1,9 @@
+import {Sets} from '@jlguenego/set';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {epsilon} from '../../terminals/epsilon.terminal';
-import {absorbSet} from '../../utils/set';
 
 const initFirstCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
@@ -46,7 +46,7 @@ export const buildFirst = (cfg: ContextFreeGrammar): void => {
           firstNt.add(epsilon);
           continue;
         }
-        absorbSet(firstNt, firstStar(cfg, rhs));
+        Sets.absorb(firstNt, firstStar(cfg, rhs));
       }
     }
     previousSize = size;
@@ -68,13 +68,13 @@ export function firstStar(
     }
     const set = getFirstCache(cfg, symbol);
     if (!set.has(epsilon)) {
-      absorbSet(result, set);
+      Sets.absorb(result, set);
       broken = true;
       break;
     }
     const setMinusEpsilon = new Set(set);
     setMinusEpsilon.delete(epsilon);
-    absorbSet(result, setMinusEpsilon);
+    Sets.absorb(result, setMinusEpsilon);
   }
   if (broken === false) {
     result.add(epsilon);

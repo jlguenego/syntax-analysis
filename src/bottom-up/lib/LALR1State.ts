@@ -1,8 +1,9 @@
+import {Sets} from '@jlguenego/set';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
-import {absorbSet, areSetEquals} from '../../utils/set';
+import {areSetEquals} from '../../utils/set';
 import {computeLR1Closure} from './computeClosure';
 import {LR0Item} from './LR0Item';
 import {LR1Item} from './LR1Item';
@@ -16,7 +17,7 @@ export class LALR1State {
     computeLR1Closure(cfg, configSet);
     for (const s of cache) {
       if (s.equalsCoreConfigSet(configSet)) {
-        absorbSet(s.configSet, configSet);
+        Sets.absorb(s.configSet, configSet);
         return s;
       }
     }

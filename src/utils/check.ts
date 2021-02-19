@@ -2,7 +2,7 @@ import {PSpec} from '../interfaces/Production';
 import {CFGSpec} from '../interfaces/CFGSpec';
 import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
-import {absorbSet} from './set';
+import {Sets} from '@jlguenego/set';
 
 export const checkAlphabetAreDisjoint = (
   t: TerminalAlphabet,
@@ -48,7 +48,7 @@ export const getAncestors = (spec: CFGSpec, nt: string): Set<string> => {
     set = new Set();
     for (const e of previousSet) {
       const s = getParents(spec, e);
-      absorbSet(set, s);
+      Sets.absorb(set, s);
     }
   }
   return set;

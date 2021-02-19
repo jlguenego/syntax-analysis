@@ -2,8 +2,8 @@ import {Word, dollarWord, epsilonWord} from '../Word';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {NonTerminal} from '../NonTerminal';
 import {SententialForm} from '../SententialForm';
-import {absorbSet} from '../utils/set';
 import {firstkStar} from './firstk';
+import {Sets} from '@jlguenego/set';
 
 const initFollowkCache = (cfg: ContextFreeGrammar, k: number): void => {
   const map = new Map<NonTerminal, Set<Word>>();
@@ -58,11 +58,11 @@ export const buildFollowk = (cfg: ContextFreeGrammar, k: number): void => {
         for (const indexA of rhs.getNonTerminalIndexList(a)) {
           const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
           const firstStarOmega = firstkStar(cfg, k, omega);
-          absorbSet(followA, firstStarOmega);
+          Sets.absorb(followA, firstStarOmega);
           followA.delete(epsilonWord);
           if (firstStarOmega.has(epsilonWord)) {
             const followB = getFollowkCacheNt(cfg, k, b);
-            absorbSet(followA, followB);
+            Sets.absorb(followA, followB);
           }
         }
       }

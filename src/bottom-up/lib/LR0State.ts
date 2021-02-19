@@ -1,9 +1,9 @@
+import {Sets} from '@jlguenego/set';
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Terminal} from '../../interfaces/Terminal';
 import {NonTerminal} from '../../NonTerminal';
-import {absorbSet} from '../../utils/set';
 import {LR0Item} from './LR0Item';
 
 export class LR0State {
@@ -75,7 +75,10 @@ export class LR0State {
       .map(
         item => this.cfg.followCache.get(item.production.LHS) as Set<Terminal>
       )
-      .reduce((acc, array) => absorbSet(acc, array), new Set<Terminal>());
+      .reduce((acc, array) => {
+        Sets.absorb(acc, array);
+        return acc;
+      }, new Set<Terminal>());
     this.followNameArrayCache = [...followSet].map(t => t.name);
   }
 

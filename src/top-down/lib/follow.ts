@@ -5,7 +5,7 @@ import {NonTerminal} from '../../NonTerminal';
 import {SententialForm} from '../../SententialForm';
 import {dollar} from '../../terminals/dollar.terminal';
 import {epsilon} from '../../terminals/epsilon.terminal';
-import {absorbSet} from '../../utils/set';
+import {Sets} from '@jlguenego/set';
 
 const initFollowCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
@@ -45,11 +45,11 @@ export const buildFollow = (cfg: ContextFreeGrammar): void => {
           const followA = getFollowCache(cfg, a);
           const omega = new SententialForm(rhs.symbols.slice(indexA + 1));
           const firstStarOmega = firstStar(cfg, omega);
-          absorbSet(followA, firstStarOmega);
+          Sets.absorb(followA, firstStarOmega);
           followA.delete(epsilon);
           if (firstStarOmega.has(epsilon)) {
             const followB = getFollowCache(cfg, b);
-            absorbSet(followA, followB);
+            Sets.absorb(followA, followB);
           }
         }
       }
