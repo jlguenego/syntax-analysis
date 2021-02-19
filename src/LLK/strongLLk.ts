@@ -2,7 +2,7 @@ import {Word} from '../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
 import {NonTerminal} from '../NonTerminal';
 import {SententialForm} from '../SententialForm';
-import {getDistinctCouples, intersection} from '../utils/set';
+import {getDistinctCouples} from '../utils/set';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {followk, buildFollowk} from './followk';
 import {Sets} from '@jlguenego/set';
@@ -43,7 +43,7 @@ export const getFirstFollowIntersec = (
 
       const set2 = firstFollow(cfg, k, rhs2, nt);
 
-      const intersec = intersection(set1, set2);
+      const intersec = Sets.intersection(set1, set2);
 
       Sets.absorb(result, intersec);
     }
