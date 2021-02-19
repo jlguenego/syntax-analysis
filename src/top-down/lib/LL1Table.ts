@@ -1,8 +1,9 @@
+import {Sets} from '@jlguenego/set';
+
 import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {firstStar} from './first';
 import {Terminal} from '../../interfaces/Terminal';
 import {epsilon} from '../../terminals/epsilon.terminal';
-import {copyWithoutElt} from '../../utils/set';
 
 const initLL1TableCache = (cfg: ContextFreeGrammar): void => {
   for (const nt of cfg.productionMap.keys()) {
@@ -17,7 +18,7 @@ export const buildLL1Table = (cfg: ContextFreeGrammar): void => {
     const a = prod.LHS;
     const ll1TableA = cfg.ll1TableCache.get(a) as Map<string, number>;
     const fs = firstStar(cfg, prod.RHS);
-    const firstStarMinusEpsilon = copyWithoutElt(fs, epsilon);
+    const firstStarMinusEpsilon = Sets.difference(fs, new Set([epsilon]));
     for (const t of firstStarMinusEpsilon) {
       if (ll1TableA.get(t.name) !== undefined) {
         throw new Error(

@@ -3,7 +3,6 @@ import {ContextFreeGrammar} from '../../ContextFreeGrammar';
 import {GrammarError} from '../../GrammarError';
 import {psSerialize} from '../../interfaces/ParseSymbol';
 import {Production} from '../../interfaces/Production';
-import {areSetEquals} from '../../utils/set';
 import {computeLR1Closure} from './computeClosure';
 import {LR0Item} from './LR0Item';
 import {LR1Item} from './LR1Item';
@@ -90,7 +89,7 @@ export class LALR1State {
     const c1 = getCore(configSet);
     const c2 = getCore(this.configSet);
 
-    return areSetEquals(c1, c2);
+    return Sets.areEquals(c1, c2);
   }
 }
 

@@ -1,4 +1,4 @@
-import {areSetEquals} from './utils/set';
+import {Sets} from '@jlguenego/set';
 import {Word} from './Word';
 
 const cache = new Set<WordSet>();
@@ -7,7 +7,7 @@ export class WordSet {
   set!: Set<Word>;
 
   static retrieve(set: Set<Word>): WordSet | undefined {
-    return [...cache].find(ws => areSetEquals(ws.set, set));
+    return [...cache].find(ws => Sets.areEquals(ws.set, set));
   }
 
   constructor(set: Set<Word>) {

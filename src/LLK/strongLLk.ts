@@ -2,10 +2,9 @@ import {Word} from '../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
 import {NonTerminal} from '../NonTerminal';
 import {SententialForm} from '../SententialForm';
-import {getDistinctCouples} from '../utils/set';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {followk, buildFollowk} from './followk';
-import {Sets} from '@jlguenego/set';
+import {getDistinctCouples, Sets} from '@jlguenego/set';
 
 const firstFollow = (
   cfg: ContextFreeGrammar,
@@ -36,9 +35,8 @@ export const getFirstFollowIntersec = (
   }
   for (const nt of cfg.productionMap.keys()) {
     const rhsArray = cfg.productionMap.get(nt) as SententialForm[];
-    const rhsSet = new Set(rhsArray);
-    const distinctRhsArrayCouples = getDistinctCouples(rhsSet);
-    for (const [rhs1, rhs2] of distinctRhsArrayCouples) {
+    const distinctRhsArrayCouples = getDistinctCouples(...rhsArray);
+    for (const {first: rhs1, second: rhs2} of distinctRhsArrayCouples) {
       const set1 = firstFollow(cfg, k, rhs1, nt);
 
       const set2 = firstFollow(cfg, k, rhs2, nt);
