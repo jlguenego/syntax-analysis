@@ -1,21 +1,6 @@
-import {Terminal} from './interfaces/Terminal';
+import {alphabet, JSSymbol} from '@jlguenego/language';
 
-export class TerminalAlphabet {
-  static getClass<T extends string>(
-    tlist: readonly T[]
-  ): {new (): Record<T, Terminal>} {
-    const result = (class extends TerminalAlphabet {
-      constructor() {
-        super();
-        tlist.forEach(e => {
-          ((this as unknown) as Record<T, Terminal>)[e] = {name: e} as Terminal;
-        });
-      }
-    } as unknown) as {new (): Record<T, Terminal> & TerminalAlphabet};
-    return result;
-  }
-}
+export class TerminalAlphabet {}
 
 export const defineTerminalAlphabet = <T extends string>(a: readonly T[]) =>
-  new (TerminalAlphabet.getClass(a))() as Record<T, Terminal> &
-    TerminalAlphabet;
+  alphabet(JSSymbol, ...a) as Record<T, JSSymbol> & TerminalAlphabet;
