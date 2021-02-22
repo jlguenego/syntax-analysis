@@ -2,7 +2,7 @@ import {NonTerminal} from './NonTerminal';
 import {ParseSymbol} from './interfaces/ParseSymbol';
 import {Sentence} from './interfaces/Sentence';
 import {Terminal} from './interfaces/Terminal';
-import {Word} from './Word';
+import {TWord} from './interfaces/TWord';
 
 type ParseSymbolArray = ParseSymbol[];
 
@@ -111,11 +111,11 @@ export class SententialForm {
     return new SententialForm([...this.symbols, ...s.symbols]);
   }
 
-  concatWord(w: Word): SententialForm {
-    return new SententialForm([...this.symbols, ...w.terminals]);
+  concatWord(w: TWord): SententialForm {
+    return new SententialForm([...this.symbols, ...w.symbols]);
   }
 
-  concatSet(set: Set<Word>): Set<SententialForm> {
+  concatSet(set: Set<TWord>): Set<SententialForm> {
     const result = new Set<SententialForm>();
     for (const e of set) {
       result.add(this.concatWord(e));

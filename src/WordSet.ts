@@ -1,16 +1,16 @@
 import {Sets} from '@jlguenego/set';
-import {Word} from './Word';
+import {TWord, tWordToString} from './interfaces/TWord';
 
 const cache = new Set<WordSet>();
 
 export class WordSet {
-  set!: Set<Word>;
+  set!: Set<TWord>;
 
-  static retrieve(set: Set<Word>): WordSet | undefined {
+  static retrieve(set: Set<TWord>): WordSet | undefined {
     return [...cache].find(ws => Sets.areEquals(ws.set, set));
   }
 
-  constructor(set: Set<Word>) {
+  constructor(set: Set<TWord>) {
     const wordset = WordSet.retrieve(set);
     if (wordset) {
       return wordset;
@@ -20,7 +20,7 @@ export class WordSet {
   }
 
   toString() {
-    const str = [...this.set].map(w => w.toString()).join(', ');
+    const str = [...this.set].map(w => tWordToString(w)).join(', ');
     return `{ ${str} }`;
   }
 }

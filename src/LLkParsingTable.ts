@@ -1,20 +1,20 @@
 import {LLkTable} from './LLkTable';
 import {ParsingResultRule} from './LLK/ParsingResultRule';
-import {Word} from './Word';
+import {TWord} from './interfaces/TWord';
 
 export class LLkParsingTable {
-  map = new Map<LLkTable, Map<Word, ParsingResultRule>>();
+  map = new Map<LLkTable, Map<TWord, ParsingResultRule>>();
 
-  set(table: LLkTable, word: Word, rule: ParsingResultRule) {
+  set(table: LLkTable, word: TWord, rule: ParsingResultRule) {
     let map = this.map.get(table);
     if (map === undefined) {
-      map = new Map<Word, ParsingResultRule>();
+      map = new Map<TWord, ParsingResultRule>();
       this.map.set(table, map);
     }
     map.set(word, rule);
   }
 
-  get(table: LLkTable, word: Word): ParsingResultRule | undefined {
+  get(table: LLkTable, word: TWord): ParsingResultRule | undefined {
     return this.map.get(table)?.get(word);
   }
 }

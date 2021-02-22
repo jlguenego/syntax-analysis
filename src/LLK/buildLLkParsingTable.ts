@@ -1,3 +1,5 @@
+import {Word} from '@jlguenego/language';
+
 import {dollar} from '../terminals/dollar.terminal';
 import {LLkParsingTable} from '../LLkParsingTable';
 import {SententialForm} from '../SententialForm';
@@ -11,8 +13,8 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {Sentence} from '../interfaces/Sentence';
 import {ParsingTableFn} from '../interfaces/ParsingTableFn';
 import {LLkTable} from '../LLkTable';
-import {Word} from '../Word';
 import {ParsingResultEnum} from '../interfaces/ParsingResultEnum';
+import {TWord} from '../interfaces/TWord';
 
 export const checkLLkParsingTable = (
   cfg: ContextFreeGrammar,
@@ -76,7 +78,9 @@ export const buildLLkParsingTable = (
   buildLLkParsingTableCache(cfg, k);
   return (symbol: ParseSymbol, lookaheadString: Sentence) => {
     if (symbol instanceof NonTerminal) {
-      const word = Word.retrieve(lookaheadString);
+      const word = (Word.retrieveFromCache(
+        lookaheadString
+      ) as unknown) as TWord;
       if (word) {
         const result = getLLkParsingTableCache(cfg, k).get(
           symbol as LLkTable,

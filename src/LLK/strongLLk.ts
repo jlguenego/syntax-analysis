@@ -1,10 +1,10 @@
-import {Word} from '../Word';
 import {buildFirstk, firstkStarSet} from './firstk';
 import {NonTerminal} from '../NonTerminal';
 import {SententialForm} from '../SententialForm';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {followk, buildFollowk} from './followk';
 import {getDistinctCouples, Sets} from '@jlguenego/set';
+import {TWord} from '../interfaces/TWord';
 
 const firstFollow = (
   cfg: ContextFreeGrammar,
@@ -25,10 +25,10 @@ export const isStrongLLk = (cfg: ContextFreeGrammar, k: number): boolean =>
 export const getFirstFollowIntersec = (
   cfg: ContextFreeGrammar,
   k: number
-): Set<Word> => {
+): Set<TWord> => {
   buildFirstk(cfg, k);
   buildFollowk(cfg, k);
-  const result = new Set<Word>();
+  const result = new Set<TWord>();
   // All LL(1) and LL(0) grammars are strong.
   if (k <= 1) {
     return result;

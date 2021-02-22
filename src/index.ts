@@ -7,6 +7,7 @@ export * from './interfaces/ParseTree';
 export * from './interfaces/Production';
 export * from './interfaces/Sentence';
 export * from './interfaces/Terminal';
+export * from './interfaces/TWord';
 export * from './interfaces/ParsingResultEnum';
 export * from './NonTerminal';
 export * from './NonTerminalAlphabet';
@@ -24,7 +25,6 @@ export * from './LLK/strongLLk';
 export * from './LLK/buildLLkParsingTable';
 export * from './LLK/KPredictiveParser';
 export * from './LLK/ParsingResultRule';
-export * from './Word';
 export * from './WordSet';
 
 export * from './top-down/common';

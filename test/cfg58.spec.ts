@@ -1,4 +1,4 @@
-import {wordSetToString} from '../src/Word';
+import {wordSetToString} from '../src';
 import {
   cfg58,
   expectedLLkTableString58,
@@ -33,6 +33,7 @@ describe('CFG58 Unit Test', () => {
   });
   it('test why_cfg58 is not strong LL2', async () => {
     const result = getFirstFollowIntersec(cfg58, 2);
+    console.log('result: ', result);
     assert.deepStrictEqual(wordSetToString(result), 'ba');
   });
 

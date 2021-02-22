@@ -1,6 +1,6 @@
+import {wordSetToString} from '../src';
 import assert from 'assert';
-import {buildFirstk} from '../src';
-import {Word} from '../src';
+import {buildFirstk, newTWord} from '../src';
 import {cfg2, nt} from './data/cfg2';
 
 describe('First Unit Test', () => {
@@ -26,23 +26,20 @@ describe('First Unit Test', () => {
     buildFirstk(cfg2, k);
     const array = Object.values(nt).map(s => ({
       nt: s.label,
-      firstk: [...cfg2.firstk(k, s)].map(w => w.terminals.map(t => t.name)),
+      firstk: wordSetToString(cfg2.firstk(k, s)),
     }));
     const expectedArray = [
-      {
-        nt: 'Num',
-        firstk: [['d'], ['+', 'd'], ['-', 'd'], ['d', 'd']],
-      },
-      {nt: 'Sign', firstk: [['ε'], ['+'], ['-']]},
-      {nt: 'Digits', firstk: [['d'], ['d', 'd']]},
-      {nt: 'More', firstk: [['ε'], ['d'], ['d', 'd']]},
+      {nt: 'Num', firstk: 'd,+d,-d,dd'},
+      {nt: 'Sign', firstk: 'ε,+,-'},
+      {nt: 'Digits', firstk: 'd,dd'},
+      {nt: 'More', firstk: 'ε,d,dd'},
     ];
     assert.deepStrictEqual(array, expectedArray);
   });
 
   it('test the word class', () => {
-    const w1 = new Word(['1', '2'].map(s => ({name: s})));
-    const w2 = new Word(['1', '2'].map(s => ({name: s})));
+    const w1 = newTWord(['1', '2'].map(s => ({name: s})));
+    const w2 = newTWord(['1', '2'].map(s => ({name: s})));
     assert(w1 === w2);
   });
 });

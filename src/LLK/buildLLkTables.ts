@@ -1,13 +1,14 @@
+import {tWordToString} from './../interfaces/TWord';
 import {LLkTable} from '../LLkTable';
 import {LLkTableRow} from '../LLkTableRow';
 import {buildFirstk, firstkStar} from './firstk';
 import {WordSet} from '../WordSet';
-import {epsilonWord} from '../Word';
 import {NonTerminal} from '../NonTerminal';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
 import {LLkTables} from '../LLkTables';
+import {emptyWord} from '@jlguenego/language';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.llkTableCache.set(k, new LLkTables());
@@ -22,7 +23,7 @@ export const getLLkTableCache = (
 
 const buildT0 = (cfg: ContextFreeGrammar, k: number) => {
   const s = cfg.startSymbol;
-  const e = new WordSet(new Set([epsilonWord]));
+  const e = new WordSet(new Set([emptyWord]));
   const t0 = buildLLkTable(cfg, k, 0, s, e);
   getLLkTableCache(cfg, k).add(s, e, t0);
 };
@@ -53,9 +54,9 @@ const buildLLkTable = (
       const existingTableRow = result.map.get(u);
       if (existingTableRow !== undefined) {
         throw new Error(
-          `Grammar is not LL(${k}). Conflict while building the LLk Table. u=${u.toString()}, prod index rule=${i} and ${
-            existingTableRow.prodIndex
-          }.`
+          `Grammar is not LL(${k}). Conflict while building the LLk Table. u=${tWordToString(
+            u
+          )}, prod index rule=${i} and ${existingTableRow.prodIndex}.`
         );
       }
       result.map.set(u, row);
