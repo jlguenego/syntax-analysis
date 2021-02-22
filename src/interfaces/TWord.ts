@@ -1,7 +1,8 @@
-import {dollar} from './../terminals/dollar.terminal';
-import {TerminalAlphabet} from '../TerminalAlphabet';
 import {emptyWord, Word} from '@jlguenego/language';
+
 import {Terminal} from './Terminal';
+import {dollar} from '../terminals/dollar.terminal';
+import {TerminalAlphabet} from '../TerminalAlphabet';
 
 export type TWord = Word<TerminalAlphabet>;
 
