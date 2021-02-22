@@ -62,13 +62,7 @@ export class ContextFreeGrammar {
     ] as unknown) as NonTerminal;
     this.productions = this.spec.productions.map(p => {
       const lhs = (this.nt[p.LHS] as unknown) as NonTerminal;
-      const rhs = new SententialForm(
-        p.RHS.map(
-          c =>
-            ((this.nt[c] as unknown) as NonTerminal) ??
-            ((this.t[c] as unknown) as Terminal)
-        )
-      );
+      const rhs = new SententialForm(p.RHS.map(c => this.nt[c] ?? this.t[c]));
       // const rhs = new SententialForm(
       //   symbols.length === 0 ? [epsilon] : symbols
       // );

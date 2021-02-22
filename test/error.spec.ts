@@ -1,25 +1,14 @@
+import {defineNonTerminalAlphabet} from './../src/NonTerminalAlphabet';
+import {defineTerminalAlphabet} from './../src/TerminalAlphabet';
 import assert from 'assert';
-import {
-  CFGSpecifications,
-  ContextFreeGrammar,
-  NonTerminal,
-  NonTerminalAlphabet,
-  Terminal,
-  TerminalAlphabet,
-} from '../src';
+import {CFGSpecifications, ContextFreeGrammar} from '../src';
 
 describe('Error Unit Test', () => {
   it('test incorrect alphabets (not disjoint)', () => {
     try {
-      class T extends TerminalAlphabet {
-        a = {name: 'a'} as Terminal;
-      }
-      class N extends NonTerminalAlphabet {
-        a = new NonTerminal('a');
-      }
-      const t = new T();
-      const nt = new N();
-      const spec: CFGSpecifications<T, N> = {
+      const t = defineTerminalAlphabet(['a']);
+      const nt = defineNonTerminalAlphabet(['a']);
+      const spec: CFGSpecifications<typeof t, typeof nt> = {
         nt,
         t,
         startSymbol: 'a',

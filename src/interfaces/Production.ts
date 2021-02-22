@@ -3,10 +3,7 @@ import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {SententialForm} from '../SententialForm';
 
-export interface ProductionSpec<
-  T extends TerminalAlphabet,
-  NT extends NonTerminalAlphabet
-> {
+export interface ProductionSpec<T, NT> {
   LHS: keyof NT;
   RHS: (keyof T | keyof NT)[];
 }

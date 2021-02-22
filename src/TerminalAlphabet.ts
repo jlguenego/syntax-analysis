@@ -1,6 +1,9 @@
+import {Terminal} from './interfaces/Terminal';
 import {alphabet, JSSymbol} from '@jlguenego/language';
 
-export class TerminalAlphabet {}
+export interface TerminalAlphabet {
+  [key: string]: Terminal;
+}
 
 export const defineTerminalAlphabet = <T extends string>(a: readonly T[]) =>
-  alphabet(JSSymbol, ...a) as Record<T, JSSymbol> & TerminalAlphabet;
+  alphabet(JSSymbol, ...a);

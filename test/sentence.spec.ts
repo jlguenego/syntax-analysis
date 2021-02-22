@@ -1,24 +1,11 @@
+import {defineTerminalAlphabet} from './../src/TerminalAlphabet';
 import assert from 'assert';
 import {getSentence, ParseTree} from '../src/interfaces/ParseTree';
 import {Sentence} from '../src/interfaces/Sentence';
-import {Terminal} from '../src/interfaces/Terminal';
-import {NonTerminal} from '../src/NonTerminal';
-import {NonTerminalAlphabet} from '../src/NonTerminalAlphabet';
-import {TerminalAlphabet} from '../src/TerminalAlphabet';
+import {defineNonTerminalAlphabet} from '../src/NonTerminalAlphabet';
 
-class NTA extends NonTerminalAlphabet {
-  S = new NonTerminal('S');
-  E = new NonTerminal('E');
-  F = new NonTerminal('F');
-}
-
-class TA extends TerminalAlphabet {
-  PLUS: Terminal = {name: '+'};
-  INT: Terminal = {name: 'int'};
-}
-
-const nt = new NTA();
-const t = new TA();
+const t = defineTerminalAlphabet(['+', 'int']);
+const nt = defineNonTerminalAlphabet(['S', 'E', 'F']);
 
 describe('Sentence Unit Test', () => {
   it('test getSentence', () => {
@@ -41,25 +28,25 @@ describe('Sentence Unit Test', () => {
                   children: [
                     {
                       node: nt.F,
-                      children: [{node: t.INT}],
+                      children: [{node: t.int}],
                     },
                   ],
                 },
                 {
-                  node: t.PLUS,
+                  node: t['+'],
                 },
                 {
                   node: nt.F,
-                  children: [{node: t.INT}],
+                  children: [{node: t.int}],
                 },
               ],
             },
             {
-              node: t.PLUS,
+              node: t['+'],
             },
             {
               node: nt.F,
-              children: [{node: t.INT}],
+              children: [{node: t.int}],
             },
           ],
         },
