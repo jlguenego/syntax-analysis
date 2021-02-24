@@ -1,26 +1,9 @@
-import {Sets} from '@jlguenego/set';
+import {Language} from '@jlguenego/language';
 import {TWord} from './interfaces/TWord';
+import {TerminalAlphabet} from './TerminalAlphabet';
 
-const cache = new Set<WordSet>();
-
-export class WordSet {
-  set!: Set<TWord>;
-
-  static retrieve(set: Set<TWord>): WordSet | undefined {
-    return [...cache].find(ws => Sets.areEquals(ws.set, set));
-  }
-
+export class WordSet extends Language<TerminalAlphabet> {
   constructor(set: Set<TWord>) {
-    const wordset = WordSet.retrieve(set);
-    if (wordset) {
-      return wordset;
-    }
-    this.set = set;
-    cache.add(this);
-  }
-
-  toString() {
-    const str = [...this.set].map(w => w.toString()).join(', ');
-    return `{ ${str} }`;
+    super(set);
   }
 }
