@@ -59,8 +59,8 @@
     "url": "https://github.com/sponsors/jlguenego"
   },
   "dependencies": {
-    "@jlguenego/language": "^1.0.1",
-    "@jlguenego/set": "^1.2.0",
+    "@jlguenego/language": "^1.1.0",
+    "@jlguenego/set": "^1.3.0",
     "@jlguenego/tree": "^1.8.0",
     "rxjs": "^6.6.3"
   }
