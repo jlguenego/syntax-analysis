@@ -1,6 +1,12 @@
 {
   "extends": "./node_modules/gts/",
   "rules": {
-    "no-constant-condition": "off"
+    "no-constant-condition": "off",
+    "node/no-extraneous-import": [
+      "error",
+      {
+        "allowModules": ["@jlguenego/set"]
+      }
+    ]
   }
 }
