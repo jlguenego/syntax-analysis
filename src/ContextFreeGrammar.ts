@@ -17,7 +17,7 @@ import {buildFollow} from './top-down/lib/follow';
 import {buildLL1Table} from './top-down/lib/LL1Table';
 import {ParseError} from './ParseError';
 import {CFGSpec, CFGSpecInput} from './interfaces/CFGSpec';
-import {LLkTables} from './LLKTables.orig';
+import {LLkTables} from './LLkTables';
 import {LLkParsingTable} from './LLkParsingTable';
 
 export interface CFGOptions {

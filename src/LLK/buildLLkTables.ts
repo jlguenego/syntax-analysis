@@ -6,7 +6,7 @@ import {NonTerminal} from '../NonTerminal';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {concatk} from './concatk';
 import {buildFollowk} from './followk';
-import {LLkTables} from '../LLKTables.orig';
+import {LLkTables} from '../LLkTables';
 import {emptyWord} from '@jlguenego/language';
 
 const initLLkTableCache = (cfg: ContextFreeGrammar, k: number): void => {

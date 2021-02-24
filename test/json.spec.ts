@@ -11,7 +11,6 @@ describe('JSON Unit Test', () => {
       method: 'LR1',
     });
     const tree = Tree.fromObject<ParseSymbol>(parseTree);
-    console.log('tree: ', tree.getSize());
     assert.deepStrictEqual(tree.getSize(), 101);
   });
 });
