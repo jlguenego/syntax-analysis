@@ -30,7 +30,7 @@ export const convertInputTapeToTree = (
       tree.graft(stock, scion);
     }
   }
-  let i = 0;
+  let index = 0;
   for (const leaf of tree.getLeaves()) {
     if (leaf.node === epsilon) {
       continue;
@@ -38,11 +38,11 @@ export const convertInputTapeToTree = (
     if (leaf.node instanceof NonTerminal) {
       throw new Error('should not happen.');
     }
-    if (leaf.node.name !== inputTape[i].name) {
+    if (leaf.node.name !== inputTape[index].name) {
       throw new Error('name are not equals. Technical bug?');
     }
-    leaf.node = inputTape[i];
-    i++;
+    leaf.node = inputTape[index];
+    index++;
   }
   return tree;
 };
