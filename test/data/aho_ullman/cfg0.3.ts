@@ -43,7 +43,7 @@ const letterRule = new Rule({
 
 const rules = [blank, ...separators, ...operators, letterRule];
 
-export function lexer(str: string): TokenSequence {
+export function lexer03(str: string): TokenSequence {
   const tokenSequence = new Lexer(rules).tokenize(str);
   return tokenSequence;
 }
@@ -177,7 +177,7 @@ f(T13,<(letter>)=3, (T3=>T10)
 f(T14,<(~>)=4, (~T10)
 `;
 
-export const sentence03: Sentence = lexer('( a => ( b => a ) )') as Sentence;
+export const sentence03: Sentence = lexer03('( a => ( b => a ) )') as Sentence;
 export const expectedParseTree03: ParseTree = {
   node: nt.WelformedStatement,
   children: [

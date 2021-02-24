@@ -4,6 +4,7 @@ import {
   expectedParseTree03,
   expectedLLkParseTableString03,
   expectedLLkTableString03,
+  lexer03,
 } from './data/aho_ullman/cfg0.3';
 import assert from 'assert';
 import {
@@ -12,7 +13,9 @@ import {
   getLLkParsingTableCache,
   getLLkTableCache,
   parse,
+  Terminal,
 } from '../src';
+import {Tree, TreeObject} from '@jlguenego/tree';
 
 describe('CFG03 Unit Test', () => {
   it('test cfg03_T0', () => {
@@ -38,5 +41,20 @@ describe('CFG03 Unit Test', () => {
       lookaheadTokenNbr: 2,
     });
     assert.deepStrictEqual(parseTree, expectedParseTree03);
+  });
+  it('test LLk_cfg03bis', async () => {
+    buildLLkTables(cfg03, 2);
+    const parseTree = parse(lexer03('(~(a=>b))'), cfg03, {
+      method: 'LLk',
+      lookaheadTokenNbr: 2,
+    });
+    const tree = Tree.fromObject<Terminal>(
+      (parseTree as unknown) as TreeObject<Terminal>
+    );
+    const str = tree
+      .getLeaves()
+      .map(leaf => leaf.node.name)
+      .join('');
+    assert.deepStrictEqual(str, '(~(letter=>letter))');
   });
 });
