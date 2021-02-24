@@ -46,7 +46,7 @@ const buildLLkTable = (
     }
     const rhs = cfg.productions[i].RHS;
     const first = firstkStar(cfg, k, rhs);
-    const set = concatk(k, first, l.set);
+    const set = concatk(k, first, l.getSet());
     for (const u of set) {
       const row = new LLkTableRow(i);
       row.addFollowSets(cfg, k, rhs, l);

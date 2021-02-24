@@ -19,7 +19,7 @@ export class LLkTableRow {
     for (const i of indexList) {
       const nt = rhs.symbols[i] as NonTerminal;
       const wordset = new WordSet(
-        concatk(k, firstkStar(cfg, k, rhs.slice(i + 1)), l.set)
+        concatk(k, firstkStar(cfg, k, rhs.slice(i + 1)), l.getSet())
       );
       this.followSet.push({nt, wordset});
     }
