@@ -40,6 +40,11 @@ export const parseWithBFS1 = (
     bfs1GetChildren(cfg)
   );
   const pt = bfsTree.search() as PartialParseTree;
+  if (pt === undefined) {
+    throw new Error(
+      'Cannot find a good parse tree. May be there is a syntax error in the sentence.'
+    );
+  }
   pt.tree.getLeaves().forEach((leaf, i) => (leaf.node = sentence[i]));
   const parseTree = pt.tree.toObject() as ParseTree;
   return parseTree;

@@ -31,7 +31,7 @@ const initLLkParsingTableCache = (cfg: ContextFreeGrammar, k: number): void => {
   cfg.llkParsingTableCache.set(k, map);
 };
 
-const getLLkParsingTableCache = (
+export const getLLkParsingTableCache = (
   cfg: ContextFreeGrammar,
   k: number
 ): LLkParsingTable => {
@@ -79,7 +79,7 @@ export const buildLLkParsingTable = (
   return (symbol: ParseSymbol, lookaheadString: Sentence) => {
     if (symbol instanceof NonTerminal) {
       const word = (Word.retrieveFromCache(
-        lookaheadString
+        lookaheadString.map(s => ({name: s.name}))
       ) as unknown) as TWord;
       if (word) {
         const result = getLLkParsingTableCache(cfg, k).get(

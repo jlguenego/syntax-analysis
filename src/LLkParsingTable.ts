@@ -17,4 +17,14 @@ export class LLkParsingTable {
   get(table: LLkTable, word: TWord): ParsingResultRule | undefined {
     return this.map.get(table)?.get(word);
   }
+
+  toString() {
+    let result = '';
+    for (const [key, value] of this.map) {
+      for (const [word, res] of value) {
+        result += 'f(' + key.label + ',<' + word + '>)=' + res + '\n';
+      }
+    }
+    return result;
+  }
 }

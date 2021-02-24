@@ -112,7 +112,11 @@ export class KPredictiveParser {
     while (!this.isFinished) {
       this.move();
     }
-    const tree = convertInputTapeToTree(this.cfg, this.outputTape);
+    const tree = convertInputTapeToTree(
+      this.cfg,
+      this.outputTape,
+      this.inputTape
+    );
     const parseTree = tree.toObject() as ParseTree;
     return parseTree;
   }

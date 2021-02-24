@@ -5,10 +5,12 @@ import {ParseSymbol} from '../interfaces/ParseSymbol';
 import {ContextFreeGrammar} from '../ContextFreeGrammar';
 import {OutputTape} from '../interfaces/OutputTape';
 import {NonTerminal} from '../NonTerminal';
+import {Sentence} from '../interfaces/Sentence';
 
 export const convertInputTapeToTree = (
   cfg: ContextFreeGrammar,
-  outputTape: OutputTape
+  outputTape: OutputTape,
+  inputTape: Sentence
 ): Tree<ParseSymbol> => {
   const tree = new Tree<ParseSymbol>(cfg.startSymbol);
   for (const i of outputTape) {
@@ -27,6 +29,20 @@ export const convertInputTapeToTree = (
       const scion = new Tree<ParseSymbol>(s);
       tree.graft(stock, scion);
     }
+  }
+  let i = 0;
+  for (const leaf of tree.getLeaves()) {
+    if (leaf.node === epsilon) {
+      continue;
+    }
+    if (leaf.node instanceof NonTerminal) {
+      throw new Error('should not happen.');
+    }
+    if (leaf.node.name !== inputTape[i].name) {
+      throw new Error('name are not equals. Technical bug?');
+    }
+    leaf.node = inputTape[i];
+    i++;
   }
   return tree;
 };
