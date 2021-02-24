@@ -1,5 +1,5 @@
 import {Sets} from '@jlguenego/set';
-import {TWord, tWordToString} from './interfaces/TWord';
+import {TWord} from './interfaces/TWord';
 
 const cache = new Set<WordSet>();
 
@@ -20,7 +20,7 @@ export class WordSet {
   }
 
   toString() {
-    const str = [...this.set].map(w => tWordToString(w)).join(', ');
+    const str = [...this.set].map(w => w.toString()).join(', ');
     return `{ ${str} }`;
   }
 }

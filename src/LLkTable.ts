@@ -1,5 +1,5 @@
 import {LocalFollow} from './interfaces/LocalFollow';
-import {TWord, tWordToString} from './interfaces/TWord';
+import {TWord} from './interfaces/TWord';
 import {LLkTableRow} from './LLkTableRow';
 import {NonTerminal} from './NonTerminal';
 import {WordSet} from './WordSet';
@@ -14,7 +14,7 @@ export class LLkTable extends NonTerminal {
   toString() {
     let result = `LLKTable ${this.nt} ${this.ws}` + '\n';
     for (const [word, tablerow] of this.map) {
-      result += tWordToString(word) + ': ' + tablerow + '\n';
+      result += word + ': ' + tablerow + '\n';
     }
     return result;
   }

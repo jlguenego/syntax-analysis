@@ -1,4 +1,3 @@
-import {tWordToString} from './../interfaces/TWord';
 import {LLkTable} from '../LLkTable';
 import {LLkTableRow} from '../LLkTableRow';
 import {buildFirstk, firstkStar} from './firstk';
@@ -54,9 +53,9 @@ const buildLLkTable = (
       const existingTableRow = result.map.get(u);
       if (existingTableRow !== undefined) {
         throw new Error(
-          `Grammar is not LL(${k}). Conflict while building the LLk Table. u=${tWordToString(
-            u
-          )}, prod index rule=${i} and ${existingTableRow.prodIndex}.`
+          `Grammar is not LL(${k}). Conflict while building the LLk Table. u=${u.toString()}, prod index rule=${i} and ${
+            existingTableRow.prodIndex
+          }.`
         );
       }
       result.map.set(u, row);
