@@ -1,6 +1,6 @@
 {
   "name": "@jlguenego/syntax-analysis",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "Syntax analysis. Lot of different methods.",
   "main": "./build/src/index.js",
   "module": "build_esm/src/index.js",
@@ -59,8 +59,8 @@
     "url": "https://github.com/sponsors/jlguenego"
   },
   "dependencies": {
-    "@jlguenego/language": "file:..\\language",
-    "@jlguenego/set": "^1.0.1",
+    "@jlguenego/language": "^1.0.0",
+    "@jlguenego/set": "^1.2.0",
     "@jlguenego/tree": "^1.8.0",
     "rxjs": "^6.6.3"
   }

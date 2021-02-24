@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.3](https://github.com/jlguenego/syntax-analysis/compare/v1.6.2...v1.6.3) (2021-02-24)
+
+
+### Bug Fixes
+
+* do not embed test directory ([e6f70ec](https://github.com/jlguenego/syntax-analysis/commit/e6f70ec9c3a9b17f62fe3e5e50021e24f12111ed))
+
 ### [1.6.2](https://github.com/jlguenego/syntax-analysis/compare/v1.6.1...v1.6.2) (2021-02-17)
 
 
