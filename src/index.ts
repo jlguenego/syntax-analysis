@@ -1,6 +1,7 @@
 export * from './Automaton';
 export * from './bottom-up/lib/LR0Automaton';
 export * from './ContextFreeGrammar';
+export * from './grammar/Linear';
 export * from './interfaces/CFGSpec';
 export * from './interfaces/ParseSymbol';
 export * from './interfaces/ParseTree';
