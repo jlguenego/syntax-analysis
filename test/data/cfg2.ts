@@ -13,7 +13,7 @@ export const nt = defineNonTerminalAlphabet([
 ] as const);
 const t = defineTerminalAlphabet(['+', '-', 'd'] as const);
 
-export const spec: CFGSpecifications<typeof t, typeof nt> = {
+export const spec: CFGSpecifications<typeof nt, typeof t> = {
   nt,
   t,
   productions: [

@@ -18,7 +18,7 @@ You should use Typescript in order to check your grammar in a easier way.
 const t = defineTerminalAlphabet(['a', 'b'] as const);
 const nt = defineNonTerminalAlphabet(['S', 'A'] as const);
 
-const spec: CFGSpecifications<typeof t, typeof nt> = {
+const spec: CFGSpecifications<typeof nt, typeof t> = {
   nt,
   t,
   productions: [

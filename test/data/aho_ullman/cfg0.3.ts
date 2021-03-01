@@ -56,7 +56,7 @@ const nt = defineNonTerminalAlphabet([
   'Negation',
 ] as const);
 
-const spec: CFGSpecifications<typeof t, typeof nt> = {
+const spec: CFGSpecifications<typeof nt, typeof t> = {
   nt,
   t,
   productions: [

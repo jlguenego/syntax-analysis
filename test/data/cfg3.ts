@@ -5,14 +5,14 @@ import {
   defineNonTerminalAlphabet,
 } from '../../src';
 
-const t = defineTerminalAlphabet(['+', '*', 'int', '(', ')'] as const);
 const nt = defineNonTerminalAlphabet(['E', 'Op'] as const);
+const t = defineTerminalAlphabet(['+', '*', 'int', '(', ')'] as const);
 
-type TA = typeof t;
 type NTA = typeof nt;
+type TA = typeof t;
 
 // This grammar is LL1.
-export const spec: CFGSpecifications<TA, NTA> = {
+export const spec: CFGSpecifications<NTA, TA> = {
   nt,
   t,
   startSymbol: 'E',

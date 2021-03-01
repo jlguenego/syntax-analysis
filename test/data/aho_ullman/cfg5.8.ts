@@ -7,11 +7,11 @@ import {
   defineTerminalAlphabet,
 } from '../../../src';
 
-export const t58 = defineTerminalAlphabet(['a', 'b'] as const);
 export const nt58 = defineNonTerminalAlphabet(['S', 'A'] as const);
+export const t58 = defineTerminalAlphabet(['a', 'b'] as const);
 
 // this grammar is not LL(1), it is LL(2) because the LL2 table can be built, but not strong LL(2).
-const spec: CFGSpecifications<typeof t58, typeof nt58> = {
+const spec: CFGSpecifications<typeof nt58, typeof t58> = {
   nt: nt58,
   t: t58,
   productions: [

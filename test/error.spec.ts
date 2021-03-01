@@ -8,7 +8,7 @@ describe('Error Unit Test', () => {
     try {
       const t = defineTerminalAlphabet(['a']);
       const nt = defineNonTerminalAlphabet(['a']);
-      const spec: CFGSpecifications<typeof t, typeof nt> = {
+      const spec: CFGSpecifications<typeof nt, typeof t> = {
         nt,
         t,
         startSymbol: 'a',

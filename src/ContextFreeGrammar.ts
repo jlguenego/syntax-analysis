@@ -27,8 +27,8 @@ export interface CFGOptions {
 export class ContextFreeGrammar {
   nt: NonTerminalAlphabet;
   t: TerminalAlphabet;
-  startSymbol: NonTerminal;
   productions: Production[];
+  startSymbol: NonTerminal;
 
   spec: CFGSpec;
 

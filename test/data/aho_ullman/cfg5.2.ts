@@ -11,7 +11,7 @@ const t = defineTerminalAlphabet(['a', 'b'] as const);
 const nt = defineNonTerminalAlphabet(['S', 'A'] as const);
 
 // this grammar is LL(1)
-const spec: CFGSpecifications<typeof t, typeof nt> = {
+const spec: CFGSpecifications<typeof nt, typeof t> = {
   nt,
   t,
   productions: [

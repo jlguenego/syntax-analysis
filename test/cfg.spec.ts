@@ -11,7 +11,7 @@ describe('CFG Unit Test', () => {
     const t = defineTerminalAlphabet(['a', 'c'] as const);
     const nt = defineNonTerminalAlphabet(['A', 'B'] as const);
 
-    const spec: CFGSpecifications<typeof t, typeof nt> = {
+    const spec: CFGSpecifications<typeof nt, typeof t> = {
       nt,
       t,
       productions: [

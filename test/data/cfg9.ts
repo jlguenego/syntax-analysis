@@ -5,13 +5,13 @@ import {
   defineTerminalAlphabet,
 } from '../../src';
 
-export const t = defineTerminalAlphabet(['a', 'b'] as const);
 export const nt = defineNonTerminalAlphabet(['S', 'E'] as const);
+export const t = defineTerminalAlphabet(['a', 'b'] as const);
 
-type TA = typeof t;
 type NTA = typeof nt;
+type TA = typeof t;
 
-export const spec9: CFGSpecifications<TA, NTA> = {
+export const spec9: CFGSpecifications<NTA, TA> = {
   nt,
   t,
   productions: [

@@ -12,13 +12,13 @@ import {
 // Slide 95
 // Grammar not SLR(1)
 
-const t = defineTerminalAlphabet(['=', 'id', '*'] as const);
 const nt = defineNonTerminalAlphabet(['S', 'E', 'L', 'R'] as const);
+const t = defineTerminalAlphabet(['=', 'id', '*'] as const);
 
-type TA = typeof t;
 type NTA = typeof nt;
+type TA = typeof t;
 
-const spec: CFGSpecifications<TA, NTA> = {
+const spec: CFGSpecifications<NTA, TA> = {
   nt,
   t,
   productions: [

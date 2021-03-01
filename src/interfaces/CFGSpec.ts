@@ -3,13 +3,13 @@ import {NonTerminalAlphabet} from '../NonTerminalAlphabet';
 import {TerminalAlphabet} from '../TerminalAlphabet';
 import {ProductionSpec} from './Production';
 
-export type CFGSpec = CFGSpecifications<TerminalAlphabet, NonTerminalAlphabet>;
+export type CFGSpec = CFGSpecifications<NonTerminalAlphabet, TerminalAlphabet>;
 
-export interface CFGSpecifications<T, NT> {
+export interface CFGSpecifications<NT, T> {
   nt: NT;
   t: T;
-  startSymbol: keyof NT & string;
   productions: ProductionSpec<T, NT>[];
+  startSymbol: keyof NT & string;
 }
 
 // just check some typings for ContextFreeGrammar, but not all.

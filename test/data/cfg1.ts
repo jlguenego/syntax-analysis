@@ -11,7 +11,7 @@ const nt = defineNonTerminalAlphabet(['E', 'T'] as const);
 const t = defineTerminalAlphabet(['+', 'int', '(', ')'] as const);
 
 // this grammar is not LL(k) (Left recursion)
-const spec: CFGSpecifications<typeof t, typeof nt> = {
+const spec: CFGSpecifications<typeof nt, typeof t> = {
   nt,
   t,
   productions: [

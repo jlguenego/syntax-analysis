@@ -7,13 +7,13 @@ import {
   defineTerminalAlphabet,
 } from '../../src';
 
-const t = defineTerminalAlphabet(['+', '(', ')', 'int'] as const);
 const nt = defineNonTerminalAlphabet(['S', 'E', 'T'] as const);
+const t = defineTerminalAlphabet(['+', '(', ')', 'int'] as const);
 
-type TA = typeof t;
 type NTA = typeof nt;
+type TA = typeof t;
 
-const spec: CFGSpecifications<TA, NTA> = {
+const spec: CFGSpecifications<NTA, TA> = {
   nt,
   t,
   productions: [
