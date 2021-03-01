@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [1.6.4](https://github.com/jlguenego/syntax-analysis/compare/v1.6.3...v1.6.4) (2021-03-01)
+
+
+### Bug Fixes
+
+* added language ([b93ff1e](https://github.com/jlguenego/syntax-analysis/commit/b93ff1ef6c87a20ef169e7a3ecc9f86886193672))
+* sentence from lexer ([35735c9](https://github.com/jlguenego/syntax-analysis/commit/35735c9af8d3c0bd80f1725aa24cd9d197e49fd6))
+* slow because of sha3 ([f817d8b](https://github.com/jlguenego/syntax-analysis/commit/f817d8bdba283b702a8f758f8db52fbdfd5c24ca))
+* version of language ([85183f8](https://github.com/jlguenego/syntax-analysis/commit/85183f87a188f51e05c7e3e45ee0489907dd0053))
+
 ### [1.6.3](https://github.com/jlguenego/syntax-analysis/compare/v1.6.2...v1.6.3) (2021-02-24)
 
 
